@@ -1,0 +1,69 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JS
+@typeparam TData
+
+<div @ref="ColumnChooserButtonRef"
+	 id="@ElementId"
+	 role="button"
+	 class="@ChooserButtonCss"
+	 title="choose columns..."
+	 disabled="@IsGridBusy"
+	 tabindex="0"
+	 @onkeydown="EventUtil.AsNonRenderingEventHandler<KeyboardEventArgs>(HandleChooserButtonKeyDown)"
+	 @onclick="HandleChooserButtonClick" @onclick:stopPropagation>
+	<i class="bi bi-layout-split" inert aria-hidden="true" />
+</div>
+
+@code {
+
+	void RenderPopover(RenderTreeBuilder __builder) {
+		<Popover @ref=ChooserPopover
+				 TriggerElement="@ColumnChooserButtonRef"
+				 Placement="Placement.BottomEnd"
+				 OnOpenChanged="@HandleOpenedChanged"
+				 OnOutsideClicked="@HandleOutsideClick">
+			<div @onkeydown="EventUtil.AsNonRenderingEventHandler<KeyboardEventArgs>(HandlePopoverKeyDown)">
+				<FocusTrap IsActive="true" FocusType="DefaultFocusType.First">
+					<h3 class="popover-header text-nowrap">
+						<Checkbox Label="Choose Columns"
+								  AriaLabel="toggle selection of all items"
+								  ThreeState="true"
+								  ShowIndeterminate="false"
+								  @bind-CheckState="AreAllColumnsVisible"
+								  title="select/unselect all..." />
+					</h3>
+					<div class="popover-body">
+						<div style="min-width:222px;">
+							<div class="columns-chooser">
+								@foreach (var model in ColumnChooserListItems) {
+									<Checkbox AriaLabel="@model.Title"
+											  LabelContent="@(LabelFragment(model))"
+											  Disabled="@model.IsFiltered"
+											  @bind-Value="model.IsVisible" />
+								}
+							</div>
+							<div class="d-flex gap-2 p-2 justify-content-end border-top rounded-bottom">
+								<button type="button" class="btn btn-primary btn-sm" role="button" @onclick="ApplyColumns">
+									Apply
+								</button>
+								<button type="button" class="btn btn-danger btn-sm" role="button" @onclick="CancelColumns">
+									Cancel
+								</button>
+							</div>
+						</div>
+					</div>
+				</FocusTrap>
+			</div>
+		</Popover>
+	}
+
+	RenderFragment<DataGridColumnVisibleModel> LabelFragment => (model) => __builder => {
+		@if (model.IsFiltered) {
+			@model.Title <i class="bi-funnel-fill text-warning" style="font-size: 0.75rem;" inert aria-hidden="true"></i>
+		} else {
+			@model.Title
+		}
+	};
+
+}

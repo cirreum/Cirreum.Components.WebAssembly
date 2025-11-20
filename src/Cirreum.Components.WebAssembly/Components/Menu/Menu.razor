@@ -1,0 +1,26 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@implements IMenuInternal
+@inject IMenuService MenuService
+@inject IJSAppModule JSApp
+
+@code {
+
+	void _MenuInstance(RenderTreeBuilder __builder) {
+		@if (ChildContent is not null) {
+			<ul @ref=menuElementReference
+				@oncontextmenu="EventUtil.AsNonRenderingEventHandler(ContextMenuNoOp)" @oncontextmenu:preventDefault @oncontextmenu:stopPropagation
+				role="menu"
+				id="@MenuElementId"
+				class="@RootMenuCss"
+				style="@CustomStyle"
+				aria-expanded="@AriaIsShowing"
+				aria-labelledby="@(Trigger.HasValue() ? Trigger : false)">
+				<CascadingValue Value="@this" IsFixed="true">
+					@ChildContent
+				</CascadingValue>
+			</ul>
+		}
+	}
+
+}

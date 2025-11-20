@@ -1,0 +1,21 @@
+.hide-footer {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+::deep.card:not(.has-footer) > .collapsable.collapsed {
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+::deep.card-header {
+  display: flex;
+  user-select: none;
+  border-bottom-color: var(--bs-secondary-border-subtle);
+}
+::deep.card-header.collapsable {
+  cursor: pointer;
+}
+::deep.card-header.collapsable.collapsed {
+  border-bottom: none;
+}

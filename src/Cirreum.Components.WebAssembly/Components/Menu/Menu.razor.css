@@ -1,0 +1,40 @@
+.menu-root.dropdown-menu {
+  user-select: none;
+  display: block;
+  border-radius: 6px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-out, visibility 0s 0.2s, transform 0.2s ease-out, max-width 0s 0.2s, max-height 0s 0.2s;
+  transform: translateY(-10px);
+}
+.menu-root.dropdown-menu.measuring {
+  clip: auto;
+  pointer-events: none;
+}
+.menu-root.dropdown-menu.root-shown {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out, max-width 0s, max-height 0s;
+  transform: translateY(0);
+}
+.menu-root:hover > .dropdown-menu.show {
+  display: block;
+}
+.menu-root:focus-visible {
+  outline: none;
+}
+
+.dropdown-item:not(.disabled) {
+  cursor: pointer;
+}
+
+.dropdown-item.dropdown-toggle::after {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-right: 0;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid;
+}

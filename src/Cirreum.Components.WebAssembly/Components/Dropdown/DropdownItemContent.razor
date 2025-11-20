@@ -1,0 +1,15 @@
+﻿@namespace Cirreum.Components
+@implements IDropdownItemBase
+<li @attributes="@LiAttributes">
+	@ChildContent
+</li>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> LiAttributes { get; set; } = [];
+
+}

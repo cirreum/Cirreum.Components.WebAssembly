@@ -1,0 +1,536 @@
+﻿@namespace Cirreum.Components
+@using Microsoft.AspNetCore.Components.Rendering;
+
+@typeparam TData
+@inherits BaseAfterRenderComponent
+
+<CascadingValue TValue="InternalGridContext<TData>" IsFixed="true" Value="@_internalGridContext">
+	<div @key="@ID" id="@ID" class="@ContainerClass" aria-busy="@((IsBusy || IsLoading).ToAttributeValue())" aria-labelledby="@($"{ID}-title")">
+		<div @key="ColumnFilterContainerId" role="none" class="datagrid-filter-container" id="@ColumnFilterContainerId" style="overflow:hidden;">
+			@if (_renderColumnHeaderFilter is not null) {
+				@_renderColumnHeaderFilter
+			}
+		</div>
+		<div role="none" class="datagrid-chooser-container" id="@ColumnChooserContainerId" style="overflow:hidden;">
+			@if (_renderColumnChooserPopup is not null) {
+				@_renderColumnChooserPopup
+			}
+		</div>
+		@if (_contextMenuTemplate is not null) {
+			<Menu @ref="contextMenu" TriggerButton="MouseButton.Right"
+				  OnMenuItemSelected="EventUtil.AsNonRenderingEventHandler<IMenuItem>(HandleContextMenuItemSelected)">
+				@_contextMenuTemplate
+			</Menu>
+		}
+		@if (ShowTitle || Searchable || ShowToolbar) {
+			<div class="datagrid-header">
+				@if (ShowTitle) {
+					<div id="@($"{ID}-title")" class="datagrid-title">
+						@if (_titleTemplate is not null) {
+							@_titleTemplate
+						} else {
+							<span class="datagrid-title-default">@Title</span>
+						}
+					</div>
+				}
+				@if (Searchable) {
+					<div class="datagrid-search">
+						<DataGridSearch TData="TData" @ref="SearchBarInstance" DebounceDelay="@SearchDebounceDelay" HasData="@HasData" />
+					</div>
+				}
+				@if (ShowToolbar) {
+					<div class="datagrid-toolbar">
+						<div class="btn-toolbar" role="toolbar" aria-label="DataGrid Toolbar">
+							<div class="btn-group" role="group" aria-label="DataGrid Commands">
+								@if (HasRefreshDataHandler) {
+									<button type="button" class="btn btn-outline-primary btn-sm @(IsRefreshing ? "active" : "")" disabled="@(IsBusy || !IsRefreshingEnabled)" title="refresh data..." @onclick="EventUtil.AsNonRenderingEventHandler(OnRefreshClicked)" @onclick:stopPropagation>
+										<i class="bi bi-arrow-repeat @(IsRefreshing ? "bi-rotate":"")"></i>
+									</button>
+								}
+								@if (HasExportDataHandler) {
+									<button type="button"
+											class="btn btn-outline-primary btn-sm @(ExportDisabled ? "disabled" : IsExporting ? "active" : "")"
+											disabled="@ExportDisabled"
+											title="export data..."
+											@onclick="EventUtil.AsNonRenderingEventHandler(OnExportClicked)"
+									@onclick:stopPropagation>
+										@if (IsExporting) {
+											<i class="bi bi-gear bi-rotate"></i>
+										} else {
+											<i class="bi bi-save2"></i>
+										}
+									</button>
+								}
+								<DataGridColumnChooser TData="TData" IsGridBusy="IsBusy" />
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+		<div class="datagrid-body" id="@(GridID)-parent">
+			<div class="@ResponsiveCssClass">
+				<table @ref=@GridTableRef
+					   role="grid"
+					   id="@GridID"
+					   class="@ResolvedTableClass"
+					   data-role="grid"
+					   aria-live="polite"
+					   aria-describedby="@($"{ID}-title")"
+					   aria-rowcount="@VisibleItems.Count"
+					   aria-colcount="@VisibleColumnCount"
+					   style="@TableStyle"
+					   @onmousedown="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(OnMouseDownHandler)" @onmousedown:preventDefault=@preventSelectionOnShiftCtl>
+					<thead class="@HeadCss">
+						@_renderColumnHeaders
+					</thead>
+					<tbody class="@BodyCss">
+						@if (IsLoading) {
+							@RenderLoadingRow
+						} else {
+							@_renderRows
+						}
+					</tbody>
+					@if (ShowFooter && VisibleColumns.Any(c => c.Aggregate.HasValue)) {
+						<tfoot aria-label="columns summary data" class="@FooterCss">
+							@_renderFooterRow
+						</tfoot>
+					}
+				</table>
+			</div>
+		</div>
+		@if (IsPageable) {
+			<div class="datagrid-footer">
+				<nav id="@GridFooterId" @ref=@GridFooterRef class="datagrid-footer-items-container">
+
+					<div>
+						@RenderPageSizer
+					</div>
+
+					@if (TotalItems > 0) {
+
+						<div>
+							@RenderPageSize
+						</div>
+
+						<div>
+							<ul class="pagination pagination-sm">
+								@RenderPageNavigation
+							</ul>
+						</div>
+					}
+
+				</nav>
+			</div>
+		}
+		@if (IsLoading) {
+			<div class="busy-overlay is-busy">
+				@RenderLoadingTemplate
+			</div>
+		}
+		@if (IsBusy && !DisableBusyOverlay) {
+			<div class="busy-overlay is-busy is-faded">
+				@RenderBusyTemplate
+			</div>
+		}
+	</div>
+	@ChildContent
+</CascadingValue>
+
+@code {
+
+	private void RenderColumnHeaders(RenderTreeBuilder __builder) {
+		if (VisibleColumnCount > 0) {
+			<tr>
+				@if (_detailTemplate != null) {
+					<th class="@DetailsHeaderClassList" role="columnheader" scope="col"></th>
+				}
+				@foreach (var column in VisibleColumns) {
+					@column.HeaderContent
+				}
+			</tr>
+		}
+	}
+	private void RenderRows(RenderTreeBuilder __builder) {
+
+		var rowIndex = 0;
+		var hasDetails = _detailTemplate is not null;
+
+		// do we have columns yet...
+		if (VisibleItems.Count > 0 && VisibleColumnCount == 0 && (hasDetails && !_statesLoaded)) {
+			if (IsLoading is false && IsBusy is false) {
+				<tr role="row">
+					<td colspan="1">
+						<div class="m-0">
+							<div class="text-center text-warning">
+								No columns to display...
+							</div>
+						</div>
+					</td>
+				</tr>
+			}
+		} else {
+			foreach (var item in VisibleItems) {
+				RenderRow(__builder, hasDetails, item, rowIndex++);
+			}
+			if (rowIndex == 0) {
+				@RenderEmptyRows
+			}
+		}
+
+	}
+	private void RenderRow(RenderTreeBuilder __builder, bool hasDetails, TData item, int itemRowIndex) {
+		var rowItem = item;
+		var rowIndex = itemRowIndex;
+		var rowId = $"row-{rowIndex}-{rowItem!.GetHashCode()}";
+
+		var toggleStateKey = $"{ID}-{DetailsPrefix}-{rowIndex}";
+		var isOpen = _rowStates.GetValueOrDefault(toggleStateKey);
+
+		var isSelected = SelectedItems is not null && SelectedItems.Contains(rowItem);
+
+		var ariaSelected = isSelected ? "true" : null;
+		var dynamicRowCss = RowCss?.Invoke(item, isSelected);
+		var rowClass = CssBuilder.Empty()
+				.AddClassIfNotEmpty(dynamicRowCss)
+				.AddClass("table-active", isSelected)
+			.NullIfEmpty();
+		var columns = VisibleColumns;
+		var columnCount = columns.Count;
+		<tr @key="@ItemKey(rowItem)"
+			@oncontextmenu="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>((e) => OnContextMenuHandlerAsync(e, rowItem))" @oncontextmenu:preventDefault="@HasContextMenu" @oncontextmenu:stopPropagation
+			@onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>((e) => OnRowClickHandlerAsync(e, rowItem, rowIndex))" @onclick:preventDefault @onclick:stopPropagation
+			id="@rowId"
+			tabindex="@GetTabIndex(rowIndex,isSelected)"
+			aria-rowindex="@(rowIndex+1)"
+			aria-selected="@ariaSelected"
+			class="@rowClass">
+			@if (hasDetails) {
+				RenderDetailRowToggle(__builder, rowIndex, isOpen);
+			}
+			@foreach (var column in columns) {
+				@column.CellContent(rowItem)
+			}
+		</tr>
+		if (isOpen && hasDetails) {
+			RenderRowDetailRow(__builder, _detailTemplate!, rowItem, columnCount);
+		}
+
+	}
+	private void RenderDetailRowToggle(RenderTreeBuilder __builder, int rowIndex, bool isOpen) {
+		var localIsOpen = isOpen;
+		var ariaExpanded = localIsOpen.ToAttributeValue();
+		var title = localIsOpen ? "Hide details..." : "Show details...";
+		<td colspan="1" class="row-detail-toggle-cell">
+			<button type="button"
+					class="btn btn-link p-0 border-0 rounded-0 lh-1"
+					title="@title"
+					aria-expanded="@ariaExpanded"
+					@onclick="@(async () => await ToggleRowDetailAsync(rowIndex))" @onclick:stopPropagation>
+				@if (localIsOpen) {
+					<i class="bi bi-dash-square" aria-hidden="true"></i>
+				} else {
+					<i class="bi bi-plus-square" aria-hidden="true"></i>
+				}
+			</button>
+		</td>
+	}
+	private static void RenderRowDetailRow(RenderTreeBuilder __builder, RenderFragment<TData> template, TData item, int columnCount) {
+		<tr class="row-detail">
+			<td colspan="1"></td>
+			<td colspan="@columnCount" style="padding:0;">
+				@template(item)
+			</td>
+		</tr>
+	}
+
+	private RenderFragment RenderEmptyRows => __builder => {
+
+		var columnCount = VisibleColumnCount;
+		var hasDetails = _detailTemplate != null;
+		<tr role="presentation">
+			@if (hasDetails) {
+				<td colspan="1" style="width:1%;"></td>
+			}
+			<td colspan="@columnCount">
+				@if (_emptyDataTemplate != null) {
+					@_emptyDataTemplate
+				} else {
+					<div class="m-0">
+						<div class="text-center text-warning">
+							No records to display
+						</div>
+					</div>
+				}
+			</td>
+		</tr>
+
+	};
+
+	private RenderFragment RenderLoadingRow => __builder => {
+
+		var columnCount = VisibleColumnCount + (_detailTemplate != null ? 1 : 0);
+
+		<tr role="row">
+			<td role="presentation" colspan="@columnCount">
+				<div class="loading-row-filler">
+					<span class="visually-hidden">loading...</span>
+				</div>
+			</td>
+		</tr>
+
+	};
+
+	private RenderFragment RenderLoadingTemplate => __builder => {
+
+		<div class="loading-template">
+			@if (_loadingDataTemplate != null) {
+				@_loadingDataTemplate
+			} else {
+				<span class="text-body-emphasis">@RenderLoadingMessage</span>
+				<br />
+				<Progress Indeterminate="true"
+						  Color="BackgroundColor.Primary"
+						  AriaLabel="@RenderLoadingMessage"
+						  Width="240px" />
+			}
+		</div>
+
+	};
+
+	private RenderFragment RenderBusyTemplate => __builder => {
+		<div class="busy-template-container">
+			<div class="busy-template">
+				<span class="text-body-emphasis">@BusyTitle</span>
+				<br />
+				<Progress Indeterminate="true"
+						  Color="BackgroundColor.Primary"
+						  AriaLabel="@BusyTitle"
+						  Width="240px" />
+			</div>
+		</div>
+	};
+
+	private void RenderFooterRow(RenderTreeBuilder __builder) {
+		<tr>
+			@if (_detailTemplate != null) {
+				<td class="row-detail-toggle-footer"></td>
+			}
+			@if (VisibleItems.Count > 0) {
+				@foreach (var column in VisibleColumns) {
+					<td @key="column" class="@(column.FooterCss)" style="@(column.FooterStyle)">
+						@if (column.CustomFooterValue.HasValue()) {
+							@column.CustomFooterValue
+						} else if (VisibleItems.Count > 0) {
+							@column.GetFooterValue()
+						} else {
+							@("...")
+						}
+					</td>
+				}
+			} else {
+				<td colspan="@VisibleColumnCount"></td>
+			}
+		</tr>
+	}
+
+	void RenderPageSizerContent(RenderTreeBuilder __builder) {
+		<span class="text-nowrap me-1" inert>Page size:</span>
+		<DropdownButton TItemType="int"
+						IsDropMenu="false"
+						Text="@PageSizeDisplay"
+						ButtonSize="ButtonSize.Small"
+						ButtonColor="ButtonColor.Primary"
+						DropdownDirection="DropdownDirection.Up"
+						DropdownMinWidth="4"
+						SelectedValue="@PageSize"
+						SelectedValueChanged="@HandlePageSizeChanged">
+			@foreach (var option in PageSizes) {
+				<DropdownItemButton Value="@(option.Value)">
+					@option.Display
+				</DropdownItemButton>
+			}
+		</DropdownButton>
+	}
+
+	void RenderPageSizeContent(RenderTreeBuilder __builder) {
+		<span class="me-1">Showing</span>
+
+		@PageFirstItem
+		<span class="mx-1">-</span>
+
+		@PageLastItem
+		<span class="mx-1">of</span>
+
+		@TotalItems
+		<span class="ms-1">items</span>
+	}
+
+	void RenderPageNavigationContent(RenderTreeBuilder __builder) {
+
+		renderPreviousPageButton(__builder);
+
+		renderNavPageButtonLeft(__builder, 1);
+
+		if (TotalPages > 7 && Page > 4) {
+			renderNavPageButtonDisabled(__builder);
+		} else {
+
+			if (TotalPages > 1) {
+				renderNavPageButtonLeft(__builder, 2);
+			}
+
+			if (TotalPages > 2) {
+				renderNavPageButtonLeft(__builder, 3);
+			}
+
+			if (TotalPages > 3) {
+				renderNavPageButtonLeft(__builder, 4);
+			}
+
+			if (TotalPages > 4) {
+				renderNavPageButtonLeft(__builder, 5);
+			}
+
+		}
+
+		if (TotalPages > 7 && Page > 4 && Page <= (TotalPages - 4)) {
+			renderNavPageCurrentButton(__builder);
+		}
+
+		if (TotalPages > 7 && Page <= (TotalPages - 4)) {
+			renderNavPageButtonDisabled(__builder);
+		} else {
+
+			if (TotalPages > 7 && TotalPages - 4 > 3) {
+				renderNavPageButtonRight(__builder, 4);
+			}
+
+			if (TotalPages > 7 && TotalPages - 3 > 2) {
+				renderNavPageButtonRight(__builder, 3);
+			}
+
+			if (TotalPages > 7 && TotalPages - 2 > 1) {
+				renderNavPageButtonRight(__builder, 2);
+			}
+
+			if (TotalPages > 6 && TotalPages - 1 > 0) {
+				renderNavPageButtonRight(__builder, 1);
+			}
+
+		}
+
+		if (TotalPages > 5) {
+			renderNavPageButtonLastPage(__builder);
+		}
+
+		renderNavNextPageButton(__builder);
+
+	}
+
+	static void renderNavPageButtonDisabled(RenderTreeBuilder __builder) {
+		<li class="page-item disabled">
+			<button type="button" class="page-link" disabled aria-disabled="true" aria-label="more pages...">
+				…
+			</button>
+		</li>
+	}
+	void renderPreviousPageButton(RenderTreeBuilder __builder) {
+		<li class="page-item previous@(Page < 2 ? " disabled" : "")" title="Previous">
+			<button @onclick="EventUtil.AsNonRenderingEventHandler(PreviousPage)" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					disabled="@(Page < 2)"
+					aria-disabled="@(Page < 2 ? "true" : false)"
+					aria-label="Previous">
+				<i class="bi bi-chevron-left" inert aria-hidden="true"></i>
+			</button>
+		</li>
+	}
+	void renderNavPageButtonLeft(RenderTreeBuilder __builder, int page) {
+
+		<li class="page-item@(Page == page ? " active" : "")"
+			title="Page @(page)">
+			<button @onclick="@EventUtil.AsNonRenderingEventHandler(() => SetPage(page))" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					disabled="@(Page == page)"
+					aria-disabled="@(Page == page ? "true" : false)"
+					aria-label="Page">
+				@(page)
+			</button>
+		</li>
+
+	}
+	void renderNavPageCurrentButton(RenderTreeBuilder __builder) {
+		<li class="page-item"
+			title="Page">
+			<button @onclick="EventUtil.AsNonRenderingEventHandler(PreviousPage)" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					aria-label="Page">
+				@(Page - 1)
+			</button>
+		</li>
+
+		<li class="page-item active" title="Page">
+			<button type="button"
+					class="page-link"
+					disabled
+					aria-disabled="true"
+					aria-label="Page">
+				@(Page)
+			</button>
+		</li>
+
+		<li class="page-item"
+			title="Page">
+			<button @onclick="EventUtil.AsNonRenderingEventHandler(NextPage)" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					aria-label="Page">
+				@(Page + 1)
+			</button>
+		</li>
+	}
+	void renderNavPageButtonRight(RenderTreeBuilder __builder, int page) {
+		<li class="page-item@(Page == (TotalPages - page) ? " active" : "")"
+			title="Page">
+			<button @onclick="@EventUtil.AsNonRenderingEventHandler(() => SetPage((TotalPages - page)))" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					disabled="@(Page == (TotalPages - page))"
+					aria-disabled="@((Page == (TotalPages - page)).ToAttributeValue())"
+					aria-label="Page">
+				@(TotalPages - page)
+			</button>
+		</li>
+	}
+	void renderNavPageButtonLastPage(RenderTreeBuilder __builder) {
+		<li class="page-item@(Page == TotalPages ? " active" : "")"
+			title="Last Page">
+			<button @onclick="EventUtil.AsNonRenderingEventHandler(LastPage)" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					disabled="@(Page >= TotalPages)"
+					aria-disabled="@((Page >= TotalPages).ToAttributeValue())"
+					aria-label="Page">
+				@TotalPages
+			</button>
+		</li>
+	}
+	void renderNavNextPageButton(RenderTreeBuilder __builder) {
+		<li class="page-item next@(Page >= TotalPages ? " disabled" : "")"
+			title="Next">
+			<button @onclick="EventUtil.AsNonRenderingEventHandler(NextPage)" @onclick:preventDefault @onclick:stopPropagation
+					type="button"
+					class="page-link"
+					disabled="@((Page >= TotalPages))"
+					aria-disabled="@((Page >= TotalPages).ToAttributeValue())"
+					aria-label="Next">
+				<i class="bi bi-chevron-right" inert aria-hidden="true"></i>
+			</button>
+		</li>
+	}
+
+}

@@ -1,0 +1,21 @@
+﻿@namespace Cirreum.Components
+@typeparam TItemType
+@inherits DropdownInteractiveItem<TItemType>
+<li>
+	<div @ref=ItemReference
+		 id="@Id"
+		 class="@ItemClass"
+		 role="button"
+		 tabindex="@TabIndex"
+		 disabled="@IsDisabled"
+		 aria-disabled="@AriaIsDisabled"
+		 @onfocusin="HandleFocus" @onfocusin:preventDefault @onfocusin:stopPropagation
+		 @onfocusout="HandleBlur" @onfocusout:preventDefault @onfocusout:stopPropagation
+		 @onclick="EventUtil.AsNonRenderingEventHandler(HandleClick)" @onclick:preventDefault @onclick:stopPropagation>
+		@if (InteractiveTemplate is not null) {
+			@InteractiveTemplate(this)
+		} else {
+			@ChildContent
+		}
+	</div>
+</li>

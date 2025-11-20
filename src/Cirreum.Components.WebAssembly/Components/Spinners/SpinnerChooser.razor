@@ -1,0 +1,44 @@
+﻿@namespace Cirreum.Components
+@inherits SpinnerBase
+@switch (Spinner) {
+	case SpinnerType.Chase:
+		<ChaseSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Circle:
+		<CircleSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.CircleFade:
+		<CircleFadeSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Flow:
+		<FlowSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Grid:
+		<GridSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Plane:
+		<PlaneSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Pulse:
+		<PulseSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Swing:
+		<SwingSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Wander:
+		<WanderSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Wave:
+		<WaveSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Folder:
+		<FolderSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+	case SpinnerType.Bounce:
+		<BounceSpinner Center="@Center" Size="@Size" Color="@Color" @attributes="AdditionalAttributes" />
+		break;
+}
+
+@code {
+	[Parameter] public SpinnerType Spinner { get; set; }
+}

@@ -1,0 +1,28 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JSApp
+<div class="input-group">
+	<div class="text-search">
+		<input @ref=inputElement
+			   id="@InputId"
+			   type="search"
+			   class="@InputClassList"
+			   autocomplete="off"
+			   spellcheck="false"
+			   disabled="@Disabled"
+			   aria-label="@AriaLabel"
+			   @bind="SearchValue" @bind:event="oninput"
+			   @onkeypress="HandleKeyPress" />
+		<label @ref=LabelRef
+			   id="@LabelId"
+			   class="text-search-label"
+			   for="@InputId">
+			@Label
+		</label>
+		<div class="form-notch">
+			<div class="form-notch-leading"></div>
+			<div class="form-notch-middle" style="@NotchStyle"></div>
+			<div class="form-notch-trailing"></div>
+		</div>
+	</div>
+</div>

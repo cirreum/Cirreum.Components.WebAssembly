@@ -1,0 +1,50 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JS
+
+<span class="@ContainerClass"
+	  style="@ContainerStyle"
+	  @ref=TriggerElement
+	  @onfocusin="OnFocus"
+	  @onfocusout="OnBlur"
+	  @onpointerenter="OnPointerEnter"
+	  @onpointerleave="OnPointerLeave"
+	  @onpointerdown="OnPointerDown"
+	  @onpointerup="OnPointerUp">
+	@ChildContent
+</span>
+@if (IsOpening) {
+	@if (ResolvedSectionName is null) {
+		@RenderTooltip
+	} else {
+		<Microsoft.AspNetCore.Components.Sections.SectionContent SectionName="@ResolvedSectionName">
+			@RenderTooltip
+		</Microsoft.AspNetCore.Components.Sections.SectionContent>
+	}
+}
+
+@code {
+
+	RenderFragment RenderTooltip => (__builder) => {
+		<div @key="ElementId"
+			 @ref="PopoverElement"
+			 role="tooltip"
+			 id="@ElementId"
+			 class="@TooltipCss"
+			 style="@Style"
+			 draggable="false"
+			 data-popper-placement="@ResolvedPlacement">
+			@if (ShowArrow) {
+				<div id="@TooltipArrowId" class="tooltip-arrow" data-tooltip-arrow></div>
+			}
+			@if (TitleTemplate is not null) {
+				@TitleTemplate
+			} else {
+				<div class="tooltip-inner">
+					@((MarkupString)Title)
+				</div>
+			}
+		</div>
+	};
+
+	}

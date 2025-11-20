@@ -1,0 +1,30 @@
+@namespace Cirreum.Components
+
+<div class="accordion-item">
+	<h2 class="accordion-header">
+		<button id="@_toggleButtonId"
+				class="@ToggleCss"
+				type="button"
+				aria-expanded="@((_isExpanded).ToAttributeValue())"
+				aria-controls="@_elementId"
+				@onclick=ToggleCollapsed>
+			@if (HeaderTemplate is not null) {
+				@HeaderTemplate
+			} else {
+				<span class="me-auto">@Header</span>
+			}	
+		</button>
+	</h2>
+	@if (ChildContent is not null) {
+		<Collapse IsCollapsed="!_isExpanded">
+			<div class="accordion-body">
+				@ChildContent
+			</div>
+		</Collapse>
+	} else {
+		<div id="@_elementId" class="accordion-collapse collapse">
+			<div class="accordion-body">
+			</div>
+		</div>
+	}
+</div>

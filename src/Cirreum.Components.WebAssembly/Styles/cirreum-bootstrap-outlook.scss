@@ -1,0 +1,9 @@
+@import "bootstrap/mixins/banner";
+@include bsBanner("");
+/*!
+* cirreum-bootstrap-outlook v1.0.1 - Outlook Theme
+* Copyright 2025 Cirreum Contributers
+* Licensed under MIT
+*/
+@import "bootstrap/themes/theme-outlook";
+@import "cirreum-bootstrap-base";

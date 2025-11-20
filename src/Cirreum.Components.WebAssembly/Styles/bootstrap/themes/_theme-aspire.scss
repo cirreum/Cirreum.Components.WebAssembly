@@ -1,0 +1,40 @@
+// .NET Aspire Dashboard theme (actual colors from Aspire)
+@import '../functions.scss';
+
+$min-contrast-ratio: 4.5 !default;
+
+//
+// Light mode overrides
+//
+$purple: #6f3dff !default;
+$indigo: #5f2bff !default;
+$cyan: #3498db !default;
+
+$primary: #8c5dff !default; // Aspire Accent Fill Rest
+$secondary: #383838 !default; // Dark Gray
+$info: #006AFF !default; // Blue
+$success: #0E700E !default; // Green
+$warning: #E9835E !default; // Amber
+$danger: #BC2F32 !default; // Red
+
+$btn-primary-color: #fff !default;
+
+$link-color: #c299ff !default;
+$link-hover-color: #9151eb !default;
+
+//
+// Dark mode overrides
+//
+$primary-dark: #d6aeff !default; // Light purple for dark backgrounds
+
+$btn-primary-color-dark: #1f1f1f !default;
+
+$link-color-dark: #cca3ff !default; // Aspire dark mode foreground rest
+$link-hover-color-dark: #f9d4ff !default; // Aspire dark mode foreground hover
+
+$primary-bg-subtle-dark: shade-color($primary, 90%) !default;
+$secondary-bg-subtle-dark: shade-color($secondary, 90%) !default;
+$success-bg-subtle-dark: shade-color($success, 90%) !default;
+$info-bg-subtle-dark: shade-color($info, 90%) !default;
+$warning-bg-subtle-dark: shade-color($warning, 80%) !default;
+$danger-bg-subtle-dark: shade-color($danger, 90%) !default;

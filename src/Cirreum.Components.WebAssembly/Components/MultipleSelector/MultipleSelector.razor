@@ -1,0 +1,167 @@
+﻿@namespace Cirreum.Components
+@implements IDisposable
+
+<div class="multiple-selector">
+	<select class="form-select"
+			multiple
+			aria-label="source items..."
+			@onchange="@(e => HandleSelectedChange(e, true))"
+			@onkeydown="@(e => HandleKeyDown(e, true))">
+		@foreach (var item in SourceItems) {
+			<option @key=@item value="@item.Key" @onclick="@(()=>HandleSourceClick(item))">@item.Value</option>
+		}
+	</select>
+	<div class=" d-flex flex-column align-items-center mx-3 gap-2 user-select-none">
+		@RenderButtons()
+	</div>
+	<select class="form-select"
+			multiple
+			aria-label="selected items..."
+			@onchange="@(e => HandleSelectedChange(e, false))"
+			@onkeydown="@(e => HandleKeyDown(e, false))">
+		@foreach (var item in Selected) {
+			<option @key=@item value="@item.Key" @onclick="@(()=>HandleSelectedClick(item))">@item.Value</option>
+		}
+	</select>
+</div>
+
+@code {
+	[Parameter]
+	public List<MultipleSelectorModel> SourceItems { get; set; } = [];
+
+	[Parameter]
+	public EventCallback<List<MultipleSelectorModel>> SourceItemsChanged { get; set; }
+
+	[Parameter]
+	public List<MultipleSelectorModel> Selected { get; set; } = [];
+
+	[Parameter]
+	public EventCallback<List<MultipleSelectorModel>> SelectedChanged { get; set; }
+
+	private Dictionary<string, MultipleSelectorModel> sourceItemsDict = new();
+	private Dictionary<string, MultipleSelectorModel> selectedItemsDict = new();
+	private List<MultipleSelectorModel> lastSelectedSourceItems = [];
+	private List<MultipleSelectorModel> lastSelectedSelectedItems = [];
+
+	private void UpdateDictionaries() {
+		sourceItemsDict = SourceItems.ToDictionary(item => item.Key);
+		selectedItemsDict = Selected.ToDictionary(item => item.Key);
+	}
+
+	protected override void OnParametersSet() {
+		UpdateDictionaries();
+	}
+
+	private void HandleSelectedChange(ChangeEventArgs e, bool isSourceList) {
+		if (e.Value is string[] keys) {
+
+			var targetList = isSourceList ? lastSelectedSourceItems : lastSelectedSelectedItems;
+			var sourceDict = isSourceList ? sourceItemsDict : selectedItemsDict;
+
+			targetList.Clear();
+			foreach (var key in keys) {
+				if (sourceDict.TryGetValue(key, out var model)) {
+					targetList.Add(model);
+#if DEBUG
+			} else {
+				Console.WriteLine($"Warning: Item with key {key} not found in {(isSourceList ? "source" : "selected")} items.");
+#endif
+				}
+			}
+
+		}
+	}
+	private async Task HandleKeyDown(KeyboardEventArgs e, bool isSourceList) {
+		var key = e.Code ?? e.Key;
+		if (key == "Enter" || key == " ") {
+			var itemsToMove = isSourceList ? lastSelectedSourceItems : lastSelectedSelectedItems;
+			var sourceList = isSourceList ? SourceItems : Selected;
+			var targetList = isSourceList ? Selected : SourceItems;
+
+			foreach (var item in itemsToMove) {
+				sourceList.Remove(item);
+				targetList.Add(item);
+			}
+
+			UpdateDictionaries();
+			lastSelectedSourceItems.Clear();
+			lastSelectedSelectedItems.Clear();
+			await NotifyCollectionsChanged();
+		}
+	}
+	private async Task HandleSourceClick(MultipleSelectorModel item) {
+		lastSelectedSourceItems.Clear();
+		await Select(item);
+	}
+	private async Task HandleSelectedClick(MultipleSelectorModel item) {
+		lastSelectedSelectedItems.Clear();
+		await Deselect(item);
+	}
+
+	private RenderFragment RenderButtons() => builder => {
+
+		var selectAllClass = SourceItems.Count > 0 ? "btn-primary" : "btn-secondary";
+		var deselectAllClass = Selected.Count > 0 ? "btn-primary" : "btn-secondary";
+
+		builder.OpenElement(0, "button");
+		builder.AddAttribute(1, "type", "button");
+		builder.AddAttribute(2, "class", $"btn {selectAllClass} btn-sm");
+		builder.AddAttribute(3, "onclick", EventCallback.Factory.Create(this, SelectAll));
+		builder.AddContent(4, new MarkupString("<span class=\"bi bi-chevron-double-right\"></span>"));
+		builder.CloseElement();
+
+		builder.OpenElement(5, "button");
+		builder.AddAttribute(6, "type", "button");
+		builder.AddAttribute(7, "class", $"btn {deselectAllClass} btn-sm");
+		builder.AddAttribute(8, "onclick", EventCallback.Factory.Create(this, DeselectAll));
+		builder.AddContent(9, new MarkupString("<span class=\"bi bi-chevron-double-left\"></span>"));
+		builder.CloseElement();
+	};
+
+	private async Task Select(MultipleSelectorModel item) {
+		SourceItems.Remove(item);
+		Selected.Add(item);
+		UpdateDictionaries();
+		await NotifyCollectionsChanged();
+	}
+
+	private async Task Deselect(MultipleSelectorModel item) {
+		Selected.Remove(item);
+		SourceItems.Add(item);
+		UpdateDictionaries();
+		await NotifyCollectionsChanged();
+	}
+
+	private async Task SelectAll() {
+		if (SourceItems.Count == 0) {
+			return;
+		}
+		Selected.AddRange(SourceItems);
+		SourceItems.Clear();
+		await NotifyCollectionsChanged();
+	}
+
+	private async Task DeselectAll() {
+		if (Selected.Count == 0) {
+			return;
+		}
+		SourceItems.AddRange(Selected);
+		Selected.Clear();
+		await NotifyCollectionsChanged();
+	}
+
+	private async Task NotifyCollectionsChanged() {
+		if (SourceItemsChanged.HasDelegate) {
+			await SourceItemsChanged.InvokeAsync(SourceItems);
+		}
+		if (SelectedChanged.HasDelegate) {
+			await SelectedChanged.InvokeAsync(Selected);
+		}
+	}
+
+	public void Dispose() {
+		SourceItemsChanged = default;
+		SelectedChanged = default;
+	}
+
+}

@@ -1,0 +1,15 @@
+﻿@namespace Cirreum.Components
+<span class="@CssClass">@ChildContent</span>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	/// <summary>
+	/// The Css Class List for the span. Default: navbar-text
+	/// </summary>
+	[Parameter]
+	public string CssClass { get; set; } = "navbar-text";
+
+}

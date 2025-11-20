@@ -1,0 +1,9 @@
+@import "bootstrap/mixins/banner";
+@include bsBanner("");
+/*!
+* cirreum-bootstrap-aspire v1.0.1 - Aspire Theme
+* Copyright 2025 Cirreum Contributers
+* Licensed under MIT
+*/
+@import "bootstrap/themes/theme-aspire";
+@import "cirreum-bootstrap-base";

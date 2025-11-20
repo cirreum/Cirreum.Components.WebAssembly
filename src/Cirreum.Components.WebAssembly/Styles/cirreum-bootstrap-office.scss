@@ -1,0 +1,9 @@
+@import "bootstrap/mixins/banner";
+@include bsBanner("");
+/*!
+* cirreum-bootstrap-office v1.0.1 - Office Theme
+* Copyright 2025 Cirreum Contributers
+* Licensed under MIT
+*/
+@import "bootstrap/themes/theme-office";
+@import "cirreum-bootstrap-base";

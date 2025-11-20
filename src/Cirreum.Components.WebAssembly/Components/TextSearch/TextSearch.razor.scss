@@ -1,0 +1,146 @@
+// Variables
+$form-control-padding: 0.3rem 0.75rem 0.32rem;
+$form-label-left: 0.75rem;
+$form-notch-border-radius: 0.25rem;
+$transition-duration: 0.2s;
+
+.text-search {
+	width:100%;
+
+	.form-control {
+		padding: $form-control-padding;
+		border: 0;
+		background: var(--bs-tertiary-bg);
+		transition: all $transition-duration linear;
+
+		~ .text-search-label {
+			position: absolute;
+			top: 0;
+			max-width: 90%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			left: $form-label-left;
+			padding-top: 0.35rem;
+			pointer-events: none;
+			transform-origin: 0 0;
+			transition: all $transition-duration ease-out;
+			color: rgba(var(--bs-body-color-rgb), 0.5);
+			margin-bottom: 0;
+			margin-left: 0px;
+			font-size: smaller;
+
+			&:after {
+				content: '...';
+				font-stretch: extra-expanded;
+				white-space: nowrap;
+				overflow: hidden;
+			}
+		}
+
+		~ .form-notch {
+			display: flex;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			max-width: 100%;
+			height: 100%;
+			text-align: left;
+			pointer-events: none;
+
+			div {
+				pointer-events: none;
+				border: 1px solid var(--bs-border-color);
+				box-sizing: border-box;
+				background: transparent;
+				transition: all $transition-duration linear;
+			}
+
+			.form-notch-leading {
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 9px;
+				border-right: none;
+				border-radius: $form-notch-border-radius 0 0 $form-notch-border-radius;
+			}
+
+			.form-notch-middle {
+				flex: 0 0 auto;
+				width: 38px;
+				max-width: calc(100% - 1rem);
+				height: 100%;
+				border-right: none;
+				border-left: none;
+			}
+
+			.form-notch-trailing {
+				flex-grow: 1;
+				height: 100%;
+				border-left: none;
+				border-radius: 0 $form-notch-border-radius $form-notch-border-radius 0;
+			}
+		}
+
+		&:not(.placeholder-active)::placeholder {
+			opacity: 0;
+		}
+
+		&:focus, &.active {
+			&::placeholder {
+				opacity: 1;
+			}
+		}
+
+		&:focus {
+			box-shadow: none !important;
+			background-color: var(--bs-body-bg);
+
+			~ .text-search-label {
+				color: var(--bs-primary-text-emphasis);
+			}
+
+			~ .form-notch {
+				.form-notch-middle, .form-notch-leading, .form-notch-trailing {
+					border-color: var(--bs-primary);
+				}
+
+				.form-notch-middle {
+					border-top: 1px solid transparent;
+				}
+			}
+		}
+
+		&.active:not(:focus) ~ .text-search-label {
+			color: rgba(var(--bs-body-color-rgb), 0.25);
+		}
+
+		&:focus ~ .text-search-label,
+		&.active ~ .text-search-label {
+			transform: translateY(-1rem) translateY(0.1rem) scale(0.8);
+			text-transform: capitalize;
+
+			&:after {
+				content: '';
+			}
+		}
+
+		&:focus ~ .form-notch .form-notch-middle,
+		&.active ~ .form-notch .form-notch-middle {
+			border-right: none;
+			border-left: none;
+			border-top: 1px solid transparent;
+		}
+
+		&:disabled,
+		&.disabled,
+		&[readonly] {
+			background-color: var(--bs-secondary-bg);
+		}
+	}
+}
+
+html[data-bs-theme="light"] .text-search .form-control:focus {
+	background-color: var(--bs-body-bg) !important;
+}

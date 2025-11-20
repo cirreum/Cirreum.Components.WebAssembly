@@ -1,0 +1,16 @@
+.multiple-selector {
+  display: flex;
+  user-select: none;
+}
+.multiple-selector select {
+  padding: 0.25rem 0.25rem 0.25rem 0.25rem !important;
+}
+.multiple-selector select option {
+  padding: 0.25rem 0.5rem !important;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+.multiple-selector select option:hover {
+  background-color: var(--bs-tertiary-bg);
+}

@@ -1,0 +1,72 @@
+@namespace Cirreum.Components
+@inherits ContextMenuBase
+
+<div class="dropdown">
+	<button @onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ClickHandler)" @onclick:stopPropagation
+			@oncontextmenu="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ToggleMenuAsync)" @oncontextmenu:preventDefault @oncontextmenu:stopPropagation
+			role="button"
+			type="button"
+			id="@ElementId"
+			class="@TargetClassList"
+			disabled="@IsDisabled"
+			aria-disabled="@AriaIsDisabled"
+			aria-expanded="@AriaIsExpanded"
+			aria-haspopup="menu">
+		@Content
+		@ContentTemplate
+	</button>
+</div>
+
+<Menu @ref=MenuRef
+	  ChildContent="@ChildContent"
+	  Trigger="@ElementId"
+	  Anchored="@Anchored"
+	  OnMenuItemSelected="@OnItemSelected"
+	  OnMenuHidden="@OnMenuHidden"
+	  OnMenuHide="@OnMenuHide"
+	  OnMenuShow="@OnMenuShow"
+	  OnMenuShown="@OnMenuShown" />
+
+
+@code {
+
+	/// <summary>
+	/// 
+	/// </summary>
+	[Parameter]
+	public bool Anchored { get; set; } = false;
+
+	/// <summary>
+	/// Optional additional css classes for the button.
+	/// </summary>
+	[Parameter]
+	public string? ButtonCss { get; set; }
+
+	/// <summary>
+	/// The color of the button. Default: <see cref="ButtonColor.Secondary" />
+	/// </summary>
+	[Parameter]
+	public ButtonColor ButtonColor { get; set; } = ButtonColor.Secondary;
+
+	/// <summary>
+	/// Optionally specify an outlined button.
+	/// </summary>
+	[Parameter]
+	public bool Outlined { get; set; }
+
+	/// <summary>
+	/// The size of the button. Default: <see cref="ResponsiveSize.Default" />
+	/// </summary>
+	[Parameter]
+	public ResponsiveSize Size { get; set; } = ResponsiveSize.Default;
+
+	private readonly string buttonCss = "btn";
+	private string TargetClassList =>
+		CssBuilder.Default(this.buttonCss)
+			.AddClass($"{this.buttonCss}{this.Size.ToShortName()}", when: this.Size != ResponsiveSize.Default)
+			.AddClass($"{this.buttonCss}-outline{this.ButtonColor.ToShortName()}", when: this.Outlined is true)
+			.AddClass(this.ButtonColor.ToName(), when: this.Outlined is false)
+			.AddClassIfNotEmpty(this.ButtonCss)
+		.Build();
+
+}

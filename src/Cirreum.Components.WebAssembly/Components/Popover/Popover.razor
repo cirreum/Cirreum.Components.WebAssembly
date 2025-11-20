@@ -1,0 +1,27 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IClickDetectorService ClickDetector
+@if (IsRendering) {
+	<div @ref="PopoverElement"
+		 @key="ElementId"
+		 id="@ElementId"
+		 draggable="false"
+		 class="@ClassList"
+		 style="@Style"
+		 data-popper-placement="@(Placement.ToName())"
+		 role="dialog">
+		@if (ShowArrow) {
+			<div id="@PopperArrowId" class="popover-arrow" data-popper-arrow></div>
+		}
+		@if (@ChildContent is not null) {
+			@ChildContent
+		} else {
+			@if (@PopoverHeader is not null) {
+				<h3 class="popover-header text-nowrap">@PopoverHeader</h3>
+			}
+			<div class="popover-body">
+				@PopoverBody
+			</div>
+		}
+	</div>
+}

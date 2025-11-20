@@ -1,0 +1,15 @@
+@namespace Cirreum.Components
+
+<CascadingValue Value="this" IsFixed=true>
+	<CascadingValue Value="DefaultOptions" IsFixed=true>
+		@_renderDialogs
+	</CascadingValue>
+</CascadingValue>
+
+@code {
+	protected void RenderDialogs(RenderTreeBuilder __builder) {
+		@foreach (var dialogReference in DialogReferences) {
+			@dialogReference.Value.DialogInstanceFragment
+		}
+	}
+}

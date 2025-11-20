@@ -1,0 +1,27 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+<div id="@ElementId" class="@collapseCss">
+	<div class="collapse-content">
+		@ChildContent
+	</div>
+</div>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	/// <summary>
+	/// Is the content current collapsed.
+	/// </summary>
+	[Parameter]
+	public bool IsCollapsed { get; set; }
+
+	string collapseCss => CssBuilder.Default("collapse-container")
+		.AddClass("collapse", when: this.IsCollapsed)
+		.AddClass("expand", when: this.IsCollapsed is false)
+		.AddClass("expanded", when: this.IsCollapsed is false)
+	.Build();
+
+}

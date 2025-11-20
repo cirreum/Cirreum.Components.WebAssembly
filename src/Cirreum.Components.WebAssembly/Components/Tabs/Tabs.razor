@@ -1,0 +1,172 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+<CascadingValue Value="@this" IsFixed>
+	@ChildContent
+	<div @ref=tabsInstance
+		 id="@tabsInstanceId"
+		 class="@TabsInstanceCss"
+		 style="@TabsInstanceStyle">
+		@if (TabPosition == TabPosition.Top || TabPosition == TabPosition.Left)
+		{
+			<div id="@tabsId" class="@TabItemsContainerCss" @oncontextmenu:preventDefault>
+				@RenderTabs
+			</div>
+			<div id="@tabsPanelsId" class="tab-content">
+				@RenderPanelItems
+			</div>
+			@if (footer is not null)
+			{
+				<div class="card-footer d-flex align-items-center m-0" role="alert">
+					@footer
+				</div>
+			}
+		}
+		else if (TabPosition == TabPosition.Bottom || TabPosition == TabPosition.Right)
+		{
+			<div id="@tabsPanelsId" class="tab-content">
+				@RenderPanelItems
+			</div>
+			<div id="@tabsId" class="@TabItemsContainerCss" @oncontextmenu:preventDefault>
+				@RenderTabs
+			</div>
+		}
+	</div>
+</CascadingValue>
+
+@code {
+
+	RenderFragment RenderTabs => __builder =>
+	{
+
+		<button id="@ScrollBackwardBtnId"
+				type="button"
+				class="@ScrollBackwardsCss"
+				disabled="@ScrollBackwardsDisabled"
+				aria-label="scroll backwards"
+				@onclick="ScrollBackwards">
+			<i class="@NavIconCss(-1)" aria-hidden="true" />
+		</button>
+		<Menu Trigger="@ScrollBackwardBtnId"
+			  TriggerButton="MouseButton.Right"
+			  Anchored="true"
+			  OnMenuItemSelected="OnContextMenuClicked">
+			@RenderContextMenu
+		</Menu>
+
+		<div class="@ScrollContainerCss">
+			@if (IsNavigationMenu)
+			{
+				<nav id="@ElementId" class="@TabItemsCss" @attributes="Attributes">
+					@foreach (var tab in tabItems)
+					{
+						@tab.RenderTab
+					}
+				</nav>
+			}
+			else
+			{
+				<div id="@ElementId" class="@TabItemsCss" @attributes="Attributes">
+					@foreach (var tab in tabItems)
+					{
+						@tab.RenderTab
+					}
+				</div>
+			}
+		</div>
+
+		<button id="@ScrollForwardBtnId"
+				type="button"
+				class="@ScrollForwardCss"
+				disabled="@ScrollForwardDisabled"
+				aria-label="scroll forwards"
+				@onclick="ScrollForward">
+			<i class="@NavIconCss(1)" aria-hidden="true" />
+		</button>
+		<Menu Trigger="@ScrollForwardBtnId"
+			  TriggerButton="MouseButton.Right"
+			  Anchored="true"
+			  OnMenuItemSelected="OnContextMenuClicked">
+			@RenderContextMenu
+		</Menu>
+
+		<DropdownButton TItemType="string"
+						AriaLabel="list of tabs that are not visible"
+						Text="@($"+{overflowTabItems.Count}")"
+						ContainerCss="@PopupSelectorCss"
+						ContainerStyle="@PopupSelectorStyle"
+						ButtonCss="@PopupSelectorButtonCss"
+						ButtonSize="ButtonSize.Small"
+						ButtonOutlined="true"
+						SelectedValueChanged="TryActivateTabByIdAsync">
+			@RenderDropdownMenu
+		</DropdownButton>
+	};
+
+	RenderFragment RenderPanelItems => __builder =>
+	{
+		@foreach (var tab in tabItems)
+		{
+			<TabPanel @key=tab.TabPanelId TabPanelId="@tab.TabPanelId" TabId="@tab.Id" IsActive="tab.Active">
+				@tab.PanelContent
+				@tab.ChildContent
+			</TabPanel>
+		}
+	};
+
+	RenderFragment RenderContextMenu => __builder =>
+	{
+		@foreach (var overflowItem in PreviousTabs)
+		{
+			<MenuItem Value="@overflowItem.ElementId" Disabled="@overflowItem.Disabled">
+				@RenderNavContent(overflowItem, -1)
+			</MenuItem>
+		}
+		@if (PreviousTabs.Count > 0 && NextTabs.Count > 0)
+		{
+			<MenuDivider />
+		}
+		@foreach (var overflowItem in NextTabs)
+		{
+			<MenuItem Value="@overflowItem.ElementId" Disabled="@overflowItem.Disabled">
+				@RenderNavContent(overflowItem, 1)
+			</MenuItem>
+		}
+	};
+
+	RenderFragment RenderDropdownMenu => __builder =>
+	{
+		@foreach (var overflowItem in PreviousTabs)
+		{
+			<DropdownItemButton Value="@overflowItem.ElementId" IsDisabled="@overflowItem.Disabled">
+				@RenderNavContent(overflowItem, -1)
+			</DropdownItemButton>
+		}
+		@if (PreviousTabs.Count > 0 && NextTabs.Count > 0)
+		{
+			<DropdownItemDivider />
+		}
+		@foreach (var overflowItem in NextTabs)
+		{
+			<DropdownItemButton Value="@overflowItem.ElementId" IsDisabled="@overflowItem.Disabled">
+				@RenderNavContent(overflowItem, 1)
+			</DropdownItemButton>
+		}
+	};
+
+	RenderFragment RenderNavContent(Tab tab, int direction) => __builder =>
+	{
+		<div class="d-flex align-items-center">
+			@if (tab.Disabled)
+			{
+				<i class="bi bi-ban" style="font-size:13px;" aria-hidden="true" />
+			}
+			else
+			{
+				<i class="@NavIconCss(direction)" style="font-size:13px;" aria-hidden="true" />
+			}
+			<span class="ms-3">@tab.Name</span>
+		</div>
+	};
+
+}

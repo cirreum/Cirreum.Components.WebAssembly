@@ -1,0 +1,111 @@
+﻿@namespace Cirreum.Components
+@using Microsoft.AspNetCore.Components.Rendering;
+@inherits BaseAfterRenderComponent
+@typeparam TData
+
+@code {
+
+	void RenderFilterContainerContent(RenderTreeBuilder __builder) {
+
+		<Popover @key="ElementId"
+				 @ref=filterPopover
+				 TriggerElement="@FilterElement"
+				 Placement="Placement.BottomStart"
+				 Offset="@([0,0])"
+				 ArrowPadding="5"
+				 OnOutsideClicked="@HandleOutsideClick">
+			<PopoverHeader>
+				Filter [@(HeaderText)]
+			</PopoverHeader>
+			<PopoverBody>
+				<div @onkeyup="EventUtil.AsNonRenderingEventHandler<KeyboardEventArgs>(KeyPress)">
+					<FocusTrap IsActive=@filterPopover.IsOpen>
+						<div class="m-2" title="filter">
+							<CascadingValue TValue="DataGridColumn<TData>" Value="@this" IsFixed="true">
+								<DataGridColumnFilterManager TData="TData"
+															 OnFilterApply="ApplyFilter"
+															 OnFilterCancel="CancelFilter"
+															 OnFilterClear="ClearFilter">
+									<div class="d-flex flex-column gap-1">
+										<DataGridColumnFilterString TData="TData" />
+										<DataGridColumnFilterBoolean TData="TData" />
+										<DataGridColumnFilterNumber TData="TData" />
+										<DataGridColumnFilterDateTime TData="TData" />
+										<DataGridColumnFilterDateTimeOffset TData="TData" />
+										<DataGridColumnFilterEnum TData="TData" />
+										@if (CustomFilter != null) {
+											@CustomFilter(this)
+										}
+									</div>
+								</DataGridColumnFilterManager>
+							</CascadingValue>
+						</div>
+					</FocusTrap>
+				</div>
+			</PopoverBody>
+		</Popover>
+
+	}
+
+	void RenderHeaderContent(RenderTreeBuilder __builder) {
+		var isFilterableLocal = this.IsFilterable;
+		<th @key="@this"
+			id="@ColumnId"
+			scope="col"
+			role="columnheader"
+			class="@HeaderCssClasses"
+			style="@HeaderStyle"
+			aria-sort="@AriaSort"
+			aria-label="@HeaderText"
+			@ondrop="EventUtil.AsNonRenderingEventHandler(HandleDrop)" @ondrop:preventDefault
+			@ondragover="EventUtil.AsNonRenderingEventHandler(HandleDragOver)" @ondragover:preventDefault>
+			<span class="col-header-content"
+				  draggable="@Draggable"
+				  @ondragstart="EventUtil.AsNonRenderingEventHandler<DragEventArgs>(HandleDragStart)">
+
+				<div title="@SortIconTitle" @onclick="@EventUtil.AsNonRenderingEventHandler(SortBy)" class="@HeaderContentCssClasses">
+					@if (HeaderTemplate is not null) {
+						@HeaderTemplate(this)
+					} else {
+						<span aria-label="@HeaderText">@HeaderText</span>
+					}
+					<i class="@SortIconClass" inert aria-hidden="true"></i>
+				</div>
+
+				@if (isFilterableLocal) {
+					<div @ref="@FilterElement"
+						 @onclick="@EventUtil.AsNonRenderingEventHandler(HandleColumnFilterClick)" @onclick:preventDefault @onclick:stopPropagation
+						 id="@HeaderFilterId"
+						 class="@HeaderFilterCss"
+						 role="button"
+						 aria-haspopup="dialog"
+						 aria-label="@HeaderFilterAriaLabel"
+						 aria-pressed="@IsFilterOpenAria"
+						 aria-expanded="@IsFilterOpenAria"
+						 title="@HeaderFilterAriaLabel">
+						<i class="@HeaderFilterIconClass" inert aria-hidden="true"></i>
+					</div>
+				}
+
+			</span>
+			@if (CanResize) {
+				<span class="col-width-draghandle" id="@("sizer_" + ColumnId)" @onclick="EventUtil.AsNonRenderingEventHandler(ResizeHandlerClicked)" @onclick:stopPropagation="true"></span>
+			}
+		</th>
+
+	}
+
+	void RenderCellContent(RenderTreeBuilder __builder, TData item) {
+		<td @key=@($"{this.ColumnId}_{GetItemId(item)}")
+			colspan="1"
+			style="@(CellStyle)"
+			class="@(CellClassList)">
+			@if (ChildContent == null) {
+				@Render(item)
+			} else {
+				@ChildContent(item)
+			}
+		</td>
+	}
+
+}

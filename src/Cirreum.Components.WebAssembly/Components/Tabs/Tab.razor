@@ -1,0 +1,30 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+@code {
+
+	void RenderTabContent(RenderTreeBuilder __builder) {
+
+		<button @key=Id
+				@ref=tabElement
+				@onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ClickHandler)"
+				role="tab"
+				type="button"
+				id="@ElementId"
+				class="@ClassList"
+				tabindex="@(Disabled ? "-1" : Active ? "0" : "-1")"
+				disabled="@Disabled"
+				aria-label="@Name"
+				aria-disabled="@(Disabled ? "true" : false)"
+				aria-selected="@(Active ? "true" : false)"
+				@attributes="@Attributes">
+			@if (LabelTemplate is null) {
+				@Name
+			} else {
+				@LabelTemplate
+			}
+		</button>
+
+	}
+
+}

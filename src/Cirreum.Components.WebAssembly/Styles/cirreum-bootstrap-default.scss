@@ -1,0 +1,9 @@
+@import "bootstrap/mixins/banner";
+@include bsBanner("");
+/*!
+* cirreum-bootstrap-default v1.0.1 - Default Theme
+* Copyright 2025 Cirreum Contributers
+* Licensed under MIT
+*/
+@import "bootstrap/themes/theme-default";
+@import "cirreum-bootstrap-base";

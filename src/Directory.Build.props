@@ -1,0 +1,34 @@
+<Project>
+
+	<!-- Detect if running in CI/CD -->
+	<PropertyGroup>
+		<!-- Azure DevOps -->
+		<IsAzureDevOps Condition="'$(TF_BUILD)' == 'true'">true</IsAzureDevOps>
+		<!-- GitHub Actions -->
+		<IsGitHubActions Condition="'$(GITHUB_ACTIONS)' == 'true'">true</IsGitHubActions>
+		<!-- Any CI -->
+		<IsCI Condition="'$(CI)' == 'true' Or '$(TF_BUILD)' == 'true' Or '$(GITHUB_ACTIONS)' == 'true'">true</IsCI>
+		<!-- Local build -->
+		<IsLocalBuild Condition="'$(IsCI)' != 'true'">true</IsLocalBuild>
+	</PropertyGroup>
+
+	<!-- Local Release Version -->
+	<PropertyGroup Label="Local Release Version" Condition="'$(IsLocalBuild)' == 'true' And '$(Configuration)'=='Release'">
+		<VersionPrefix Condition="'$(VersionPrefix)' == ''">1.0.100</VersionPrefix>
+		<VersionSuffix Condition="'$(VersionSuffix)' == ''">rc</VersionSuffix>
+	</PropertyGroup>
+
+	<!-- Imports -->
+	<Import Project="..\build\Author.props" />
+	<Import Project="..\build\Icon.props" />
+	<Import Project="..\build\SourceLink.props" />
+	<Import Project="..\build\PackageInfo.props" />
+	<Import Project="..\build\Versioning.props" />
+	<Import Project="..\build\Common.props" />
+
+	<!-- CI/CD Packaging -->
+	<PropertyGroup Label="CI/CD Packaging" Condition="'$(IsCI)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+	
+</Project>

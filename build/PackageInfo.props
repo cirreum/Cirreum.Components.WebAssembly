@@ -1,0 +1,16 @@
+﻿<Project>
+
+	<PropertyGroup Label="Package Information">
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/cirreum/$(MSBuildProjectName)</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/cirreum/$(MSBuildProjectName)</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="/"/>
+	</ItemGroup>
+
+</Project>

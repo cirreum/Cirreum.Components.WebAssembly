@@ -1,0 +1,16 @@
+﻿@namespace Cirreum.Components
+<li class="@LiCss">
+	@ChildContent
+</li>
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	/// <summary>
+	/// The Css Class List for the li. Default: nav-item
+	/// </summary>
+	[Parameter]
+	public string LiCss { get; set; } = "nav-item";
+
+}

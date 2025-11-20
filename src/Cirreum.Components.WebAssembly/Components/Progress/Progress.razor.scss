@@ -1,0 +1,89 @@
+// Variables
+$background-color: var(--bs-border-color-translucent);
+$border-radius: 4px;
+
+.fluent-progress {
+	background-color: $background-color;
+	border-radius: $border-radius;
+	width: 100%;
+	height: 1px;
+	display: flex;
+	align-items: center;
+	position: relative;
+
+	.determinate {
+		border-radius: $border-radius;
+		height: 3px;
+		transition: all 0.2s ease-in-out 0s;
+		display: flex;
+	}
+
+	.indeterminate {
+		height: 3px;
+		border-radius: $border-radius;
+		display: flex;
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+
+		&-indicator-1,
+		&-indicator-2 {
+			position: absolute;
+			opacity: 0;
+			height: 100%;
+			border-radius: $border-radius;
+		}
+
+		&-indicator-1 {
+			width: 40%;
+			animation: indeterminate-1 2s ease 0s infinite normal none running;
+		}
+
+		&-indicator-2 {
+			width: 60%;
+			animation: indeterminate-2 2s ease 0s infinite normal none running;
+		}
+	}
+}
+
+@keyframes indeterminate-1 {
+	0% {
+		opacity: 1;
+		transform: translateX(-100%);
+	}
+
+	70% {
+		opacity: 1;
+		transform: translateX(300%);
+	}
+
+	70.01% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateX(300%);
+	}
+}
+
+@keyframes indeterminate-2 {
+	0% {
+		opacity: 0;
+		transform: translateX(-150%);
+	}
+
+	29.99% {
+		opacity: 0;
+	}
+
+	30% {
+		opacity: 1;
+		transform: translateX(-150%);
+	}
+
+	100% {
+		transform: translateX(166.66%);
+		opacity: 1;
+	}
+}

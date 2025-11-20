@@ -1,0 +1,40 @@
+@namespace Cirreum.Components
+
+<li role="presentation" @oncontextmenu:preventDefault>
+	@if (ShowDivider) {
+		<hr />
+	}
+	@if (Text.HasValue()) {
+		<span class="@CssClass">@Text</span>
+	}
+</li>
+
+@code {
+
+	/// <summary>
+	/// Gets or sets a value indicating whether the header node should be rendered with a divider line.
+	/// </summary>
+	/// <remarks>
+	/// If <see cref="Text"/> has a value it will be displayed below the divider line.
+	/// </remarks>
+	[Parameter]
+	public bool ShowDivider { get; set; }
+
+	/// <summary>
+	/// Gets or sets the text to display in the header node.
+	/// </summary>
+	/// <remarks>
+	/// This component renders as an <c>&lt;li&gt;</c> element with a nested <c>&lt;span&gt;</c>
+	/// having the <see cref="CssClass"/> class. It's typically used to separate and categorize
+	/// groups of nodes within the tree view.
+	/// </remarks>
+	[Parameter]
+	public string? Text { get; set; }
+
+	/// <summary>
+	/// Gets or sets the CSS class for the <c>&lt;span&gt;</c> element.
+	/// </summary>
+	[Parameter]
+	public string CssClass { get; set; } = "treeview-header-node";
+
+}

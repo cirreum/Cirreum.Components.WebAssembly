@@ -1,0 +1,239 @@
+// Base class
+//
+// Kickstart any navigation component with a set of style resets. Works with
+// `<nav>`s, `<ul>`s or `<ol>`s.
+
+.nav {
+    // scss-docs-start nav-css-vars
+    --#{$prefix}nav-link-padding-x: #{$nav-link-padding-x};
+    --#{$prefix}nav-link-padding-y: #{$nav-link-padding-y};
+    @include rfs($nav-link-font-size, --#{$prefix}nav-link-font-size);
+    --#{$prefix}nav-link-font-weight: #{$nav-link-font-weight};
+    --#{$prefix}nav-link-color: #{$nav-link-color};
+    --#{$prefix}nav-link-hover-color: #{$nav-link-hover-color};
+    --#{$prefix}nav-link-disabled-color: #{$nav-link-disabled-color};
+    // scss-docs-end nav-css-vars
+
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-link {
+    display: block;
+    padding: var(--#{$prefix}nav-link-padding-y) var(--#{$prefix}nav-link-padding-x);
+    @include font-size(var(--#{$prefix}nav-link-font-size));
+    font-weight: var(--#{$prefix}nav-link-font-weight);
+    color: var(--#{$prefix}nav-link-color);
+    text-decoration: if($link-decoration == none, null, none);
+    background: none;
+    border: 0;
+    flex-shrink: 0;
+    @include transition($nav-link-transition);
+
+    &:hover,
+    &:focus {
+        color: var(--#{$prefix}nav-link-hover-color);
+        text-decoration: if($link-hover-decoration == underline, none, null);
+    }
+
+    &:focus-visible {
+        outline: 0;
+        box-shadow: $nav-link-focus-box-shadow;
+    }
+    // Disabled state lightens text
+    &.disabled,
+    &:disabled {
+        color: var(--#{$prefix}nav-link-disabled-color);
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+//
+// Tabs
+//
+
+.nav-tabs {
+    // scss-docs-start nav-tabs-css-vars
+    --#{$prefix}nav-tabs-border-width: #{$nav-tabs-border-width};
+    --#{$prefix}nav-tabs-border-color: #{$nav-tabs-border-color};
+    --#{$prefix}nav-tabs-border-radius: #{$nav-tabs-border-radius};
+    --#{$prefix}nav-tabs-link-hover-border-color: #{$nav-tabs-link-hover-border-color};
+    --#{$prefix}nav-tabs-link-active-color: #{$nav-tabs-link-active-color};
+    --#{$prefix}nav-tabs-link-active-bg: #{$nav-tabs-link-active-bg};
+    --#{$prefix}nav-tabs-link-active-border-color: #{$nav-tabs-link-active-border-color};
+    // scss-docs-end nav-tabs-css-vars
+
+    border-bottom: var(--#{$prefix}nav-tabs-border-width) solid var(--#{$prefix}nav-tabs-border-color);
+
+    .nav-link {
+        border: var(--#{$prefix}nav-tabs-border-width) solid transparent;
+        @include border-top-radius(var(--#{$prefix}nav-tabs-border-radius));
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        color: var(--#{$prefix}nav-tabs-link-active-color);
+        background-color: var(--#{$prefix}nav-tabs-link-active-bg);
+        border-color: var(--#{$prefix}nav-tabs-link-active-border-color);
+    }
+
+    .dropdown-menu {
+        // Make dropdown border overlap tab border
+        margin-top: calc(-1 * var(--#{$prefix}nav-tabs-border-width)); // stylelint-disable-line function-disallowed-list
+        // Remove the top rounded corners here since there is a hard edge above the menu
+        @include border-top-radius(0);
+    }
+}
+
+
+//
+// Pills
+//
+
+.nav-pills {
+    // scss-docs-start nav-pills-css-vars
+    --#{$prefix}nav-pills-border-radius: #{$nav-pills-border-radius};
+    --#{$prefix}nav-pills-link-active-color: #{$nav-pills-link-active-color};
+    --#{$prefix}nav-pills-link-active-bg: #{$nav-pills-link-active-bg};
+    // scss-docs-end nav-pills-css-vars
+
+    .nav-link {
+        @include border-radius(var(--#{$prefix}nav-pills-border-radius));
+    }
+
+    .nav-link.active,
+    .show > .nav-link {
+        color: var(--#{$prefix}nav-pills-link-active-color);
+        @include gradient-bg(var(--#{$prefix}nav-pills-link-active-bg));
+    }
+}
+
+
+//
+// Underline
+//
+
+.nav-underline {
+    --#{$prefix}nav-underline-width: 20px;
+    --#{$prefix}nav-underline-height: 4px;
+    --#{$prefix}nav-underline-link-color: #{$nav-underline-link-color};
+    --#{$prefix}nav-underline-link-active-color: #{$nav-underline-link-color};
+    --#{$prefix}nav-underline-link-disabled-color: var(--#{$prefix}nav-link-disabled-color);
+    --#{$prefix}nav-underline-indicator-color: var(--#{$prefix}primary);
+    position: relative;
+
+    .nav-link,
+    .nav-item .nav-link {
+        color: var(--#{$prefix}nav-underline-link-color);
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        font-weight: 600;
+        color: var(--#{$prefix}nav-underline-link-active-color);
+    }
+
+    .nav-link.disabled,
+    .nav-link:disabled {
+        // Disabled state lightens text
+        color: var(--#{$prefix}nav-underline-link-disabled-color);
+        pointer-events: none;
+        cursor: default;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        background-color: var(--#{$prefix}nav-underline-indicator-color);
+        transition: all 0.3s ease;
+        border-radius: 6rem;
+    }
+
+    &[data-underline-updated]::after {
+        left: var(--#{$prefix}nav-underline-left, 0);
+        top: var(--#{$prefix}nav-underline-top, 0);
+    }
+
+    &:not(.flex-column)::after {
+        // Horizontal orientation (top or bottom)
+        bottom: 0;
+        top: auto; // Override top for horizontal orientation
+        height: var(--#{$prefix}nav-underline-height);
+        width: var(--#{$prefix}nav-underline-width);
+        transform: translateX(-50%);
+    }
+
+    &.flex-column::after {
+        // Vertical orientation (left or right)
+        width: var(--#{$prefix}nav-underline-height);
+        height: var(--#{$prefix}nav-underline-width);
+    }
+}
+
+.position-right .nav-underline::after {
+    left: auto;
+    right: 10px;
+}
+
+.position-left .nav-underline::after {
+    right: auto;
+    left: 10px;
+}
+
+//
+// Justified variants
+//
+
+.nav-fill {
+    > .nav-link,
+    .nav-item {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+}
+
+.nav-justified {
+    > .nav-link,
+    .nav-item {
+        flex-basis: 0;
+        flex-grow: 1;
+        text-align: center;
+    }
+}
+
+.nav-fill,
+.nav-justified {
+    .nav-item .nav-link {
+        width: 100%; // Make sure button will grow
+    }
+}
+
+
+// Tabbable tabs
+//
+// Hide tabbable panes to start, show them when `.active`
+
+.tab-content {
+    --bs-tab-pane-padding-x: 0.5rem;
+    --bs-tab-pane-padding-y: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+    padding: var(--bs-tab-pane-padding-y) var(--bs-tab-pane-padding-x);
+
+    > .tab-pane {
+        display: none;
+    }
+
+    > .active {
+        display: block;
+        min-height: 0;
+        height: 100%;
+        min-width: 0;
+        width: 100%;
+        overflow: auto;
+    }
+}

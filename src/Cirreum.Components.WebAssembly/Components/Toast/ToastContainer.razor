@@ -1,0 +1,46 @@
+﻿@namespace Cirreum.Components
+
+@if (_toastDictionary.Any()) {
+	@_renderToasts
+}
+
+@code {
+	protected void RenderToasts(RenderTreeBuilder __builder) {
+		<CascadingValue Value=this IsFixed="true">
+			@foreach (var group in GetGroups()) {
+				<div @key="group.Key"
+					 id="toast-container"
+					 class="toast-container @group.Key"
+					 aria-live="polite"
+					 aria-atomic="true">
+					@if (group.Key.Contains("bottom")) {
+						@_renderBottomUpToasts(group)
+					} else {
+						@_renderTopDownToasts(group)
+					}
+				</div>
+			}
+		</CascadingValue>
+	}
+	RenderFragment RenderToastBottomUp(IGrouping<string, ToastInstance> group) => __builder => {
+		@foreach (var toastr in group) {
+			<ToastElement @key="toastr.Id"
+						  ToastId=@toastr.Id
+						  Options=@toastr.Options
+						  Title=@toastr.Title
+						  Subtitle=@toastr.Subtitle
+						  Message=@toastr.Message />
+		}
+	};
+
+	RenderFragment RenderToastTopDown(IGrouping<string, ToastInstance> group) => __builder => {
+		@foreach (var toastr in group) {
+			<ToastElement @key="toastr.Id"
+						  ToastId=@toastr.Id
+						  Options=@toastr.Options
+						  Title=@toastr.Title
+						  Subtitle=@toastr.Subtitle
+						  Message=@toastr.Message />
+		}
+	};
+}

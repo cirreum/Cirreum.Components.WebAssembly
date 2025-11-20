@@ -1,0 +1,54 @@
+@namespace Cirreum.Components
+
+<div class="@AlertClass" role="alert">
+	<span class="@IconClass" aria-hidden="true"></span>
+	<strong>@Message</strong>
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="OnDimiss"></button>
+</div>
+
+@code {
+
+	/// <summary>
+	/// The message...
+	/// </summary>
+	[Parameter]
+	public string Message { get; set; } = "";
+
+	/// <summary>
+	/// The alert icon using the Bootstrap name (excluding the bi-). Default: exclamation-triangle-fill
+	/// </summary>
+	[Parameter]
+	public string Icon { get; set; } = "exclamation-triangle-fill";
+
+	/// <summary>
+	/// The alert color. Default: <see cref="BackgroundColor.Info"/>
+	/// </summary>
+	/// <remarks>
+	/// See: <see cref="BackgroundColor"/>
+	/// </remarks>
+	[Parameter]
+	public BackgroundColor Color { get; set; } = BackgroundColor.Info;
+
+
+	[CascadingParameter]
+	protected Dialog Dialog { get; set; } = default!;
+
+	protected string IconClass => CssBuilder
+		.Default("bi")
+			.AddClass($"bi-{this.Icon}")
+			.AddClass("flex-shrink-0")
+			.AddClass("me-2")
+		.Build();
+
+	protected string AlertClass => CssBuilder
+		.Default("alert")
+			.AddClass($"alert{this.Color.ToShortName()}")
+			.AddClass("alert-dismissible")
+			.AddClass("fade")
+			.AddClass("show")
+			.AddClass("m-0")
+		.Build();
+
+	protected Task OnDimiss() => Dialog.OkAsync();
+
+}

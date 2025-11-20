@@ -1,0 +1,12 @@
+<Project>
+
+	<!-- Source Link & Symbols -->
+	<PropertyGroup Label="Source Link">
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
+	</PropertyGroup>
+
+</Project>

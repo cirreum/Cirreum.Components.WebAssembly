@@ -1,0 +1,25 @@
+@namespace Cirreum.Components
+
+@if (Indeterminate) {
+	<div role="progressbar"
+	id="@ElementId"
+	class="fluent-progress"
+	aria-label="@(AriaLabel.HasValue() ? AriaLabel : false)"
+	aria-labelledby="@(AriaLabelledBy.HasValue() ? AriaLabelledBy : false)"
+	style="width: @Width;">
+		<div class="indeterminate" name="indeterminate">
+			<span class="indeterminate-indicator-1 @(Color.ToName())"></span>
+			<span class="indeterminate-indicator-2 @(Color.ToName())"></span>
+		</div>
+	</div>
+} else {
+	<div role="progressbar"
+	id="@ElementId"
+	class="fluent-progress"
+	aria-label="@(AriaLabel.HasValue() ? AriaLabel : false)"
+	aria-labelledby="@(AriaLabelledBy.HasValue() ? AriaLabelledBy : false)"
+	aria-valuenow="@validPercentage"
+	style="width: @Width;">
+		<div class="determinate @Color.ToName()" style="width: @($"{validPercentage}%;")"></div>
+	</div>
+}

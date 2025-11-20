@@ -1,0 +1,51 @@
+@namespace Cirreum.Components
+
+<div class="@CardCss">
+	<div class="@CardHeaderCss"
+		role="presentation"
+		 @onclick="ToggleCollapsed">
+		@if (TitleTemplate is not null) {
+			@TitleTemplate
+		} else {
+			@Title
+		}
+		@if (ShowCopyButton || Collapsable) {
+			<div class="ms-auto">
+				@if (ShowCopyButton) {
+					<CopyToClipboardButton Text="@ClipboardText" ButtonColor="@CollapseButtonColor" />
+				}
+				@if (Collapsable) {
+					<button type="button" class="@CardHeaderCollapseBtnCss" aria-label="toggle collapse">
+						<i class="bi @( this.IsCollapsed ? "bi-chevron-down" : "bi-chevron-up")"></i>
+					</button>
+				}
+			</div>
+		}
+	</div>
+	@if (ChildContent is not null) {
+		@if (Collapsable) {
+			<Collapse IsCollapsed="IsCollapsed">
+				<div class="card-body">
+					@ChildContent
+				</div>
+			</Collapse>
+		} else {
+			<div class="card-body">
+				@ChildContent
+			</div>
+		}
+	}
+	@if (HasFooter) {
+		@if (Collapsable) {
+			<Collapse IsCollapsed="HideFooter">
+				<div class="card-footer">
+					@FooterContent
+				</div>
+			</Collapse>
+		} else {
+			<div class="card-footer">
+				@FooterContent
+			</div>
+		}
+	}
+</div>

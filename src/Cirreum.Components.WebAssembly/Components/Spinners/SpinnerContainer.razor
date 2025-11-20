@@ -1,0 +1,28 @@
+﻿@namespace Cirreum.Components
+@inherits SpinnerBase
+<div @attributes="AdditionalAttributes" class="@CssClass" style="@Style">
+	@ChildContent
+</div>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public string BaseCss { get; set; } = "";
+
+	string CssClass =>
+		CssBuilder.Default(BaseCss)
+		.AddClass("sk-center", Center)
+		.AddClassFromAttributes(AdditionalAttributes)
+	.Build();
+
+	string? Style =>
+		StyleBuilder.Empty()
+		.AddStyle("--sk-color", Color!, when: !string.IsNullOrEmpty(Color))
+		.AddStyle("--sk-size", Size!, when: !string.IsNullOrEmpty(Size))
+		.AddStyleFromAttributes(AdditionalAttributes)
+	.NullIfEmpty();
+
+}

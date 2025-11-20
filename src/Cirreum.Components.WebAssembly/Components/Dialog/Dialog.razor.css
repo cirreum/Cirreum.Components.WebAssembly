@@ -1,0 +1,238 @@
+.dialog-container {
+  --dialog-min-width: 320px;
+  --dialog-max-width: unset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1031;
+}
+.dialog-container.static {
+  position: relative;
+  z-index: 1;
+  --dialog-min-width: unset;
+  --dialog-max-width: unset;
+}
+@media (min-width: 576px) {
+  .dialog-container.dialog-sm, .dialog-container.dialog-md, .dialog-container.dialog-lg, .dialog-container.dialog-xl {
+    --dialog-max-width: 480px;
+  }
+}
+@media (min-width: 768px) {
+  .dialog-container.dialog-md, .dialog-container.dialog-lg, .dialog-container.dialog-xl {
+    --dialog-max-width: 640px;
+  }
+}
+@media (min-width: 992px) {
+  .dialog-container.dialog-lg, .dialog-container.dialog-xl {
+    --dialog-max-width: 800px;
+  }
+}
+@media (min-width: 1200px) {
+  .dialog-container.dialog-xl {
+    --dialog-max-width: 1140px;
+  }
+}
+@media (max-width: 576px) {
+  .dialog-container {
+    --dialog-max-width: 95vw;
+  }
+}
+@media (max-width: 426px) {
+  .dialog-container {
+    --dialog-min-width: 95vw;
+  }
+}
+
+.dialog-overlay {
+  user-select: none;
+  display: block;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(190, 190, 190, 0.25);
+  z-index: 13;
+}
+[data-bs-theme=dark] .dialog-overlay {
+  background-color: rgba(30, 30, 30, 0.25);
+}
+.dialog-overlay-nested {
+  background-color: rgba(190, 190, 190, 0.05);
+}
+[data-bs-theme=dark] .dialog-overlay-nested {
+  background-color: rgba(30, 30, 30, 0.075);
+}
+
+.dialog {
+  --dialog-scrollable-margin-top: 4rem;
+  --dialog-scrollable-margin-bottom: 4rem;
+  --dialog-body-color: ;
+  --dialog-body-padding: 1rem;
+  --dialog-border-width: var(--bs-border-width);
+  --dialog-border-color: var(--bs-border-color-translucent);
+  --dialog-border-radius: var(--bs-border-radius);
+  --dialog-inner-border-radius: calc(var(--bs-border-radius) - var(--bs-border-width));
+  --dialog-cap-padding-y: 0.5rem;
+  --dialog-cap-padding-x: 0.5rem;
+  --dialog-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+  --dialog-cap-color: ;
+  --dialog-buttons-bg-color: ;
+  --dialog-buttons-gap: 0.5rem;
+  --bs-border-color: var(--dialog-border-color);
+  min-width: var(--dialog-min-width);
+  max-width: var(--dialog-max-width);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--dialog-border-radius);
+  background-color: var(--bs-body-bg);
+  padding: 0;
+  margin: auto;
+  outline: 0;
+  z-index: 14;
+  box-shadow: rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0, 0, 0.12) 0px 4px 16px 0px;
+}
+[data-bs-theme=dark] .dialog {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 16px 18px 0px, rgba(0, 0, 0, 0.15) 0px 4px 16px 0px;
+}
+.dialog .dialog-header {
+  display: flex;
+  align-items: center;
+  padding: var(--dialog-cap-padding-y) var(--dialog-cap-padding-x);
+  color: var(--dialog-cap-color);
+  background-color: var(--dialog-cap-bg);
+}
+.dialog .dialog-header:first-child {
+  border-radius: var(--dialog-inner-border-radius) var(--dialog-inner-border-radius) 0 0;
+}
+.dialog .dialog-header.transparent {
+  color: unset;
+  background-color: unset;
+  border-bottom: unset;
+  padding-block: calc(var(--dialog-cap-padding-y) * 2);
+}
+.dialog .dialog-header .btn-close {
+  margin-left: auto;
+}
+.dialog .dialog-content-only {
+  display: contents;
+  user-select: none;
+}
+
+::deep .dialog-title {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  line-height: 1.5rem;
+  cursor: default;
+  user-select: none;
+}
+::deep .dialog-body {
+  flex: 1 1 auto;
+  padding: var(--dialog-body-padding) var(--dialog-body-padding);
+  color: var(--dialog-body-color);
+}
+::deep .dialog-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--dialog-buttons-gap);
+  padding: calc(var(--dialog-body-padding) - var(--dialog-buttons-gap) * 0.5);
+  background-color: var(--dialog-buttons-bg-color);
+}
+::deep .dialog-footer {
+  padding: var(--dialog-cap-padding-y) var(--dialog-cap-padding-x);
+  color: var(--dialog-cap-color);
+  background-color: var(--dialog-cap-bg);
+  border-top: var(--dialog-border-width) solid var(--dialog-border-color);
+}
+::deep .dialog-footer.transparent {
+  color: unset;
+  background-color: unset;
+  border-bottom: unset;
+  padding-block: calc(var(--dialog-cap-padding-y) * 2);
+}
+::deep .dialog-footer:last-child {
+  border-radius: 0 0 var(--dialog-inner-border-radius) var(--dialog-inner-border-radius);
+}
+::deep .dialog-scrollable {
+  max-height: calc(100vh - (var(--dialog-scrollable-margin-top) + var(--dialog-scrollable-margin-bottom)));
+  display: flex;
+  flex-direction: column;
+}
+::deep .dialog-scrollable .dialog-content,
+::deep .dialog-scrollable .dialog-content-only {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+::deep .dialog-scrollable .dialog-content .dialog-body,
+::deep .dialog-scrollable .dialog-content-only .dialog-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+::deep .dialog-scrollable .dialog-header,
+::deep .dialog-scrollable .dialog-buttons,
+::deep .dialog-scrollable .dialog-footer {
+  flex-shrink: 0;
+}
+
+.dialog-center .dialog {
+  position: absolute;
+  transform: none;
+}
+
+.dialog-center-left .dialog {
+  position: absolute;
+  top: 50%;
+  left: 1.5rem;
+  transform: translateY(-50%);
+}
+
+.dialog-center-right .dialog {
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+}
+
+.dialog-top .dialog {
+  position: absolute;
+  top: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dialog-topleft .dialog {
+  position: absolute;
+  top: 3rem;
+  left: 1.5rem;
+}
+
+.dialog-topright .dialog {
+  position: absolute;
+  top: 3rem;
+  right: 1.5rem;
+}
+
+.dialog-bottom .dialog {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dialog-bottomleft .dialog {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+}
+
+.dialog-bottomright .dialog {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}

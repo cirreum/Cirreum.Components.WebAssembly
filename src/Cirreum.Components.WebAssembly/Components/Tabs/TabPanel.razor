@@ -1,0 +1,10 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+<div id="@ElementId"
+	 class="@ClassList"
+	 @attributes="@Attributes">
+	@if (ShouldLoad) {
+		@ChildContent
+	}
+</div>

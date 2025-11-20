@@ -1,0 +1,231 @@
+
+@import "../../Styles/bootstrap/functions";
+
+$enable-rounded: true !default;
+
+@import "../../Styles/bootstrap/mixins";
+
+$busy-overlay-bg: rgba(0,0,0,0.075);
+
+.busy-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border-radius: 0.375rem;
+	background-color: $busy-overlay-bg;
+	z-index: 10;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	user-select: none;
+
+	&.is-busy {
+		display: flex;
+	}
+
+	&.is-faded {
+		background: var(--bs-gradient);
+	}
+}
+
+.busy-template-container {
+	position: fixed;
+	display: flex;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.busy-template {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-self: stretch;
+	align-items: center;
+	justify-content: flex-end;
+	border-radius: 0.5rem;
+	background: rgba(var(--bs-tertiary-bg-rgb), 0.95);
+	box-shadow: var(--bs-box-shadow-lg);
+	padding: 2rem 5rem;
+}
+
+@media (max-width: 576px) {
+	.busy-template-container {
+		max-width: 576px;
+	}
+
+	.busy-template {
+		padding: 1rem 2rem;
+	}
+}
+
+.loading-row-filler {
+	min-height: 135px;
+}
+
+.loading-template {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	align-self: stretch;
+	align-items: center;
+	justify-content: flex-end;
+	margin-bottom: 80px;
+}
+
+.row-detail-toggle-header {
+	position: relative;
+	overflow: hidden;
+	width: 24px;
+	min-width: 24px;
+	max-width: 24px;
+	padding: 0;
+}
+
+.row-detail-toggle-cell {
+	padding-top: 0.2rem;
+}
+
+.row-detail-toggle-footer {
+	position: relative;
+	overflow: hidden;
+	width: 24px;
+	min-width: 24px;
+	max-width: 24px;
+	padding: 0;
+}
+
+.datagrid {
+	min-width: 250px;
+
+	.datagrid-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 0.5rem;
+		padding: 0.5rem;
+
+		.datagrid-title {
+			min-height: 31px;
+			flex-grow: 1;
+
+			& .datagrid-title-default {
+				font-size: 1.25rem;
+			}
+		}
+
+		.datagrid-search {
+			min-height: 31px;
+			flex-grow: 1;
+		}
+
+		.datagrid-toolbar {
+			min-height: 31px;
+		}
+	}
+
+	.datagrid-body {
+		padding: 0.5rem 0.5rem;
+		overflow-x: hidden;
+
+		& tr {
+			height: 41px;
+
+			&:focus-visible {
+				outline-style: solid;
+				outline-color: var(--bs-focus-ring-color);
+				outline-width: var(--bs-focus-ring-width);
+				outline-offset: -5px;
+				-webkit-box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+				box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+			}
+
+			&:not(.row-detail):focus-visible > * {
+				background: transparent;
+				--bs-table-color-state: var(--bs-table-hover-color);
+				--bs-table-bg-state: var(--bs-table-hover-bg);
+			}
+		}
+
+		& .table-sm tr {
+			height: 35px;
+		}
+	}
+
+	&:has(.datagrid-header) {
+		.datagrid-body {
+			padding-top: 0;
+		}
+	}
+
+	.datagrid-footer {
+		padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-y);
+		color: var(--bs-card-cap-color);
+		background-color: var(--bs-card-cap-bg);
+		border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+		min-height: 2rem;
+		user-select: none;
+
+		&:last-child {
+			@include border-radius(0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius));
+		}
+
+		.datagrid-footer-items-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			--align-items: space-between;
+			justify-content: var(--align-items);
+
+			> div {
+				min-height: 2rem;
+				display: flex;
+				flex-wrap: nowrap;
+				align-items: center;
+			}
+		}
+	}
+
+	&:has(.datagrid-footer) {
+
+		& .loading-template {
+			margin-bottom: 130px;
+		}
+	}
+}
+
+@media (min-width: 576px) {
+	.datagrid {
+		.datagrid-header {
+			padding: 1rem;
+
+			.datagrid-search {
+				flex-grow: 0;
+			}
+		}
+	}
+}
+
+// Flush table
+//
+// Remove borders and border-radius to keep table edge-to-edge. Most
+// useful within other components (e.g., cards).
+.datagrid-flush {
+
+	&:has(.datagrid-footer) {
+		.datagrid-body {
+			padding-bottom: 0;
+
+			table > :last-child > tr:last-child {
+				border-bottom-width: 0;
+			}
+		}
+	}
+
+	& .datagrid-body {
+		padding: 1rem 0;
+	}
+}

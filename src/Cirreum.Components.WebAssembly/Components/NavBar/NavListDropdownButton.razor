@@ -1,0 +1,107 @@
+﻿@namespace Cirreum.Components
+@typeparam TItemType
+@inherits DropdownBase<TItemType>
+
+<li id="@ElementId"
+	class="@DropdownContainerCss"
+	style="@DropdownContainerStyle"
+	aria-label="@AriaLabel">
+	@if (IsSplitButton) {
+		@if (DropdownDirection == DropdownDirection.Left) {
+			@SplitDropdownButton
+		} else {
+			@SplitActionButton
+			@SplitDropdownButton
+		}
+	} else {
+		@NormalDropdownButton
+	}
+	<ul @ref="@PopperRef"
+		id="@DropdownMenuId"
+		class="@DropdownMenuClass"
+		style="@DropdownMenuStyle"
+		aria-labelledby="@DropdownId"
+		data-bs-popper>
+		<CascadingValue Value="@this" IsFixed="true">
+			@ChildContent
+		</CascadingValue>
+	</ul>
+	@if (IsSplitButton && DropdownDirection == DropdownDirection.Left) {
+		@SplitActionButton
+	}
+</li>
+
+@code {
+
+	RenderFragment NormalDropdownButton => __builder => {
+		<button @ref="TargetElement"
+				@onclick="EventUtil.AsNonRenderingEventHandler(ToggleAsync)" @onclick:preventDefault @onclick:stopPropagation
+				type="button"
+				id="@DropdownId"
+				class="@(ButtonCssClass) dropdown-toggle"
+				style="@(ButtonStyle.HasValue() ? ButtonStyle : false)" 
+				disabled="@IsDisabled"
+				title=""
+				aria-label="drop down menu"
+				aria-disabled="@AriaIsDisabled"
+				aria-controls="@DropdownMenuId"
+				aria-expanded="@AriaIsExpanded"
+				aria-haspopup="true"
+				data-bs-toggle="dropdown">
+			@ButtonContent
+		</button>
+	};
+	RenderFragment SplitDropdownButton => __builder => {
+		<button @ref="TargetElement"
+				@onclick="EventUtil.AsNonRenderingEventHandler(ToggleAsync)" @onclick:preventDefault @onclick:stopPropagation
+				type="button"
+				id="@DropdownId"
+				class="@(ButtonCssClass) dropdown-toggle dropdown-toggle-split"
+				style="@(ButtonStyle.HasValue() ? ButtonStyle : false)" 
+				disabled="@IsDisabled"
+				title=""
+				aria-label="drop down menu"
+				aria-disabled="@AriaIsDisabled"
+				aria-controls="@DropdownMenuId"
+				aria-expanded="@AriaIsExpanded"
+				aria-haspopup="true"
+				data-bs-toggle="dropdown">
+			<span class="visually-hidden">Toggle Dropdown</span>
+		</button>
+	};
+	RenderFragment SplitActionButton => __builder => {
+		<button type="button"
+				class="@SplitButtonCssClass"
+				disabled="@IsDisabled"
+				title=""
+				aria-label="action menu"
+				aria-disabled="@AriaIsDisabled"
+				@onclick="HandleSplitButtonClicked">
+			@ButtonContent
+		</button>
+	};
+	RenderFragment ButtonContent => __builder => {
+		@if (HasTooltip) {
+			<Tooltip Title="@Tooltip">
+				@if (TextTemplate is not null) {
+					@TextTemplate
+				} else {
+					@Text
+				}
+			</Tooltip>
+		} else {
+			@if (TextTemplate is not null) {
+				@TextTemplate
+			} else {
+				@Text
+			}
+		}
+	};
+
+
+	protected override void OnInitialized() {
+		this.IsNav = true;
+		base.OnInitialized();
+	}
+
+}

@@ -1,0 +1,15 @@
+﻿<Project>
+
+	<PropertyGroup Label="Versioning">
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+		<MajorProductVersion Condition="$(MajorProductVersion) == ''">1</MajorProductVersion>
+		<MinorProductVersion Condition="$(MinorProductVersion) == ''">0</MinorProductVersion>
+		<PatchProductVersion Condition="$(PatchProductVersion) == ''">0</PatchProductVersion>
+		<VersionPrefix Condition="$(VersionPrefix) == ''">$(MajorProductVersion).$(MinorProductVersion).$(PatchProductVersion)</VersionPrefix>
+		<Version Condition="'$(Version)' == ''">$(VersionPrefix)$(VersionSuffix)</Version>
+		<AssemblyVersion Condition="$(AssemblyVersion) == ''">$(VersionPrefix).0</AssemblyVersion>
+		<FileVersion Condition="$(FileVersion) == ''">$(AssemblyVersion)</FileVersion>
+		<PackageVersion Condition="$(PackageVersion) == ''">$(VersionPrefix)</PackageVersion>
+	</PropertyGroup>
+
+</Project>

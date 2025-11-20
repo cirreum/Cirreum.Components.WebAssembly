@@ -1,0 +1,113 @@
+.text-search {
+  width: 100%;
+}
+.text-search .form-control {
+  padding: 0.3rem 0.75rem 0.32rem;
+  border: 0;
+  background: var(--bs-tertiary-bg);
+  transition: all 0.2s linear;
+}
+.text-search .form-control ~ .text-search-label {
+  position: absolute;
+  top: 0;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  left: 0.75rem;
+  padding-top: 0.35rem;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: all 0.2s ease-out;
+  color: rgba(var(--bs-body-color-rgb), 0.5);
+  margin-bottom: 0;
+  margin-left: 0px;
+  font-size: smaller;
+}
+.text-search .form-control ~ .text-search-label:after {
+  content: "...";
+  font-stretch: extra-expanded;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.text-search .form-control ~ .form-notch {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  text-align: left;
+  pointer-events: none;
+}
+.text-search .form-control ~ .form-notch div {
+  pointer-events: none;
+  border: 1px solid var(--bs-border-color);
+  box-sizing: border-box;
+  background: transparent;
+  transition: all 0.2s linear;
+}
+.text-search .form-control ~ .form-notch .form-notch-leading {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 9px;
+  border-right: none;
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+.text-search .form-control ~ .form-notch .form-notch-middle {
+  flex: 0 0 auto;
+  width: 38px;
+  max-width: calc(100% - 1rem);
+  height: 100%;
+  border-right: none;
+  border-left: none;
+}
+.text-search .form-control ~ .form-notch .form-notch-trailing {
+  flex-grow: 1;
+  height: 100%;
+  border-left: none;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+.text-search .form-control:not(.placeholder-active)::placeholder {
+  opacity: 0;
+}
+.text-search .form-control:focus::placeholder, .text-search .form-control.active::placeholder {
+  opacity: 1;
+}
+.text-search .form-control:focus {
+  box-shadow: none !important;
+  background-color: var(--bs-body-bg);
+}
+.text-search .form-control:focus ~ .text-search-label {
+  color: var(--bs-primary-text-emphasis);
+}
+.text-search .form-control:focus ~ .form-notch .form-notch-middle, .text-search .form-control:focus ~ .form-notch .form-notch-leading, .text-search .form-control:focus ~ .form-notch .form-notch-trailing {
+  border-color: var(--bs-primary);
+}
+.text-search .form-control:focus ~ .form-notch .form-notch-middle {
+  border-top: 1px solid transparent;
+}
+.text-search .form-control.active:not(:focus) ~ .text-search-label {
+  color: rgba(var(--bs-body-color-rgb), 0.25);
+}
+.text-search .form-control:focus ~ .text-search-label, .text-search .form-control.active ~ .text-search-label {
+  transform: translateY(-1rem) translateY(0.1rem) scale(0.8);
+  text-transform: capitalize;
+}
+.text-search .form-control:focus ~ .text-search-label:after, .text-search .form-control.active ~ .text-search-label:after {
+  content: "";
+}
+.text-search .form-control:focus ~ .form-notch .form-notch-middle, .text-search .form-control.active ~ .form-notch .form-notch-middle {
+  border-right: none;
+  border-left: none;
+  border-top: 1px solid transparent;
+}
+.text-search .form-control:disabled, .text-search .form-control.disabled, .text-search .form-control[readonly] {
+  background-color: var(--bs-secondary-bg);
+}
+
+html[data-bs-theme=light] .text-search .form-control:focus {
+  background-color: var(--bs-body-bg) !important;
+}

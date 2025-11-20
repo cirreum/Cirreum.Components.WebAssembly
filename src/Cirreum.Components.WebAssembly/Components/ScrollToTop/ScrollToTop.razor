@@ -1,0 +1,16 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JSApp
+
+<div class="@ComputedCss"
+	 style="@ComputedStyle"
+	 tabindex="-1"
+	 data-instance-id="@instanceId"
+	 @onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ScrollTop)"
+	 @attributes="AdditionalAttributes">
+	@if (ChildContent != null) {
+		@ChildContent
+	} else {
+		<span>↑</span>
+	}
+</div>

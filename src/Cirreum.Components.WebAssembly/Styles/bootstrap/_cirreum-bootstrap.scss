@@ -1,0 +1,732 @@
+// based on Bootswatch Flatly and Darkly 5.3.x
+
+// 1. Root-level CSS custom properties FIRST
+:root {
+	--presence-available: #13a10e;
+	--presence-away: #eaa300;
+	--presence-busy: #d13438;
+	--presence-dnd: #d13438;
+	--presence-offline: #adadad;
+	--presence-oof: #c239b3;
+	--presence-unknown: #d13438;
+	--scrollbar-width: 0.675rem;
+}
+
+//
+// 2. Dark mode root variable overrides
+//
+@if $enable-dark-mode {
+	@include color-mode(dark, true) {
+		// :root {}
+		--#{$prefix}light: #adb5bd;
+		--#{$prefix}dark: #303030;
+		--#{$prefix}gray: #888;
+		--#{$prefix}gray-dark: #303030;
+		--#{$prefix}light-rgb: 173, 181, 189;
+		--#{$prefix}dark-rgb: 48, 48, 48;
+		// Theme-specific color overrides for dark mode
+		// Uses -dark variants which default to light mode colors but can be overridden by themes
+		--#{$prefix}primary: #{$primary-dark};
+		--#{$prefix}primary-rgb: #{to-rgb($primary-dark)};
+		--#{$prefix}secondary: #{$secondary-dark};
+		--#{$prefix}secondary-rgb: #{to-rgb($secondary-dark)};
+		--#{$prefix}success: #{$success-dark};
+		--#{$prefix}success-rgb: #{to-rgb($success-dark)};
+		--#{$prefix}info: #{$info-dark};
+		--#{$prefix}info-rgb: #{to-rgb($info-dark)};
+		--#{$prefix}warning: #{$warning-dark};
+		--#{$prefix}warning-rgb: #{to-rgb($warning-dark)};
+		--#{$prefix}danger: #{$danger-dark};
+		--#{$prefix}danger-rgb: #{to-rgb($danger-dark)};
+		// Additional base colors for dark mode
+		--#{$prefix}blue: #{$blue-dark};
+		--#{$prefix}indigo: #{$indigo-dark};
+		--#{$prefix}purple: #{$purple-dark};
+		--#{$prefix}pink: #{$pink-dark};
+		--#{$prefix}red: #{$red-dark};
+		--#{$prefix}orange: #{$orange-dark};
+		--#{$prefix}yellow: #{$yellow-dark};
+		--#{$prefix}green: #{$green-dark};
+		--#{$prefix}teal: #{$teal-dark};
+		--#{$prefix}cyan: #{$cyan-dark};
+		// Links
+		--#{$prefix}link-color: #{$link-color-dark};
+		--#{$prefix}link-hover-color: #{$link-hover-color-dark};
+		--#{$prefix}link-color-rgb: #{to-rgb($link-color-dark)};
+		--#{$prefix}link-hover-color-rgb: #{to-rgb($link-hover-color-dark)};
+		// DataGrid Sort Styles
+		--#{$prefix}table-sorted-bg: #{$sort-bg-color-dark};
+		--#{$prefix}table-striped-sorted-bg: #{$sort-striped-bg-color-dark};
+
+		@each $color, $value in $theme-colors-dark {
+			--#{$prefix}#{$color}: #{$value};
+		}
+
+		@each $color, $value in $table-variants-dark {
+			@include table-variant($color, $value);
+		}
+		// Component overrides
+		--#{$prefix}component-active-color: #{$component-active-color-dark};
+		--#{$prefix}component-active-bg: #{$component-active-bg-dark};
+	   
+	}
+}
+
+// 3. :target pseudo-selector
+:target {
+	scroll-margin-top: 5rem;
+	scroll-margin-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+	html::after {
+		content: 'desktop';
+		display: none;
+	}
+}
+
+@media (max-width: 767px) {
+	html::after {
+		content: 'mobile';
+		display: none;
+	}
+}
+
+//
+// 4. Then all your class-based customizations
+//
+.btn-primary {
+	--#{$prefix}btn-color: #{$btn-primary-color};
+	--#{$prefix}btn-hover-color: #{$btn-primary-color};
+	--#{$prefix}btn-active-color: #{$btn-primary-color};
+	--#{$prefix}btn-disabled-color: #{$btn-primary-color};
+}
+
+.hide-scrollbar, [data-scrollbar="hide"] {
+	scrollbar-color: transparent transparent;
+}
+
+// Tables
+.card > table > thead > tr,
+.card > div > table > thead > tr {
+	border-top: none;
+}
+
+// Footer
+footer {
+	--bs-footer-bg: #{$footer-bg};
+	background-color: var(--bs-footer-bg)
+}
+
+html[data-bs-theme=dark] {
+	footer {
+		--bs-footer-bg: #{$footer-bg-dark};
+	}
+}
+
+// Navs
+.nav-link {
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+// Pagination
+.pagination {
+	a:hover {
+		text-decoration: none;
+	}
+}
+
+.page-item {
+	.page-link {
+		@include border-radius(var(--#{$prefix}pagination-border-radius));
+	}
+}
+// Indicators
+.force-cursor {
+	cursor: pointer;
+}
+
+.badge {
+	&.bg-light {
+		color: $dark;
+	}
+}
+// Blazor builtin Loading Progress
+.loading-progress {
+	position: relative;
+	display: block;
+	width: 8rem;
+	height: 8rem;
+	margin: 20vh auto 1rem auto;
+
+	circle {
+		fill: none;
+		stroke: #e0e0e0;
+		stroke-width: 0.6rem;
+		transform-origin: 50% 50%;
+		transform: rotate(-90deg);
+
+		&:last-child {
+			stroke: #1b6ec2;
+			stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+			transition: stroke-dasharray 0.05s ease-in-out;
+		}
+	}
+}
+
+.loading-progress-text {
+	position: absolute;
+	text-align: center;
+	font-weight: bold;
+	inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+
+	&:after {
+		content: var(--blazor-load-percentage-text, "Loading");
+	}
+}
+// pacejs
+.pace {
+	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	.pace-progress {
+		background: var(--bs-primary);
+		position: fixed;
+		z-index: 2000;
+		top: 0;
+		right: 100%;
+		width: 100%;
+		height: 2px;
+	}
+}
+
+.pace-inactive {
+	display: none;
+}
+// Buttons
+// -xs
+.btn-xs {
+	--bs-btn-padding-y: 0.0rem;
+	--bs-btn-padding-x: 0.25rem;
+	--bs-btn-font-size: 0.75rem;
+	--bs-btn-border-radius: 0.25rem;
+
+	+ {
+		.dropdown-toggle-split {
+			padding-right: 0.25rem;
+			padding-left: 0.25rem;
+		}
+	}
+}
+
+.btn-group-xs {
+	> .btn {
+		--bs-btn-padding-y: 0.0rem;
+		--bs-btn-padding-x: 0.25rem;
+		--bs-btn-font-size: 0.75rem;
+		--bs-btn-border-radius: 0.25rem;
+
+		+ {
+			.dropdown-toggle-split {
+				padding-right: 0.25rem;
+				padding-left: 0.25rem;
+			}
+		}
+	}
+}
+// Form Controls
+// -xs
+.form-control-plaintext.form-control-xs {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.form-control-xs {
+	min-height: 0.25rem;
+	padding: 0.025rem 0.25rem;
+	font-size: 0.75rem;
+	border-radius: 0.25rem;
+	// Customize the `:focus` state to imitate native WebKit styles.
+	&:focus {
+		@if $enable-shadows {
+			@include box-shadow($input-box-shadow-sm, $input-focus-box-shadow-sm);
+		}
+		@else {
+			// Avoid using mixin so we can pass custom focus shadow properly
+			box-shadow: $input-focus-box-shadow-sm;
+		}
+	}
+
+	&::-webkit-file-upload-button {
+		padding: 0.025rem 0.25rem;
+		margin: -0.025rem -0.25rem;
+		margin-inline-end: 0.25rem;
+	}
+
+	&::file-selector-button {
+		padding: 0.025rem 0.25rem;
+		margin: -0.025rem -0.25rem;
+		margin-inline-end: 0.25rem;
+	}
+}
+
+textarea.form-control-xs {
+	min-height: 0.25rem;
+}
+
+.form-control-color.form-control-xs {
+	height: calc(0.5rem);
+}
+
+.invalid-message {
+	color: var(--bs-form-invalid-color);
+	font-size: 0.75em;
+	display: inline-flex;
+	align-items: center;
+	column-gap: 0.25rem;
+	margin-left: 0.25rem;
+	margin-top: 0.25rem;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.form-check-inline ~ .invalid-message {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: -0.875rem;
+}
+
+.valid-message {
+	color: var(--bs-form-valid-color);
+	font-size: 0.75em;
+	display: inline-flex;
+	align-items: center;
+	column-gap: 0.25rem;
+	margin-left: 0.25rem;
+	margin-top: 0.25rem;
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.form-check-inline ~ .valid-message {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: -0.875rem;
+}
+// Dropdowns
+.dropdown-menu {
+	--bs-dropdown-item-border-radius: 0.25rem;
+}
+
+.dropdown-item {
+	&:focus-visible {
+		outline: solid 1px var(--bs-secondary-border-subtle)
+	}
+}
+// Navbars
+.noscroll {
+	overflow: hidden;
+	padding-right: var(--scrollbar-width, 0px); //0.675rem;
+}
+
+.nav-link {
+	flex-shrink: 0;
+}
+
+.navbar-toggler {
+	--bs-navbar-toggler-focus-width: 0;
+}
+
+.navbar-toggler-bar {
+	display: block;
+	position: relative;
+	width: 22px;
+	height: 1px;
+	background: var(--bs-body-color);
+	border-radius: 1px;
+
+	+ {
+		.navbar-toggler-bar {
+			margin-top: 7px;
+		}
+
+		.navbar-toggler-bar.navbar-kebab {
+			margin-top: 0px;
+		}
+	}
+}
+
+.navbar-toggler-bar.bar2 {
+	width: 17px;
+	transition: width .2s linear;
+}
+
+.navbar-toggler-bar.navbar-kebab {
+	height: 4px;
+	width: 4px;
+	margin-bottom: 3px;
+	border-radius: 50%;
+}
+
+.navbar-toggle {
+	&:hover {
+		.navbar-toggler-bar.bar2 {
+			width: 22px;
+		}
+	}
+}
+
+.bar1 {
+	outline: 1px solid transparent;
+	top: 0px;
+	-webkit-animation: topbar-back 500ms linear 0s;
+	-moz-animation: topbar-back 500ms linear 0s;
+	animation: topbar-back 500ms 0s;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.bar2 {
+	outline: 1px solid transparent;
+	opacity: 1;
+}
+
+.bar3 {
+	outline: 1px solid transparent;
+	bottom: 0px;
+	-webkit-animation: bottombar-back 500ms linear 0s;
+	-moz-animation: bottombar-back 500ms linear 0s;
+	animation: bottombar-back 500ms 0s;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+.nav-underline {
+	--#{$prefix}nav-underline-width: 20px;
+	--#{$prefix}nav-underline-height: 4px;
+	--#{$prefix}nav-underline-link-color: #{$nav-underline-link-color};
+	--#{$prefix}nav-underline-link-active-color: #{$nav-underline-link-color};
+	--#{$prefix}nav-underline-link-disabled-color: var(--#{$prefix}nav-link-disabled-color);
+	--#{$prefix}nav-underline-indicator-color: var(--#{$prefix}primary);
+	position: relative;
+
+	.nav-link,
+	.nav-item .nav-link {
+		color: var(--#{$prefix}nav-underline-link-color);
+	}
+
+	.nav-link.active,
+	.nav-item.show .nav-link {
+		font-weight: 600;
+		color: var(--#{$prefix}nav-underline-link-active-color);
+	}
+
+	.nav-link.disabled,
+	.nav-link:disabled {
+		// Disabled state lightens text
+		color: var(--#{$prefix}nav-underline-link-disabled-color);
+		pointer-events: none;
+		cursor: default;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		background-color: var(--#{$prefix}nav-underline-indicator-color);
+		transition: all 0.3s ease;
+		border-radius: 6rem;
+	}
+
+	&[data-underline-updated]::after {
+		left: var(--#{$prefix}nav-underline-left, 0);
+		top: var(--#{$prefix}nav-underline-top, 0);
+	}
+
+	&:not(.flex-column)::after {
+		// Horizontal orientation (top or bottom)
+		bottom: 0;
+		top: auto; // Override top for horizontal orientation
+		height: var(--#{$prefix}nav-underline-height);
+		width: var(--#{$prefix}nav-underline-width);
+		transform: translateX(-50%);
+	}
+
+	&.flex-column::after {
+		// Vertical orientation (left or right)
+		width: var(--#{$prefix}nav-underline-height);
+		height: var(--#{$prefix}nav-underline-width);
+	}
+}
+
+.position-right .nav-underline::after {
+	left: auto;
+	right: 10px;
+}
+
+.position-left .nav-underline::after {
+	right: auto;
+	left: 10px;
+}
+
+.pagination {
+	margin: 0;
+}
+// Tabbable tabs
+//
+// Hide tabbable panes to start, show them when `.active`
+
+.tab-content {
+	--bs-tab-pane-padding-x: 0.5rem;
+	--bs-tab-pane-padding-y: 0.5rem;
+	height: 100%;
+	overflow: hidden;
+	padding: var(--bs-tab-pane-padding-y) var(--bs-tab-pane-padding-x);
+
+	> .tab-pane {
+		display: none;
+	}
+
+	> .active {
+		display: block;
+		min-height: 0;
+		height: 100%;
+		min-width: 0;
+		width: 100%;
+		overflow: auto;
+	}
+}
+// tables
+.sorting_1 {
+	// Single Column Sorting...
+	background-color: var(--#{$prefix}table-sorted-bg) !important;
+}
+
+.table-striped {
+	> tbody > tr:nth-of-type(#{$table-striped-order}) > .sorting_1 {
+		--#{$prefix}table-bg-type: var(--#{$prefix}table-striped-sorted-bg);
+	}
+}
+
+.table-hover {
+	> tbody > tr:hover:not(.row-detail) {
+		-webkit-box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+		box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+
+		> * {
+			/* Creates a paint layer, establishing a stacking context that allows 
+			 the tr's inset box-shadow to be visible against the table background */
+			background: transparent;
+			--bs-table-color-state: var(--#{$prefix}table-hover-color);
+			--bs-table-bg-state: var(--#{$prefix}table-hover-bg);
+		}
+	}
+}
+// New Feature table-flush
+.table-flush {
+
+	> :not(caption) {
+
+		&:last-child {
+			> :last-child > * {
+				border-bottom-width: 0;
+			}
+		}
+
+		> * > :first-child {
+			border-left-width: 0;
+		}
+
+		> * > :last-child {
+			border-right-width: 0;
+		}
+	}
+}
+
+.tooltip-inner {
+	border: var(--#{$prefix}tooltip-border);
+}
+
+.text-bg-primary {
+	color: #{$btn-primary-color} if($enable-important-utilities, !important, null);
+}
+
+
+//
+// 5. Dark mode class-based utilities LAST
+//
+@if $enable-dark-mode {
+	@include color-mode(dark, true) {
+		// text-bg utilities
+		@each $color, $value in $theme-colors-dark {
+			.text-bg-#{$color} {
+				color: color-contrast($value) if($enable-important-utilities, !important, null);
+				background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if($enable-important-utilities, !important, null);
+			}
+		}
+
+		.text-bg-primary {
+			color: #{$btn-primary-color-dark} if($enable-important-utilities, !important, null);
+		}
+		// All-caps `RGBA()` function used because of this Sass bug: https://github.com/sass/node-sass/issues/2251
+		@each $color, $value in $theme-colors-dark {
+			.link-#{$color} {
+				color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}link-opacity, 1)) if($enable-important-utilities, !important, null);
+				text-decoration-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+
+				@if $link-shade-percentage != 0 {
+					&:hover,
+					&:focus {
+						$hover-color: if(color-contrast($value) == $color-contrast-light, shade-color($value, $link-shade-percentage), tint-color($value, $link-shade-percentage));
+						color: RGBA(#{to-rgb($hover-color)}, var(--#{$prefix}link-opacity, 1)) if($enable-important-utilities, !important, null);
+						text-decoration-color: RGBA(to-rgb($hover-color), var(--#{$prefix}link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+					}
+				}
+			}
+		}
+		// One-off special link helper as a bridge until v6
+		.link-body-emphasis {
+			color: RGBA(var(--#{$prefix}emphasis-color-rgb), var(--#{$prefix}link-opacity, 1)) if($enable-important-utilities, !important, null);
+			text-decoration-color: RGBA(var(--#{$prefix}emphasis-color-rgb), var(--#{$prefix}link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+
+			@if $link-shade-percentage != 0 {
+				&:hover,
+				&:focus {
+					color: RGBA(var(--#{$prefix}emphasis-color-rgb), var(--#{$prefix}link-opacity, .75)) if($enable-important-utilities, !important, null);
+					text-decoration-color: RGBA(var(--#{$prefix}emphasis-color-rgb), var(--#{$prefix}link-underline-opacity, .75)) if($enable-important-utilities, !important, null);
+				}
+			}
+		}
+		//
+		// Buttons
+		//
+		@each $color, $value in $theme-colors-dark {
+			.btn-#{$color} {
+				@include button-variant($value, $value);
+			}
+
+			.btn-outline-#{$color} {
+				@include button-outline-variant($value);
+			}
+		}
+
+		.btn-primary {
+			--#{$prefix}btn-color: #{$btn-primary-color-dark};
+			--#{$prefix}btn-hover-color: #{$btn-primary-color-dark};
+			--#{$prefix}btn-active-color: #{$btn-primary-color-dark};
+			--#{$prefix}btn-disabled-color: #{$btn-primary-color-dark};
+		}
+		//
+		// Forms controls
+		//
+		.form-check-input {
+			&:checked {
+				background-color: $form-check-input-checked-bg-color-dark;
+				border-color: $form-check-input-checked-border-color-dark;
+			}
+		}
+
+		.form-switch .form-check-input {
+			// Unchecked state (OFF) - white/light circle
+			&:not(:checked) {
+				--#{$prefix}form-switch-bg: #{escape-svg($form-switch-bg-image-dark)};
+			}
+			// Checked state (ON) - dark circle
+			&:checked {
+				@if $enable-gradients {
+					--#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image-dark)}, var(--#{$prefix}gradient);
+				}
+				@else {
+					--#{$prefix}form-switch-bg: #{escape-svg($form-switch-checked-bg-image-dark)};
+				}
+			}
+		}
+
+		.form-control {
+			// Customize the `:focus` state to imitate native WebKit styles.
+			&:focus {
+				border-color: $border-color-dark;
+			}
+		}
+
+		.form-control-xs {
+			// Customize the `:focus` state to imitate native WebKit styles.
+			&:focus {
+				@if $enable-shadows {
+					@include box-shadow($input-box-shadow-sm, $input-focus-box-shadow-sm-dark);
+				}
+				@else {
+					// Avoid using mixin so we can pass custom focus shadow properly
+					box-shadow: $input-focus-box-shadow-sm-dark;
+				}
+			}
+		}
+		//
+		// List Groups
+		//
+		.list-group {
+			--#{$prefix}list-group-active-color: #{$list-group-active-color-dark};
+			--#{$prefix}list-group-active-bg: #{$list-group-active-bg-dark};
+		}
+		// Continue for other components...
+	}
+}
+//
+// 6. Animations
+//
+@keyframes bi-rotater {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.bi-rotate {
+	display: inline-block;
+	animation: bi-rotater 2s linear infinite;
+}
+
+@keyframes bi-pulser {
+	0%, 100% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+.bi-pulse {
+	display: inline-block;
+	animation: bi-pulser 1s infinite;
+}
+
+@keyframes bi-shaker {
+	0%, 100% {
+		transform: translateX(0);
+	}
+
+	25%, 75% {
+		transform: translateX(-10px);
+	}
+
+	50% {
+		transform: translateX(10px);
+	}
+}
+
+.bi-shake {
+	display: inline-block;
+	animation: bi-shaker 0.5s infinite;
+}

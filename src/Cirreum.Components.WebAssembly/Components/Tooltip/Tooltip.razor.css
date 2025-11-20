@@ -1,0 +1,4 @@
+.tooltip-contents-container {
+  position: relative;
+  display: inline-flex;
+}

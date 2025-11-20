@@ -1,0 +1,75 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+<li role="treeitem"
+	id="@ElementId"
+	aria-selected="@($"{Model.IsSelected}".ToLowerInvariant())"
+	aria-expanded="@(Model.HasChildren ? $"{Model.IsExpanded}".ToLowerInvariant() : false)"
+	aria-disabled="@($"{Model.IsDisabled}".ToLowerInvariant())"
+	aria-label="@Model.Name">
+	<div @ref=TreeViewNodeElement
+		 @onfocusin="HandleFocusIn"
+		 @onfocusout="HandleFocusOut"
+		 @onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(HandleClick)" @onclick:stopPropagation
+		 @oncontextmenu="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(HandleContextMenu)" @oncontextmenu:preventDefault @oncontextmenu:stopPropagation
+		 @onkeydown="EventUtil.AsNonRenderingEventHandler<KeyboardEventArgs>(HandleKeyDown)" @onkeydown:preventDefault
+		 id="@TreeViewNodeElementId"
+		 tabindex="@tabIndex"
+		 class="@TreeViewNodeClassList"
+		 aria-disabled="@(Model.IsDisabled ? "true" : false)">
+		<div class="node-content">
+			@if (@Model.HasChildren) {
+				<div @onclick="@EventUtil.AsNonRenderingEventHandler(ToggleNode)" @onclick:stopPropagation
+					 class="expando expandable"
+					 title="">
+					@if (Model.IsExpanded) {
+						<i class="bi bi-chevron-down" aria-hidden="true"></i>
+					} else {
+						<i class="bi bi-chevron-right" aria-hidden="true"></i>
+					}
+				</div>
+			} else {
+				<div class="expando empty" title=""></div>
+			}
+
+			<div class="hstack">
+				@if (this.State.ShowIcons) {
+					@if (HasItemIconImageUrl) {
+						<img src="@ResolvedIconImageUrl" class="node-icon-img" alt="@Model.Name icon">
+					} else {
+						<i class="node-icon @ResolvedIconCss @ResolvedIconColorCss" aria-hidden="true"></i>
+					}
+				}
+				<div class="node-name ms-1" title="@(Model.Description)">
+					@Model.Name
+				</div>
+			</div>
+
+			@if (ShowDisplayCount) {
+				<div class="ms-auto me-1">
+					<div class="node-badge @ResolvedBadgeClassList" title="count...">@DisplayedCount</div>
+				</div>
+			}
+		</div>
+	</div>
+	@if (this.ParentTreeView.NodeContextMenu is not null) {
+		<Menu @ref=MenuRef
+			  Trigger="@TreeViewNodeElementId"
+			  OnMenuItemSelected="@HandleContextMenuItemSelected">
+			@this.ParentTreeView.NodeContextMenu(this.Model)
+		</Menu>
+	}
+	@if (Model.HasChildren) {
+		<ul class="@TreeViewGroupClassList" role="group">
+			@foreach (var childModel in Model.Children) {
+				if (childModel.IsHeaderNode) {
+					if (ShowNodeHeaders) {
+						<TreeViewHeaderNode @key=childModel.NodeId Text="@childModel.Name" ShowDivider="@childModel.ShowHeaderNodeDivider" />
+					}
+				} else {
+					<TreeViewNode @key=childModel.NodeId Model="childModel" ParentNode="this" />
+				}
+			}
+		</ul>
+	}
+</li>

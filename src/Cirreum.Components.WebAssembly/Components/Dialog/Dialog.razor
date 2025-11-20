@@ -1,0 +1,69 @@
+@namespace Cirreum.Components
+
+<div id="@ContainerId"
+	 class="@DialogContainerClass"
+	 tabindex="-1"
+	 @onkeydown="HandleContainerKeyDown" @onkeydown:stopPropagation="@onEscapeStopPropagation">
+
+	@if (IsModal is true) {
+		<div id="@OverlayId"
+			 class="@OverlayClass"
+			 @onclick="EventUtil.AsNonRenderingEventHandler(HandleBackgroundClick)" @onclick:stopPropagation>
+		</div>
+	}
+
+	<FocusTrap IsActive="usingFocusTrap" FocusType="@DefaultFocus">
+		@CssAnimationStyle
+		<div @ref="dialogInstanceElementRef"
+			 id="@Id"
+			 class="@DialogClass"
+			 style="@DialogStyle"
+			 role="dialog"
+			 tabindex="-1"
+			 aria-modal="@AriaIsModal"
+			 aria-labelledby="@HeaderId"
+			 aria-describedby="@ContentId">
+			@if (HideHeader is false) {
+				<div id="@HeaderId" class="dialog-header">
+					@if (TitleOrFragment.IsString) {
+						<h5 class="dialog-title">
+							@if (TitleIcon.HasValue()) {
+								<i class="@TitleIcon" aria-hidden="true"></i>
+							}
+							@TitleOrFragment.ToString()
+						</h5>
+					} else {
+						@TitleOrFragment.ToRenderFragment()
+					}
+					@if (HideCloseButton is false) {
+						<button type="button"
+								class="btn-close"
+								aria-label="close"
+								@onclick="EventUtil.AsNonRenderingEventHandler(CancelAsync)" @onclick:stopPropagation
+								@attributes="@_closeBtnAttributes" />
+					}
+				</div>
+				<div id="@ContentId" class="dialog-content">
+					<CascadingValue Value="this" IsFixed=true>
+						@if (@DialogContent is not null) {
+							@DialogContent
+						} else {
+							@ChildContent
+						}
+					</CascadingValue>
+				</div>
+			} else {
+				<div id="@ContentId" class="dialog-content-only">
+					<CascadingValue Value="this" IsFixed=true>
+						@if (@DialogContent is not null) {
+							@DialogContent
+						} else {
+							@ChildContent
+						}
+					</CascadingValue>
+				</div>
+			}
+		</div>
+	</FocusTrap>
+
+</div>

@@ -1,0 +1,59 @@
+@namespace Cirreum.Components
+
+<li role="presentation">
+	<span class="@CssClass">@Text@ChildContent</span>
+</li>
+
+@code {
+	/// <summary>
+	/// Represents a non-interactive text item within a menu structure.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This component renders as an <c>&lt;li&gt;</c> element containing a <c>&lt;span&gt;</c>.
+	/// It's typically used to display static text or custom content within a menu or dropdown list,
+	/// without providing clickable functionality.
+	/// </para>
+	/// <para>
+	/// If both <see cref="Text"/> and <see cref="ChildContent"/> are provided,
+	/// they will be concatenated in that order within the span element.
+	/// </para>
+	/// </remarks>
+	/// <example>
+	/// Simple usage with text:
+	/// <code>
+	/// <MenuText Text="Status: Online" />
+	/// </code>
+	///
+	/// Usage with custom content and CSS class:
+	/// <code>
+	/// <MenuText CssClass="custom-menu-text">
+	///     <em>Custom formatted text</em>
+	/// </MenuText>
+	/// </code>
+	/// </example>
+	[Parameter]
+	public string? Text { get; set; }
+
+	/// <summary>
+	/// Gets or sets the child content to be rendered within the span element.
+	/// </summary>
+	/// <remarks>
+	/// Use this parameter to provide custom markup or components within the menu text item.
+	/// If both <see cref="Text"/> and <see cref="ChildContent"/> are provided,
+	/// they will be concatenated in that order within the span element.
+	/// </remarks>
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	/// <summary>
+	/// Gets or sets the CSS class for the span element.
+	/// </summary>
+	/// <remarks>
+	/// This allows for custom styling of the menu text item.
+	/// If not set, it defaults to "dropdown-item-text", which is typically used
+	/// in Bootstrap-styled dropdown menus for non-interactive text items.
+	/// </remarks>
+	[Parameter]
+	public string CssClass { get; set; } = "dropdown-item-text";
+}

@@ -1,0 +1,26 @@
+@namespace Cirreum.Components
+
+<div class="counterbadge-container">
+	@ChildContent
+
+	@if (Dot)
+	{
+		<div class="@ClassValue" style="@StyleValue" dot-only></div>
+	}
+	else
+	{
+		if (BadgeTemplate is not null)
+		{
+			<div class="@ClassValue" style="@StyleValue" title="@Count">@BadgeTemplate(Count)</div>
+		}
+		else if (ShowWhen.Invoke(Count))
+		{
+			string? text = Count.ToString();
+			if (Count > Max)
+			{
+				text = $@"{Max}{(ShowOverflow ? "+" : "")}";
+			}
+			<div class="@ClassValue" style="@StyleValue" title="@Count">@text</div>
+		}
+	}
+</div>

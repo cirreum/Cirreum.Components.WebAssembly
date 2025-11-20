@@ -1,0 +1,31 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+@using Microsoft.AspNetCore.Components.Forms;
+
+<div class="@ClassValue"
+	 style="@StyleValue"
+	 drop-files="@DropOver"
+	 disabled="@Disabled"
+	 @ondragenter="@(e => DropOver = true)"
+	 @ondragenter:stopPropagation
+	 @ondragover="@(e => DropOver = true)"
+	 @ondragover:stopPropagation
+	 @ondragleave="@(e => DropOver = false)"
+	 @ondragleave:stopPropagation
+	 @ondragend="@(e => DropOver = false)">
+
+	<div class="inputfile-content" style="z-index: @(DropOver ? null : 999)">
+		@ChildContent
+	</div>
+
+	<div style="grid-column: 1; grid-row: 1; @(DropOver ? $"z-index: {990}" : null)">
+		<InputFile OnChange="OnFileSelectedChanged"
+				   @oncancel="OnFileSelectionCanceled"
+				   id="@Id"
+				   multiple=@Multiple
+				   accept="@Accept"
+				   disabled="@Disabled" />
+	</div>
+
+</div>

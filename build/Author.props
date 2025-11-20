@@ -1,0 +1,11 @@
+<Project>
+
+	<PropertyGroup Label="Author Information">
+
+		<Authors>Cirreum Contributors</Authors>
+		<Company>Cirreum</Company>
+		<Copyright>Copyright © Cirreum Contributors. All rights reserved.</Copyright>
+
+	</PropertyGroup>
+
+</Project>

@@ -1,0 +1,62 @@
+@use "sass:map";
+
+$lifts: ( 
+  xs: (
+    distance: 2px, 
+    shadow: 0 4px 8px rgba(0,0,0,0.1),
+    dark-shadow: 0 4px 8px rgba(0,0,0,0.2),
+    dark-border: 0 0 0 1px rgba(255,255,255,0.05)
+  ), 
+  sm: (
+    distance: 4px, 
+    shadow: 0 8px 16px rgba(0,0,0,0.10),
+    dark-shadow: 0 8px 16px rgba(0,0,0,0.25),
+    dark-border: 0 0 0 1px rgba(255,255,255,0.07)
+  ), 
+  md: (
+    distance: 8px, 
+    shadow: 0 12px 24px rgba(0,0,0,0.15),
+    dark-shadow: 0 12px 24px rgba(0,0,0,0.3),
+    dark-border: 0 0 0 1px rgba(255,255,255,0.08)
+  ), 
+  lg: (
+    distance: 12px, 
+    shadow: 0 16px 32px rgba(0,0,0,0.20),
+    dark-shadow: 0 16px 32px rgba(0,0,0,0.4),
+    dark-border: 0 0 0 1px rgba(255,255,255,0.1)
+  )
+);
+
+.lift {
+  --lift-distance: -#{map.get(map.get($lifts, 'md'), 'distance')};
+  --lift-shadow: #{map.get(map.get($lifts, 'md'), 'shadow')};
+  --lift-dark-shadow: #{map.get(map.get($lifts, 'md'), 'dark-shadow')};
+  --lift-dark-border: #{map.get(map.get($lifts, 'md'), 'dark-border')};
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+@each $size, $props in $lifts {
+  @if $size != 'md' {
+    .lift-#{$size} {
+      --lift-distance: -#{map.get($props, 'distance')};
+      --lift-shadow: #{map.get($props, 'shadow')};
+      --lift-dark-shadow: #{map.get($props, 'dark-shadow')};
+      --lift-dark-border: #{map.get($props, 'dark-border')};
+    }
+  }
+}
+
+.lift:hover {
+  transform: translateY(var(--lift-distance));
+  box-shadow: var(--lift-shadow);
+}
+
+[data-bs-theme=dark] .lift:hover {
+  box-shadow: var(--lift-dark-border), var(--lift-dark-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  :not([data-bs-theme=light]) .lift:hover:not([data-bs-theme=light], *) {
+    box-shadow: var(--lift-dark-border), var(--lift-dark-shadow);
+  }
+}

@@ -1,0 +1,341 @@
+$treeview-spacer-y: 1rem !default;
+$treeview-spacer-x: 1rem !default;
+$treeview-border-width: var(--bs-border-width) !default;
+$treeview-border-style: var(--bs-border-style) !default;
+$treeview-border-color: var(--bs-border-color) !default;
+$treeview-border-radius: var(--bs-border-radius) !default;
+$treeview-inner-border-radius: subtract($treeview-border-radius, $treeview-border-width) !default;
+$treeview-cap-padding-y: $treeview-spacer-y * 0.25 !default;
+$treeview-cap-padding-x: $treeview-spacer-x * 0.5 !default;
+$treeview-cap-bg: rgba(var(--bs-body-color-rgb), .03) !default;
+$treeview-cap-color: null !default;
+
+.treeview-wrapper {
+	--bs-treeview-width: 100%;
+	--bs-treeview-height: 100%;
+	--bs-treeview-border-width: #{$treeview-border-width};
+	--bs-treeview-border-style: #{$treeview-border-style};
+	--bs-treeview-border-color: #{$treeview-border-color};
+	--bs-treeview-border-radius: #{$treeview-border-radius};
+	--bs-treeview-boxshadow: none;
+	--bs-treeview-inner-border-radius: #{$treeview-inner-border-radius};
+	--bs-treeview-cap-padding-y: #{$treeview-cap-padding-y};
+	--bs-treeview-cap-padding-x: #{$treeview-cap-padding-x};
+	--bs-treeview-cap-bg: #{$treeview-cap-bg};
+	--bs-treeview-cap-color: #{$treeview-cap-color};
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	min-height: 0;
+	height: var(--bs-treeview-height);
+	width: var(--bs-treeview-width);
+	border-radius: var(--bs-treeview-border-radius);
+	border: var(--bs-treeview-border-width) var(--bs-treeview-border-style) var(--bs-treeview-border-color);
+	box-shadow: var(--bs-treeview-boxshadow);
+}
+
+.treeview {
+	--bs-treeview-node-padding: 4px 0px;
+	--bs-treeview-node-color: var(--bs-secondary-color);
+	--bs-treeview-node-active-color: var(--bs-emphasis-color);
+	--bs-treeview-node-active-bg: rgba(var(--bs-emphasis-color-rgb),0.1);
+	--bs-treeview-node-active-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+	--bs-treeview-node-hover-color: inherit;
+	--bs-treeview-node-hover-bg: rgba(var(--bs-emphasis-color-rgb),0.05);
+	--bs-treeview-node-hover-shadow: inset 2px 0 0 var(--bs-primary-text-emphasis);
+	--bs-treeview-node-toggler-color: var(--bs-secondary-text-emphasis);
+	--bs-treeview-node-toggler-expanded-color: var(--bs-body-color);
+	--bs-treeview-node-toggler-hover-color: var(--bs-secondary);
+	--bs-treeview-node-toggler-expanded-hover-color: rgba(var(--bs-emphasis-color-rgb),0.4);
+	--bs-treeview-node-toggler-expanded-hover-shadow: 0 0 1px var(--bs-body-bg);
+	--bs-treeview-node-icon-color: inherit;
+	--bs-treeview-node-icon-margin: auto 2px;
+	--bs-treeview-node-badge-padding-x: 0.65em;
+	--bs-treeview-node-badge-padding-y: 0.35em;
+	--bs-treeview-node-badge-font-size: 0.6em;
+	--bs-treeview-node-badge-font-weight: 700;
+	--bs-treeview-node-badge-color: var(--bs-body-color);
+	--bs-treeview-node-badge-bg: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity, 1));
+	--bs-treeview-node-badge-radius: var(--bs-border-radius-pill);
+	--bs-treeview-node-disabled-color: var(--bs-tertiary-color);
+	display: inline-block;
+	flex-grow: 1;
+	min-height: 0;
+	min-width: 100%;
+	width: 100%;
+	height: 100%;
+	padding: 0.5rem 0;
+	overflow: auto;
+	user-select: none;
+
+	::deep {
+		.treeview-node-container {
+			&:focus-visible {
+				outline: none;
+			}
+
+			.treeview-node {
+				color: var(--bs-treeview-node-color);
+				cursor: pointer;
+				display: block;
+				width: 100%;
+				text-decoration: none;
+				padding: 1px 0;
+				user-select: none;
+
+				&:hover {
+					-webkit-box-shadow: var(--bs-treeview-node-hover-shadow);
+					box-shadow: var(--bs-treeview-node-hover-shadow);
+					background-color: var(--bs-treeview-node-hover-bg);
+					color: var(--bs-treeview-node-hover-color);
+					z-index: 1;
+				}
+
+				&:focus-visible {
+					outline: none;
+					-webkit-box-shadow: var(--bs-treeview-node-active-shadow);
+					box-shadow: var(--bs-treeview-node-active-shadow);
+					background-color: var(--bs-treeview-node-hover-bg);
+					color: var(--bs-treeview-node-hover-color);
+					z-index: 1;
+				}
+
+				&.disabled,
+				&:disabled {
+					color: var(--bs-treeview-node-disabled-color);
+					pointer-events: none;
+					background-color: transparent;
+					// Remove CSS gradients if they're enabled
+					background-image: none;
+				}
+
+				&.node-active {
+					background-color: var(--bs-treeview-node-active-bg);
+					color: var(--bs-treeview-node-active-color);
+				}
+
+				.node-content {
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					margin: var(--bs-treeview-node-padding);
+					user-select: none;
+
+					&:focus-visible {
+						outline: none;
+					}
+				}
+
+				.expando {
+					height: 100%;
+					color: var(--bs-treeview-node-toggler-color);
+					user-select: none;
+					padding-right: 0.25rem;
+					display: flex;
+					flex-wrap: wrap;
+					align-content: space-around;
+
+					&::before {
+						font-size: 16px;
+						content: counters(section, '') '';
+						opacity: 0;
+						float: left;
+					}
+
+					&:hover {
+						color: var(--bs-treeview-node-toggler-hover-color);
+						text-shadow: var(--bs-treeview-node-toggler-expanded-hover-shadow);
+					}
+
+					&.expandable {
+						cursor: default;
+					}
+
+					&.empty {
+						cursor: pointer;
+
+						&::after {
+							font-size: 16px;
+							content: '';
+							width: 16px;
+							opacity: 0;
+						}
+					}
+				}
+
+				&.node-expanded {
+					.expando {
+						color: var(--bs-treeview-node-toggler-expanded-color);
+
+						&:hover {
+							color: var(--bs-treeview-node-toggler-expanded-hover-color);
+							text-shadow: var(--bs-treeview-node-toggler-expanded-hover-shadow);
+						}
+					}
+				}
+
+				.node-icon {
+					color: var(--bs-treeview-node-icon-color);
+					margin: var(--bs-treeview-node-icon-margin);
+				}
+
+				.node-icon-img {
+					width: 1rem;
+					height: 1rem;
+					margin: var(--bs-treeview-node-icon-margin);
+				}
+
+				.node-name {
+					color: currentColor;
+					white-space: nowrap;
+					user-select: none;
+				}
+
+				.node-badge {
+					line-height: 1;
+					text-align: center;
+					white-space: nowrap;
+					padding: var(--bs-treeview-node-badge-padding-y) var(--bs-treeview-node-badge-padding-x);
+					font-size: var(--bs-treeview-node-badge-font-size);
+					font-weight: var(--bs-treeview-node-badge-font-weight);
+					color: var(--bs-treeview-node-badge-color);
+					background-color: var(--bs-treeview-node-badge-bg);
+					border-radius: var(--bs-treeview-node-badge-radius);
+					user-select: none;
+				}
+			}
+		}
+	}
+}
+
+.treeview-header {
+	padding: var(--bs-treeview-cap-padding-y) var(--bs-treeview-cap-padding-x);
+	margin-bottom: 0;
+	color: var(--bs-treeview-cap-color);
+	background-color: var(--bs-treeview-cap-bg);
+	border-bottom: var(--bs-treeview-border-width) solid var(--bs-treeview-border-color);
+
+	&:first-child {
+		border-radius: var(--bs-treeview-inner-border-radius) var(--bs-treeview-inner-border-radius) 0 0;
+	}
+}
+
+.treeview-footer {
+	padding: var(--bs-treeview-cap-padding-y) var(--bs-treeview-cap-padding-x);
+	color: var(--bs-treeview-cap-color);
+	background-color: var(--bs-treeview-cap-bg);
+	border-top: var(--bs-treeview-border-width) solid var(--bs-treeview-border-color);
+
+	&:last-child {
+		border-radius: 0 0 var(--bs-treeview-inner-border-radius) var(--bs-treeview-inner-border-radius);
+	}
+}
+
+.treeview ::deep ol:not(.dropdown-menu),
+.treeview ::deep ul:not(.dropdown-menu),
+.treeview ::deep li:not(.dropdown-menu) {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.treeview ::deep ol:not(.dropdown-menu),
+.treeview ::deep ul:not(.dropdown-menu) {
+	li {
+		counter-reset: section;
+		counter-increment: section;
+	}
+}
+
+.treeview ::deep li > ul,
+.treeview ::deep li > ol {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.treeview ::deep li > ul.expanded,
+.treeview ::deep li > ol.expanded {
+	transition: max-height 1s ease-in-out;
+	max-height: 1000px;
+}
+
+
+
+$glow-color: rgba(58, 144, 255, 0.5);
+$glow-color-intense: rgba(58, 144, 255, 0.8);
+$highlight-color: rgba(58, 144, 255, 0.2);
+$shake-distance: 5px;
+$animation-duration: 1s;
+$shake-duration: 0.3s; // Reduced from 0.5s to 0.3s
+
+// Combined styles
+.treeview ::deep .treeview-found-node {
+	animation: glow $animation-duration ease-in-out, shake $shake-duration ease-in-out, pulse $animation-duration ease-in-out, highlight $animation-duration ease-in-out;
+}
+
+// Optional: Separate classes for individual effects
+.treeview ::deep .treeview-found-node {
+	&--glow {
+		animation: glow $animation-duration ease-in-out;
+	}
+
+	&--shake {
+		animation: shake $shake-duration ease-in-out;
+	}
+
+	&--pulse {
+		animation: pulse $animation-duration ease-in-out;
+	}
+
+	&--highlight {
+		animation: highlight $animation-duration ease-in-out;
+	}
+}
+
+// Keyframes
+@keyframes glow {
+	0%, 100% {
+		box-shadow: 0 0 5px $glow-color;
+	}
+
+	50% {
+		box-shadow: 0 0 20px $glow-color-intense;
+	}
+}
+
+@keyframes shake {
+	0%, 100% {
+		transform: translateX(0);
+	}
+
+	20%, 60% {
+		transform: translateX(-$shake-distance);
+	}
+
+	40%, 80% {
+		transform: translateX($shake-distance);
+	}
+}
+
+@keyframes pulse {
+	0%, 100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.6;
+	}
+}
+
+@keyframes highlight {
+	0%, 100% {
+		background-color: transparent;
+	}
+
+	50% {
+		background-color: $highlight-color;
+	}
+}

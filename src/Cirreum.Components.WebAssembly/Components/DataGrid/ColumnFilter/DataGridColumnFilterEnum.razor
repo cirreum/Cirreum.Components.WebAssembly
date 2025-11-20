@@ -1,0 +1,18 @@
+﻿@namespace Cirreum.Components
+@typeparam TData
+@inherits DataGridColumnFilterBase<TData>
+
+@if (Column.FilterControl == this) {
+	<select class="form-select form-select-sm" value="@Operation.Name" @onchange="OnOperationChanged" title="chose the filter operation">
+		@foreach (var option in Options) {
+			<option value="@option.Id">@option.Name</option>
+		}
+	</select>
+	@if (Operation.NumberOfValues > 0) {
+		<select @ref="initialFocusElement" class="form-select form-select-sm mt-1" value="@FilterValue" @onchange="OnItemChanged" title="chose the item">
+			@foreach (var option in Items) {
+				<option value="@option">@option.GetDescription()</option>
+			}
+		</select>
+	}
+}

@@ -1,0 +1,40 @@
+﻿@namespace Cirreum.Components
+<CascadingValue Value=this Name="Nav" IsFixed="true">
+	@if (UseOrderedList) {
+		<ol class="@ResolvedCss" style="@Style">
+			@ChildContent
+		</ol>
+	} else {
+		<ul class="@ResolvedCss" style="@Style">
+			@ChildContent
+		</ul>
+	}
+</CascadingValue>
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	/// <summary>
+	/// Gets or sets the css class list for the ul/ol container. default: nav
+	/// </summary>
+	[Parameter]
+	public string Css { get; set; } = "nav";
+	private string ResolvedCss => CssBuilder
+		.Empty()
+			.AddClassIfNotEmpty(this.Css)
+		.Build();
+
+	/// <summary>
+	/// Gets or sets the style for the ul/ol container. default: empty string
+	/// </summary>
+	[Parameter]
+	public string? Style { get; set; }
+
+	/// <summary>
+	/// Gets or sets if the list should be ordered (&lt;ol /&gt;). default: <c>false</c>
+	/// </summary>
+	[Parameter]
+	public bool UseOrderedList { get; set; }
+
+}

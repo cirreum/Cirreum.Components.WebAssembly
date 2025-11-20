@@ -1,0 +1,7 @@
+div {
+  outline: none;
+  user-select: none;
+}
+div.active.focused {
+  outline: solid 1px;
+}

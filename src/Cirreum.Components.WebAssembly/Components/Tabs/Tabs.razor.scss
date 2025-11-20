@@ -1,0 +1,334 @@
+// Variables
+$tab-padding-x: var(--bs-card-cap-padding-x);
+$tab-padding-y: var(--bs-card-cap-padding-y);
+$tab-border-width: var(--bs-card-border-width);
+$tab-border-radius: var(--bs-card-border-radius);
+$tab-color: var(--bs-card-cap-color);
+$tab-bg: var(--bs-card-cap-bg);
+$tab-border-color: var(--bs-card-border-color);
+
+// Mixins
+
+@mixin nav-overflow() {
+	&.position-right,
+	&.position-left {
+		.nav-scroll-container {
+			height: 100%;
+		}
+	}
+
+	&.position-top,
+	&.position-bottom {
+		.nav-scroll-container {
+			width: 100%;
+		}
+	}
+
+	&.overflow-mode-multiline,
+	&.overflow-mode-scrollable,
+	&.overflow-mode-popup {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+
+		.nav-scroll-container {
+			overflow: hidden;
+		}
+	}
+
+	&.overflow-mode-multiline {
+		.nav-tabs,
+		.nav-pills,
+		.nav-underline {
+			flex-wrap: wrap;
+		}
+	}
+
+	&.overflow-mode-scrollable,
+	&.overflow-mode-popup {
+		.nav-tabs,
+		.nav-pills,
+		.nav-underline {
+			flex-wrap: nowrap;
+		}
+	}
+}
+
+@mixin nav-position($position) {
+	@if $position == top {
+		padding: $tab-padding-y $tab-padding-x 0 $tab-padding-x;
+		border-bottom: $tab-border-width solid $tab-border-color;
+		border-radius: $tab-border-radius $tab-border-radius 0 0;
+	}
+	@else if $position == right {
+		padding: $tab-padding-y $tab-padding-y $tab-padding-y 0;
+		border-left: $tab-border-width solid $tab-border-color;
+		border-radius: 0 $tab-border-radius $tab-border-radius 0;
+	}
+	@else if $position == bottom {
+		padding: 0 $tab-padding-x $tab-padding-y $tab-padding-x;
+		border-top: $tab-border-width solid $tab-border-color;
+		border-radius: 0 0 $tab-border-radius $tab-border-radius;
+	}
+	@else if $position == left {
+		padding: $tab-padding-y 0 $tab-padding-y $tab-padding-y;
+		border-right: $tab-border-width solid $tab-border-color;
+		border-radius: $tab-border-radius 0 0 $tab-border-radius;
+	}
+}
+
+@mixin nav-scroll-container($position) {
+	@if $position == top {
+		.nav-scroll-container {
+			&:has(.nav-tabs) {
+				margin-bottom: -1px;
+			}
+		}
+	}
+	@else if $position == right {
+		.nav-scroll-container {
+			&:has(.nav-tabs) {
+				margin-left: -1px;
+				margin-bottom: 1px;
+				margin-top: 1px;
+			}
+
+			&:has(.nav-pills) {
+				margin-bottom: 1px;
+				margin-top: 1px;
+			}
+		}
+	}
+	@else if $position == bottom {
+		.nav-scroll-container {
+			&:has(.nav-tabs) {
+				margin-top: -1px;
+			}
+		}
+	}
+	@else if $position == left {
+		.nav-scroll-container {
+			&:has(.nav-tabs) {
+				margin-right: -1px;
+				margin-bottom: 1px;
+				margin-top: 1px;
+			}
+
+			&:has(.nav-pills) {
+				margin-bottom: 1px;
+				margin-top: 1px;
+			}
+		}
+	}
+}
+
+@mixin nav-tabs-position($position) {
+	@if $position == right {
+		align-items: flex-start;
+		--bs-nav-link-padding-x: 1rem;
+	}
+	@else if $position == left {
+		align-items: flex-end;
+		--bs-nav-link-padding-x: 1rem;
+	}
+}
+
+@mixin nav-tabs-links($position) {
+	@if $position == top {
+		border-radius: $tab-border-radius $tab-border-radius 0 0;
+
+		&.active {
+			border-bottom-color: var(--bs-body-bg);
+		}
+	}
+	@else if $position == right {
+		border-radius: 0 $tab-border-radius $tab-border-radius 0;
+
+		&.active {
+			border-left-color: var(--bs-body-bg);
+		}
+	}
+	@else if $position == bottom {
+		border-radius: 0 0 $tab-border-radius $tab-border-radius;
+
+		&.active {
+			border-top-color: var(--bs-body-bg);
+		}
+	}
+	@else if $position == left {
+		border-radius: $tab-border-radius 0 0 $tab-border-radius;
+
+		&.active {
+			border-right-color: var(--bs-body-bg);
+		}
+	}
+}
+
+@mixin nav-pills-position($position) {
+	@if $position == top {
+		padding-bottom: $tab-padding-y;
+	}
+	@else if $position == right {
+		padding-left: $tab-padding-y;
+		--bs-nav-link-padding-x: 1rem;
+	}
+	@else if $position == bottom {
+		padding-top: $tab-padding-y;
+	}
+	@else if $position == left {
+		padding-right: $tab-padding-y;
+		--bs-nav-link-padding-x: 1rem;
+	}
+}
+
+@mixin nav-underlines-position($position) {
+	@if $position == top {
+		margin-bottom: $tab-padding-y;
+	}
+}
+
+@mixin nav-underlines-links($position) {
+	@if $position == top {
+		text-align: center;
+
+		&::before {
+			// this ensures the width is the same width
+			// when active based on the font-weight
+			content: attr(aria-label);
+			display: block;
+			font-weight: 700;
+			height: 0;
+			overflow: hidden;
+			visibility: hidden;
+			width: 100%;
+			text-align: center;
+		}
+	}
+	@else if $position == right {
+		text-align: left;
+
+		&::after {
+			// this ensures the width is the same width
+			// when active based on the font-weight
+			content: attr(aria-label);
+			display: block;
+			font-weight: 700;
+			height: 0;
+			overflow: hidden;
+			visibility: hidden;
+			width: 100%;
+			text-align: left;
+		}
+	}
+	@else if $position == bottom {
+		text-align: center;
+
+		&::before {
+			// this ensures the width is the same width
+			// when active based on the font-weight
+			content: attr(aria-label);
+			display: block;
+			font-weight: 700;
+			height: 0;
+			overflow: hidden;
+			visibility: hidden;
+			width: 100%;
+			text-align: center;
+		}
+	}
+	@else if $position == left {
+		text-align: right;
+
+		&::before {
+			// this ensures the width is the same width
+			// when active based on the font-weight
+			content: attr(aria-label);
+			display: block;
+			font-weight: 700;
+			height: 0;
+			overflow: hidden;
+			visibility: hidden;
+			width: 100%;
+			text-align: right;
+		}
+	}
+}
+
+@mixin nav-fill-tabs-links($position) {
+	@if $position == right {
+		width: 100%;
+		text-align: start;
+	}
+	@else if $position == left {
+		width: 100%;
+		text-align: end;
+	}
+}
+
+
+// Styles
+.card {
+	--bs-card-bg: var(--bs-body-bg);
+}
+
+.tab-items {
+	// base styles
+	user-select: none;
+
+	::deep .nav-link {
+		&:focus-visible {
+			outline: 0;
+			box-shadow: inset 0 0 0 .25rem color-mix(in srgb, currentColor 25%, transparent);
+		}
+	}
+
+	.nav-tabs {
+		border: 0;
+		--bs-nav-tabs-link-active-border-color: #{$tab-border-color};
+	}
+
+	.nav-underline {
+		--bs-nav-link-padding-x: 1rem;
+	}
+
+	color: $tab-color;
+	background-color: $tab-bg;
+
+	@include nav-overflow();
+
+	@each $position in (top, right, bottom, left) {
+		&.position-#{$position} {
+			@include nav-scroll-container($position);
+			@include nav-position($position);
+
+			.nav-tabs {
+				@include nav-tabs-position($position);
+
+				::deep .nav-link {
+					@include nav-tabs-links($position);
+				}
+			}
+
+			.nav-pills {
+				@include nav-pills-position($position);
+			}
+
+			.nav-underline {
+				@include nav-underlines-position($position);
+
+				::deep .nav-link {
+					@include nav-underlines-links($position);
+				}
+			}
+
+			.nav-fill {
+				&.nav-tabs {
+					::deep > .nav-link,
+					::deep .nav-item {
+						@include nav-fill-tabs-links($position);
+					}
+				}
+			}
+		}
+	}
+}

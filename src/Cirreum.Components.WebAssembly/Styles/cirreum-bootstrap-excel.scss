@@ -1,0 +1,9 @@
+@import "bootstrap/mixins/banner";
+@include bsBanner("");
+/*!
+* cirreum-bootstrap-excel v1.0.1 - Excel Theme
+* Copyright 2025 Cirreum Contributers
+* Licensed under MIT
+*/
+@import "bootstrap/themes/theme-excel";
+@import "cirreum-bootstrap-base";

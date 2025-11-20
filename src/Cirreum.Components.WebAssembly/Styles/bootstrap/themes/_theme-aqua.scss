@@ -1,0 +1,44 @@
+// macOS Big Sur inspired
+@import '../functions.scss';
+
+$min-contrast-ratio: 4.5 !default;
+
+//
+// Light mode overrides
+//
+$primary: #007AFF !default; // iOS/macOS blue
+$success: #34C759 !default; // macOS green
+$warning: #FF9500 !default; // macOS orange
+$danger: #FF3B30 !default; // macOS red
+$secondary: #8E8E93 !default; // macOS gray
+
+
+// macOS Aqua/Big Sur theme - Dark mode overrides
+$primary-dark: #0A84FF !default; // macOS dark mode blue (brighter than light mode)
+$success-dark: #32D74B !default; // macOS dark green (more vibrant)
+$warning-dark: #FF9F0A !default; // macOS dark orange (slightly adjusted)
+$danger-dark: #FF453A !default; // macOS dark red (more vibrant)
+$secondary-dark: #98989D !default; // macOS dark gray (lighter for contrast)
+
+// Button colors
+$btn-primary-color-dark: #000000 !default; // Black text on bright blue
+$btn-secondary-color-dark: #FFFFFF !default;
+
+// Link colors
+$link-color-dark: #0A84FF !default; // Same as primary-dark
+$link-hover-color-dark: #409CFF !default; // Lighter blue on hover
+
+// Background subtles (macOS uses very subtle backgrounds)
+$primary-bg-subtle-dark: rgba(10, 132, 255, 0.15) !default;
+$secondary-bg-subtle-dark: rgba(152, 152, 157, 0.15) !default;
+$success-bg-subtle-dark: rgba(50, 215, 75, 0.15) !default;
+$info-bg-subtle-dark: rgba(100, 210, 255, 0.15) !default;
+$warning-bg-subtle-dark: rgba(255, 159, 10, 0.15) !default;
+$danger-bg-subtle-dark: rgba(255, 69, 58, 0.15) !default;
+
+// Text colors
+$body-color-dark: #FFFFFF !default;
+$body-secondary-color-dark: #98989D !default;
+
+// Border colors (macOS uses subtle separators)
+$border-color-dark: rgba(255, 255, 255, 0.1) !default;

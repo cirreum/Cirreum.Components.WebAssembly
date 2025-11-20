@@ -1,0 +1,42 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@implements IMenuItem
+@inject IJSAppModule JSApp
+
+<li @onmouseenter="HandleMouseEnter"
+	@onmouseleave="HandleMouseLeave"
+	@onkeydown="HandleFocusKeyDown" @onkeydown:preventDefault @onkeydown:stopPropagation
+	role="presentation"
+	id="@LIElementId"
+	class="menu-item"
+	tabindex="@tabIndex">
+	<div @ref="menuItemElementRef"
+		 @onkeydown="HandleKeyDown" @onkeydown:preventDefault @onkeydown:stopPropagation
+		 @onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(HandleClick)" @onclick:stopPropagation
+		 role="menuitem"
+		 id="@ElementId"
+		 class="@ElementClassList"
+		 tabindex="@tabIndex"
+		 disabled="@Disabled"
+		 aria-disabled="@AriaDisabled"
+		 aria-expanded="@AriaExpanded"
+		 aria-haspopup="@AriaHasPopup"
+		 aria-controls="@submenuElementId">
+		@if (ChildContent is not null) {
+			@ChildContent
+		} else {
+			@Label
+		}
+	</div>
+	@if (HasSubMenu) {
+		<ul @oncontextmenu:preventDefault
+			role="menu"
+			id="@submenuElementId"
+			class="@MenuClassList"
+			aria-labelledby="@ElementId">
+			<CascadingValue Value="this" IsFixed="true">
+				@MenuItems
+			</CascadingValue>
+		</ul>
+	}
+</li>

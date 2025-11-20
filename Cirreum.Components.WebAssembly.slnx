@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/build/">
+    <File Path="build/Author.props" />
+    <File Path="build/Common.props" />
+    <File Path="build/icon.png" />
+    <File Path="build/Icon.props" />
+    <File Path="build/PackageInfo.props" />
+    <File Path="build/SourceLink.props" />
+    <File Path="build/Versioning.props" />
+  </Folder>
+  <Folder Name="/publish/">
+    <File Path=".github/workflows/publish.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/Cirreum.Components.WebAssembly/Cirreum.Components.WebAssembly.csproj" />
+  </Folder>
+  <Folder Name="/_solution items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="global.json" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>

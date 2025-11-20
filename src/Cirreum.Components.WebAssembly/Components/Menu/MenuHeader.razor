@@ -1,0 +1,51 @@
+@namespace Cirreum.Components
+<li role="presentation"><h6 class="@CssClass">@Text@ChildContent</h6></li>
+@code {
+
+	/// <summary>
+	/// Represents a header item within a menu or dropdown structure.
+	/// </summary>
+	/// <remarks>
+	/// This component renders as an <c>&lt;li&gt;</c> element with a nested <c>&lt;h6&gt;</c>
+	/// having the "dropdown-header" class. It's typically used to separate and categorize
+	/// groups of items in a menu or dropdown list.
+	/// </remarks>
+	/// <example>
+	/// Simple usage with text:
+	/// <code>
+	/// <MenuHeader Text="Category 1" />
+	/// </code>
+	///
+	/// Usage with custom content:
+	/// <code>
+	/// <MenuHeader>
+	///     <span class="text-primary">Custom Header</span>
+	/// </MenuHeader>
+	/// </code>
+	/// </example>
+	[Parameter]
+	public string? Text { get; set; }
+
+	/// <summary>
+	/// Gets or sets the child content to be rendered within the header.
+	/// </summary>
+	/// <remarks>
+	/// Use this parameter to provide custom markup or components within the header.
+	/// If both <see cref="Text"/> and <see cref="ChildContent"/> are provided,
+	/// they will be concatenated in that order within the header.
+	/// </remarks>
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	/// <summary>
+	/// Gets or sets the CSS class for the <c>&lt;h6&gt;</c> element.
+	/// </summary>
+	/// <remarks>
+	/// This allows for custom styling of the menu header.
+	/// If not set, it defaults to "dropdown-header", which is typically used
+	/// in Bootstrap-styled dropdown menus for header items.
+	/// </remarks>
+	[Parameter]
+	public string CssClass { get; set; } = "dropdown-header";
+
+}

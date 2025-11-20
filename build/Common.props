@@ -1,0 +1,13 @@
+﻿<Project>
+
+	<PropertyGroup Label="Default Setup">
+		<TargetFramework>net10.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable Condition="$(Nullable) == ''">enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591;IDE0130</NoWarn>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+</Project>

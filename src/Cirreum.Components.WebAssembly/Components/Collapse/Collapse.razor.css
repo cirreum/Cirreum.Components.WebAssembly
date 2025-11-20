@@ -1,0 +1,23 @@
+.collapse-container {
+  overflow: hidden auto;
+  display: inline-block;
+}
+
+.collapse {
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+  max-height: 0;
+}
+
+.expand {
+  transition: max-height 1s ease-in-out;
+  max-height: 2000px;
+}
+
+.collapse-content {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.expanded .collapse-content {
+  opacity: 1;
+}

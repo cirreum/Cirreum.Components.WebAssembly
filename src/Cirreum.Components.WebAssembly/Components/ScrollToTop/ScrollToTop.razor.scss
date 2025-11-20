@@ -1,0 +1,61 @@
+$scroll-btn-size: 50px;
+$scroll-btn-bottom: 45px;
+$scroll-btn-right: 20px;
+$scroll-btn-font-size: 24px;
+$scroll-btn-z-index: 1000;
+$scroll-btn-transition-duration: 0.3s;
+
+.scroll-to-top {
+    position: fixed;
+    bottom: $scroll-btn-bottom;
+    right: $scroll-btn-right;
+    width: $scroll-btn-size;
+    height: $scroll-btn-size;
+    border-radius: 50%;
+    font-size: $scroll-btn-font-size;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $scroll-btn-transition-duration, visibility $scroll-btn-transition-duration, background-color 0.15s ease-in-out, transform 0.15s ease-in-out;
+    z-index: $scroll-btn-z-index;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // Bootstrap-like shadow
+    box-shadow: var(--bs-box-shadow);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--bs-box-shadow-sm);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: var(--bs-box-shadow-lg);
+    }
+
+    &:focus-visible {
+        outline: 0;
+    }
+
+    @media (max-width: 768px) {
+        // Apply btn-sm styling on mobile
+        // Bootstrap btn-sm dimensions
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        width: 40px;
+        height: 40px;
+        bottom: 45px;
+        // Ensure button stays visible even with horizontal scroll
+        // Use smaller right offset and add margin to keep it on screen
+        right: max(15px, calc(100vw - 100% + 15px));
+    }
+}

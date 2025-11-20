@@ -1,0 +1,49 @@
+@namespace Cirreum.Components
+@inherits ContextMenuBase
+
+<div class="dropdown">
+	<a @onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ClickHandler)" @onclick:stopPropagation
+	   @oncontextmenu="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(ToggleMenuAsync)" @oncontextmenu:preventDefault @oncontextmenu:stopPropagation
+	   href="@Href"
+	   target="@Target"
+	   role="button"
+	   id="@ElementId"
+	   class="@(AnchorCss.HasValue() ? AnchorCss : false)"
+	   aria-disabled="@AriaIsDisabled"
+	   aria-expanded="@AriaIsExpanded"
+	   aria-haspopup="menu">
+		@Content
+		@ContentTemplate
+	</a>
+</div>
+
+<Menu @ref=MenuRef
+	  ChildContent="@ChildContent"
+	  Trigger="@ElementId"
+	  OnMenuItemSelected="@OnItemSelected"
+	  OnMenuHidden="@OnMenuHidden"
+	  OnMenuHide="@OnMenuHide"
+	  OnMenuShow="@OnMenuShow"
+	  OnMenuShown="@OnMenuShown" />
+
+@code {
+
+	/// <summary>
+	/// The url to navigate to. Default: /
+	/// </summary>
+	[Parameter]
+	public string Href { get; set; } = "/";
+
+	/// <summary>
+	/// The target of the link. Default: _blank
+	/// </summary>
+	[Parameter]
+	public string Target { get; set; } = "_blank";
+
+	/// <summary>
+	/// Optional Css Classes for the Anchor (a) tag. Default: btn-link
+	/// </summary>
+	[Parameter]
+	public string AnchorCss { get; set; } = "btn-link";
+
+}

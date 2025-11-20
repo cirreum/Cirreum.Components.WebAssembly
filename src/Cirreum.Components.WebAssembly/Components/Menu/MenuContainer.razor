@@ -1,0 +1,82 @@
+@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+
+@inject IMenuService MenuService
+@inject IClickDetectorService ClickDetector
+
+@if (CurrentMenu is not null) {
+	@CurrentMenu.MenuTemplate
+}
+
+@code {
+
+	private volatile IMenuInternal? CurrentMenu;
+
+	private async Task ClickedOutsideAsync(string targetId) {
+		if (CurrentMenu is not null) {
+			await CurrentMenu.HideAsync(true);
+		}
+	}
+
+	private void ShowMenu(IMenuInternal menu, string? triggerElementId) {
+		if (menu.MenuTemplate is null) {
+			return;
+		}
+		if (CurrentMenu is not null) {
+			//
+			// A menu is already being shown, so we have to close it first
+			//
+			var oldMenu = CurrentMenu;
+			CurrentMenu = null;
+			ClickDetector.Unregister(oldMenu.MenuId);
+			_ = oldMenu.HideAsync(false);
+		}
+
+		//
+		// Normal opening of a menu
+		//
+		OpenNewMenu(menu, triggerElementId);
+	}
+	private void OpenNewMenu(IMenuInternal newMenu, string? triggerElementId) {
+		CurrentMenu = newMenu;
+		RunAfterRender(async () => {
+			if (CurrentMenu is not null) {
+				ClickDetector.Register(
+					CurrentMenu.MenuId,
+					ClickedOutsideAsync,
+					ignoreOutside: triggerElementId.HasValue() ? new string[] { triggerElementId } : []);
+				await CurrentMenu.OnOpenedAsync();
+			}
+		});
+		Update();
+	}
+	private void CloseMenu() {
+		if (CurrentMenu is not null) {
+			ClickDetector.Unregister(CurrentMenu.MenuId);
+			var oldMenu = CurrentMenu;
+			CurrentMenu = null;
+			RunAfterRender(async () => {
+				await oldMenu.OnClosedAsync();
+			});
+			Update();
+		}
+	}
+	private void RefreshMenu() {
+		this.Update();
+	}
+
+	protected override void OnInitialized() {
+		MenuService.OnShow += ShowMenu;
+		MenuService.OnClose += CloseMenu;
+		MenuService.OnRefresh += RefreshMenu;
+		base.OnInitialized();
+	}
+
+	protected override void Dispose(bool disposing) {
+		MenuService.OnShow -= ShowMenu;
+		MenuService.OnClose -= CloseMenu;
+		MenuService.OnRefresh -= RefreshMenu;
+		base.Dispose(disposing);
+	}
+
+}

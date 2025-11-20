@@ -1,0 +1,8 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JSApp
+
+<div id="@ElementId" class="focus-trap">
+	<div @ref=@firstItemRef class="d-fixed pe-none" aria-label="press tab key, to focus next element" tabindex="-1"></div>
+	@ChildContent
+</div>

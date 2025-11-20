@@ -1,0 +1,17 @@
+﻿@namespace Cirreum.Components
+@typeparam TData
+@inherits DataGridColumnFilterBase<TData>
+
+@if (Column.FilterControl == this) {
+	<select class="form-select form-select-sm" value="@Operation.Name" @onchange="OnOperationChanged" title="chose the filter operation">
+		@foreach (var option in Options) {
+			<option value="@option.Id">@option.Name</option>
+		}
+	</select>
+	@if (Operation.NumberOfValues > 0) {
+		<input @ref="initialFocusElement" @bind-value="@FilterValue" type="datetime-local" step="1" class="form-control form-control-sm mt-1" />
+	}
+	@if (Operation.NumberOfValues == 2) {
+		<input @bind-value="@FilterValue2" type="datetime-local" step="1" class="form-control form-control-sm mt-1" />
+	}
+}

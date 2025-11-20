@@ -1,0 +1,10 @@
+@namespace Cirreum.Components
+
+<DialogManager DefaultOptions="@DefaultOptions" />
+
+@code {
+
+	[Parameter] 
+	public DialogOptions DefaultOptions { get; set; } = DialogOptions.Default;
+
+}

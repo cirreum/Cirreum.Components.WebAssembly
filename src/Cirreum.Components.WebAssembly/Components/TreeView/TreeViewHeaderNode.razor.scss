@@ -1,0 +1,22 @@
+.treeview-header-node {
+	padding: 0.5rem 0.5rem 0.25rem 0.75rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary);
+	background-color: transparent;
+}
+
+li[role="presentation"] {
+	hr {
+		margin: 1.25rem 0.75rem;
+		border: 0;
+		border-top: 1px solid var(--bs-border-color);
+		opacity: 1;
+	}
+	// Remove bottom margin when hr is followed by text
+	&:has(span) hr {
+		margin-bottom: 0rem;
+	}
+}

@@ -1,0 +1,31 @@
+@namespace Cirreum.Components.Authentication
+
+@inject NavigationManager Navigation
+
+<button type="button" class="@Css" @onclick="Login" aria-label="Login">
+	<i class="bi bi-person-circle" aria-hidden="true"></i> Log in
+</button>
+
+@code {
+
+	/// <summary>
+	/// Default: nav-link
+	/// </summary>
+	[Parameter]
+	public string Css { get; set; } = "nav-link";
+
+	/// <summary>
+	/// The path to the login page. Default: authentication/login
+	/// </summary>
+	[Parameter]
+	public string LoginPath { get; set; } = "authentication/login";
+
+	void Login() {
+		InteractiveRequestOptions requestOptions = new() {
+				Interaction = InteractionType.SignIn,
+				ReturnUrl = Navigation.Uri,
+			};
+		Navigation.NavigateToLogin(LoginPath, requestOptions);
+	}
+
+}

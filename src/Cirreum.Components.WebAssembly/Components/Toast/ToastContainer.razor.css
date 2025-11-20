@@ -1,0 +1,69 @@
+.toast-container {
+  --bs-toast-spacing: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1090;
+  width: max-content;
+  max-width: 100%;
+  pointer-events: none;
+}
+.toast-container > ::deep :not(:last-child) {
+  margin-bottom: var(--bs-toast-spacing);
+}
+.toast-container.toast-bottom-center > ::deep div, .toast-container.toast-top-center > ::deep div {
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.toast-container.toast-bottom-full-width > ::deep div, .toast-container.toast-top-full-width > ::deep div {
+  --bs-toast-max-width: 100%;
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* placement */
+.toast-top-center {
+  top: 8px;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-center {
+  bottom: 48px;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-full-width {
+  top: 8px;
+  right: 0;
+  width: 100%;
+}
+
+.toast-bottom-full-width {
+  bottom: 48px;
+  right: 0;
+  width: 100%;
+}
+
+.toast-top-left {
+  top: 8px;
+  left: 8px;
+}
+
+.toast-top-right {
+  top: 8px;
+  right: 8px;
+}
+
+.toast-bottom-right {
+  right: 8px;
+  bottom: 48px;
+}
+
+.toast-bottom-left {
+  bottom: 48px;
+  left: 8px;
+}

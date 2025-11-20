@@ -1,0 +1,182 @@
+.busy-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0.375rem;
+  background-color: rgba(0, 0, 0, 0.075);
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  user-select: none;
+}
+.busy-overlay.is-busy {
+  display: flex;
+}
+.busy-overlay.is-faded {
+  background: var(--bs-gradient);
+}
+
+.busy-template-container {
+  position: fixed;
+  display: flex;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.busy-template {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 0.5rem;
+  background: rgba(var(--bs-tertiary-bg-rgb), 0.95);
+  box-shadow: var(--bs-box-shadow-lg);
+  padding: 2rem 5rem;
+}
+
+@media (max-width: 576px) {
+  .busy-template-container {
+    max-width: 576px;
+  }
+  .busy-template {
+    padding: 1rem 2rem;
+  }
+}
+.loading-row-filler {
+  min-height: 135px;
+}
+
+.loading-template {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 80px;
+}
+
+.row-detail-toggle-header {
+  position: relative;
+  overflow: hidden;
+  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  padding: 0;
+}
+
+.row-detail-toggle-cell {
+  padding-top: 0.2rem;
+}
+
+.row-detail-toggle-footer {
+  position: relative;
+  overflow: hidden;
+  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  padding: 0;
+}
+
+.datagrid {
+  min-width: 250px;
+}
+.datagrid .datagrid-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+.datagrid .datagrid-header .datagrid-title {
+  min-height: 31px;
+  flex-grow: 1;
+}
+.datagrid .datagrid-header .datagrid-title .datagrid-title-default {
+  font-size: 1.25rem;
+}
+.datagrid .datagrid-header .datagrid-search {
+  min-height: 31px;
+  flex-grow: 1;
+}
+.datagrid .datagrid-header .datagrid-toolbar {
+  min-height: 31px;
+}
+.datagrid .datagrid-body {
+  padding: 0.5rem 0.5rem;
+  overflow-x: hidden;
+}
+.datagrid .datagrid-body tr {
+  height: 41px;
+}
+.datagrid .datagrid-body tr:focus-visible {
+  outline-style: solid;
+  outline-color: var(--bs-focus-ring-color);
+  outline-width: var(--bs-focus-ring-width);
+  outline-offset: -5px;
+  -webkit-box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+  box-shadow: inset 2px 0 0 var(--bs-gray-500), inset -2px 0 0 var(--bs-gray-500);
+}
+.datagrid .datagrid-body tr:not(.row-detail):focus-visible > * {
+  background: transparent;
+  --bs-table-color-state: var(--bs-table-hover-color);
+  --bs-table-bg-state: var(--bs-table-hover-bg);
+}
+.datagrid .datagrid-body .table-sm tr {
+  height: 35px;
+}
+.datagrid:has(.datagrid-header) .datagrid-body {
+  padding-top: 0;
+}
+.datagrid .datagrid-footer {
+  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-y);
+  color: var(--bs-card-cap-color);
+  background-color: var(--bs-card-cap-bg);
+  border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  min-height: 2rem;
+  user-select: none;
+}
+.datagrid .datagrid-footer:last-child {
+  border-radius: 0 0 var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius);
+}
+.datagrid .datagrid-footer .datagrid-footer-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  --align-items: space-between;
+  justify-content: var(--align-items);
+}
+.datagrid .datagrid-footer .datagrid-footer-items-container > div {
+  min-height: 2rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.datagrid:has(.datagrid-footer) .loading-template {
+  margin-bottom: 130px;
+}
+
+@media (min-width: 576px) {
+  .datagrid .datagrid-header {
+    padding: 1rem;
+  }
+  .datagrid .datagrid-header .datagrid-search {
+    flex-grow: 0;
+  }
+}
+.datagrid-flush:has(.datagrid-footer) .datagrid-body {
+  padding-bottom: 0;
+}
+.datagrid-flush:has(.datagrid-footer) .datagrid-body table > :last-child > tr:last-child {
+  border-bottom-width: 0;
+}
+.datagrid-flush .datagrid-body {
+  padding: 1rem 0;
+}

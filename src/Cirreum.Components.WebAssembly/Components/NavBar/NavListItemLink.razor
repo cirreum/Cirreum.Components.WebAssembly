@@ -1,0 +1,30 @@
+﻿@namespace Cirreum.Components
+@implements IDisposable
+@inject NavigationManager NavManager
+<li class="@LiCssClass">
+	@if (ShouldRenderTooltip) {
+		<Tooltip Title="@Tooltip"
+				 TitleTemplate="@TooltipTemplate"
+				 Placement="@TooltipPlacement"
+				 Delay="@TooltipDelay"
+				 ShowOnFocus="@TooltipShowOnFocus"
+				 ShowArrow="@TooltipShowArrow"
+				 Css="@TooltipCss">
+			<a id="@Id"
+			   class="@LinkCssClass"
+			   href="@Href"
+			   aria-current="@AriaCurrent"
+			   aria-disabled="@IsDisabled">
+				@ChildContent
+			</a>
+		</Tooltip>
+	} else {
+		<a id="@Id"
+		   class="@LinkCssClass"
+		   href="@Href"
+		   aria-current="@AriaCurrent"
+		   aria-disabled="@IsDisabled">
+			@ChildContent
+		</a>
+	}
+</li>

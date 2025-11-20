@@ -1,0 +1,39 @@
+.inputfile-container {
+	display: grid;
+	grid-gap: 10px;
+	background-color: rgba(var(--bs-body-color-rgb), 0.03);
+
+	&[drop-files] {
+		border: 1px dashed var(--bs-info);
+	}
+
+	.inputfile-content {
+		grid-column: 1;
+		grid-row: 1;
+		text-align: center;
+		align-self: center;
+		justify-self: center;
+	}
+
+	::deep {
+		input[type='file'] {
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+		}
+
+		label,
+		a {
+			color: var(--bs-info);
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+
+	&[disabled],
+	&[disabled="true"] {
+		opacity: 0.5;
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+}

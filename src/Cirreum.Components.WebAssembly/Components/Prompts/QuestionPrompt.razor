@@ -1,0 +1,46 @@
+@namespace Cirreum.Components
+
+<div class="dialog-body">
+	<p>
+		@QuestionText
+	</p>
+</div>
+
+<div class="dialog-buttons">
+	<button type="button" @onclick=OnSubmit class="btn btn-primary">@ButtonOkText</button>
+	<button type="button" @onclick="Cancel" class="btn btn-secondary">@ButtonCancelText</button>
+</div>
+
+@code {
+
+	/// <summary>
+	/// Are you sure?
+	/// </summary>
+	[Parameter]
+	public string QuestionText { get; set; } = "Are you sure?";
+
+	/// <summary>
+	/// Yes
+	/// </summary>
+	[Parameter]
+	public string ButtonOkText { get; set; } = "Yes";
+
+	/// <summary>
+	/// No
+	/// </summary>
+	[Parameter]
+	public string ButtonCancelText { get; set; } = "No";
+
+
+	[CascadingParameter]
+	Dialog Dialog { get; set; } = default!;
+
+	private async Task OnSubmit() {
+		await Dialog.CloseAsync(DialogResult.Ok());
+	}
+
+	async Task Cancel() {
+		await Dialog.CancelAsync();
+	}
+
+}

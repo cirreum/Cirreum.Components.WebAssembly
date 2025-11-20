@@ -1,0 +1,112 @@
+@namespace Cirreum.Components
+
+<div class="@ContainerClassWithTransition">
+	@if (IsLoading) {
+		@LoadingTemplate
+	} else if (IsFaulted) {
+		if (FaultType == FaultType.Transient) {
+			if (TransientFaultTemplate != null) {
+				@TransientFaultTemplate
+			} else {
+				<div class="d-flex flex-column align-items-center mt-5">
+					<div class="@TransientFaultClass"
+						 role="alert"
+						 aria-live="polite">
+						<i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"
+						   role="img"
+						   aria-hidden="true"></i>
+						<div class="flex-grow-1">
+							@TransientFaultMessage
+						</div>
+						@if (OnRetry.HasDelegate) {
+							<button class="@RetryButtonClass" @onclick="OnRetry">@RetryButtonText</button>
+						}
+					</div>
+				</div>
+			}
+		} else {
+			if (PermanentFaultTemplate != null) {
+				@PermanentFaultTemplate
+			} else {
+				<div class="d-flex flex-column align-items-center mt-5">
+					<div class="@PermanentFaultClass"
+						 role="alert"
+						 aria-live="assertive">
+						<i class="bi bi-x-circle-fill flex-shrink-0 me-2"
+						   role="img"
+						   aria-hidden="true"></i>
+						<div class="flex-grow-1">
+							@PermanentFaultMessage
+						</div>
+					</div>
+				</div>
+			}
+		}
+	} else {
+		@ContentTemplate
+	}
+</div>
+
+@code {
+
+	[Parameter]
+	public bool IsLoading { get; set; }
+
+	[Parameter]
+	public bool IsFaulted { get; set; }
+
+	[Parameter]
+	public FaultType FaultType { get; set; } = FaultType.Permanent;
+
+	// Required templates
+	[Parameter, EditorRequired]
+	public RenderFragment LoadingTemplate { get; set; } = default!;
+
+	[Parameter, EditorRequired]
+	public RenderFragment ContentTemplate { get; set; } = default!;
+
+	// Optional transient fault templates
+	[Parameter]
+	public RenderFragment? TransientFaultTemplate { get; set; }
+	[Parameter]
+	public string TransientFaultMessage { get; set; } = "Something went wrong. Please try again.";
+	[Parameter]
+	public EventCallback OnRetry { get; set; }
+
+	// Optional permanent fault templates
+	[Parameter]
+	public RenderFragment? PermanentFaultTemplate { get; set; }
+	[Parameter]
+	public string PermanentFaultMessage { get; set; } = "An unexpected error occurred.";
+
+	// Styling parameters
+
+	[Parameter]
+	public string? ContainerClass { get; set; }
+
+	[Parameter]
+	public string TransientFaultClass { get; set; } = "alert alert-warning d-inline-flex align-items-center";
+
+	[Parameter]
+	public string PermanentFaultClass { get; set; } = "alert alert-danger d-inline-flex align-items-center";
+
+	[Parameter]
+	public string RetryButtonClass { get; set; } = "btn btn-warning ms-3 text-nowrap";
+
+	[Parameter]
+	public string RetryButtonText { get; set; } = "Retry";
+
+	// Animation parameters
+	[Parameter]
+	public bool EnableTransitions { get; set; } = false;
+
+	[Parameter]
+	public string TransitionClass { get; set; } = "fade-transition";
+
+	private string? ContainerClassWithTransition => CssBuilder
+		.Empty()
+			.AddClassIfNotEmpty(ContainerClass)
+			.AddClass(TransitionClass, when: EnableTransitions && TransitionClass.HasValue())
+		.NullIfEmpty();
+
+}

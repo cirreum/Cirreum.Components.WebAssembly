@@ -1,0 +1,11 @@
+﻿@namespace Cirreum.Components
+
+<button type="button"
+		class="@buttonState.ButtonClass"
+		disabled="@buttonState.IsDisabled"
+		role="button"
+		aria-label="@buttonState.Title"
+		title="@buttonState.Title"
+		@onclick="CopyToClipboard" @onclick:preventDefault @onclick:stopPropagation>
+	<i class="@buttonState.IconClass" aria-hidden="true"></i> @buttonState.ButtonText
+</button>

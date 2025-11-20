@@ -1,0 +1,298 @@
+//_cirreum-variables.scss
+// based on Bootswatch Flatly and Darkly 5.3.x
+
+$theme: "cirreum-bootstrap";
+
+$min-contrast-ratio: 4.5 !default;
+
+//
+// Color system
+//
+$transparent: transparent;
+// scss-docs-start gray-color-variables
+$white: #ffffff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #1f1f1f !default;
+$black: #000000 !default;
+// scss-docs-end gray-color-variables
+
+$blue: #375a7f !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #e74c3c !default;
+$orange: #fd7e14 !default;
+$yellow: #f39c12 !default;
+$green: #00bc8c !default;
+$teal: #20c997 !default;
+$cyan: #3498db !default;
+
+// scss-docs-start theme-color-variables
+$primary: $blue !default;
+$secondary: $gray-600 !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-900 !default;
+// scss-docs-end theme-color-variables
+
+$light-text-emphasis: $gray-700 !default;
+$primary-text-emphasis: shade-color($primary, 60%) !default;
+$primary-bg-subtle: tint-color($primary, 60%) !default;
+$primary-border-subtle: tint-color($primary, 40%) !default;
+$component-active-color: $white !default;
+
+$prefix: bs-;
+$spacer: 1rem !default;
+
+// Body
+$body-color: $gray-900 !default;
+$blockquote-footer-color: #494c51;
+
+// Links
+$link-color: #036ac4 !default;
+$link-hover-color: #0473ce !default;
+
+// Fonts
+// stylelint-disable-next-line value-keyword-case
+$font-family-sans-serif: system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !default;
+$font-size-base: 1rem !default;
+$font-size-xs: $font-size-base * .75 !default;
+$h1-font-size: 3rem !default;
+$h2-font-size: 2.5rem !default;
+$h3-font-size: 2rem !default;
+
+// Component Defaults
+$component-active-color: $body-color !default;
+$component-active-bg: $primary !default;
+
+//
+// Borders
+//
+$border-color-translucent: rgba($black, .175) !default;
+
+
+// Inputs
+$input-bg: var(--bs-light-bg-subtle) !default;
+$input-focus-bg: var(--bs-light-bg-subtle) !default;
+$input-focus-box-shadow: inset 0 -2px 0px 0 var(--bs-primary) !default;
+$input-focus-box-shadow-sm: inset 0 -2px 0px -1px var(--bs-primary) !default;
+$input-focus-border-color: $border-color-translucent !default;
+
+// Buttons
+$btn-primary-color: $white !default;
+
+// Cards
+$card-bg: var(--bs-light-bg-subtle) !default;
+$card-cap-bg: rgba(var(--bs-body-color-rgb), 0.075) !default;
+
+
+// Accordion
+$accordion-icon-color: $body-color !default;
+$accordion-icon-active-color: $primary-text-emphasis !default;
+$accordion-button-active-bg: rgba(var(--bs-body-color-rgb), 0.075) !default;
+$accordion-button-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='#{$accordion-icon-color}' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>") !default;
+$accordion-button-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='#{$accordion-icon-active-color}' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>") !default;
+
+
+// Tables
+$table-bg-scale: 0%;
+$table-bg: $transparent;
+$table-border-color: var(--bs-border-color-translucent);
+$table-striped-bg: rgba(var(--bs-tertiary-bg-rgb), 0.75);
+$table-active-color: var(--bs-body-color);
+$table-hover-color: var(--bs-body-color);
+$table-hover-bg: rgba(var(--bs-emphasis-color-rgb), 0.05);
+$table-cell-padding-y-sm: .3rem;
+$table-cell-padding-x-sm: .3rem;
+
+// Dropdowns
+$dropdown-bg: var(--bs-light-bg-subtle);
+$dropdown-padding-x: 0.25rem;
+$dropdown-padding-y: 0.25rem;
+$dropdown-link-hover-bg: var(--#{$prefix}light-border-subtle) !default;
+$dropdown-item-padding-x: $spacer * 0.5 !default;
+
+// Navs
+$nav-link-padding-y: .5rem;
+$nav-link-padding-x: 2rem;
+$nav-link-disabled-color: $gray-600;
+
+$nav-tabs-link-hover-border-color: var(--bs-tertiary-color) var(--bs-tertiary-color) $transparent;
+$nav-tabs-link-active-color: $success;
+$nav-tabs-link-active-border-color: var(--bs-border-color) var(--bs-border-color) $transparent;
+$nav-tabs-link-active-color: var(--bs-body-color);
+
+$nav-underline-link-color: var(--bs-body-color);
+
+
+// Navbar
+$navbar-padding-y: 1rem;
+$navbar-dark-toggler-border-color: transparent;
+$navbar-light-toggler-border-color: transparent;
+$navbar-light-hover-color: var(--#{$prefix}emphasis-color-rgb) !default;
+
+// Pagination
+$pagination-border-width: 0;
+$pagination-margin-start: 0;
+$pagination-color: var(--bs-body-color) !default;
+$pagination-bg: $transparent;
+$pagination-border-radius: 0;
+$pagination-padding-y-sm: .3rem;
+$pagination-padding-x-sm: .55rem;
+$pagination-border-radius-lg: 0;
+$pagination-border-radius-sm: 0;
+$pagination-border-width: 0;
+$pagination-border-color: $transparent !default;
+$pagination-hover-color: $white !default;
+$pagination-hover-bg: var(--bs-primary) !default;
+$pagination-hover-border-color: $transparent !default;
+
+$pagination-focus-bg: initial;
+$pagination-focus-box-shadow: 0;
+$pagination-focus-box-shadow_original: 0 0 0 0.25rem rgba(45,99,151, 0.25);
+
+$pagination-active-bg: $pagination-hover-bg;
+$pagination-active-border-color: $transparent;
+$pagination-disabled-color: rgba(var(--bs-body-color-rgb),0.35);
+$pagination-disabled-bg: $transparent;
+$pagination-disabled-border-color: $transparent;
+
+// List group
+$list-group-bg: var(--bs-light-bg-subtle);
+$list-group-hover-bg: var(--bs-secondary-border-subtle);
+$list-group-action-hover-bg: var(--bs-secondary-border-subtle);
+$list-group-action-active-bg: var(--bs-dark-bg-subtle);
+$list-group-disabled-bg: var(--bs-light-bg-subtle);
+
+// Breadcrumbs
+$breadcrumb-padding-y: .375rem;
+$breadcrumb-padding-x: .75rem;
+$breadcrumb-border-radius: .25rem;
+
+// Popover
+$popover-bg: var(--bs-light-bg-subtle);
+$popover-body-padding-y: 0;
+$popover-body-padding-x: 0;
+$popover-header-bg: var(--#{$prefix}border-color) !default;
+
+
+// Tooltip
+$tooltip-font-size: $font-size-xs;
+$tooltip-color: var(--#{$prefix}body-color);
+$tooltip-bg: var(--#{$prefix}secondary-bg);
+$tooltip-border: 1px solid var(--#{$prefix}border-color);
+
+// Spinners
+$spinner-width-sm: 0.875rem;
+$spinner-border-width-sm: 0.175rem;
+
+// Footer
+$footer-bg: #efefef !default;
+
+// DataGrid Sorting
+$sort-bg-color: rgba(50, 90, 127, 0.05) !default;
+$sort-striped-bg-color: rgba(25, 35, 55, 0.025) !default;
+
+// Form switch
+$form-switch-color: #1a1a1a !default;
+
+
+// ==============================================================================
+// DARK MODE
+// ==============================================================================
+$body-color-dark: $white !default;
+$body-secondary-bg-dark: #303030 !default;
+$body-tertiary-color-dark: rgba(222, 226, 230, 0.5) !default;
+$body-tertiary-bg-dark: #292929 !default;
+
+$border-color-dark: #444 !default;
+
+$link-color-dark: #a4d8fb !default;
+$link-hover-color-dark: #3498db !default;
+
+$light-bg-subtle-dark: #303030 !default;
+
+$footer-bg-dark: #1c1c1c !default !default;
+
+$sort-bg-color-dark: rgba(50, 71, 96, 0.0875) !default;
+$sort-striped-bg-color-dark: rgba(25,35,55, 0.15) !default;
+
+$primary-dark: $primary !default;
+$secondary-dark: $secondary !default;
+$success-dark: $success !default;
+$info-dark: $info !default;
+$warning-dark: $warning !default;
+$danger-dark: $danger !default;
+$light-dark: $light !default;
+$dark-dark: $dark !default;
+
+//
+// Optional base color overrides for dark mode
+//
+
+$blue-dark: $blue !default;
+$indigo-dark: $indigo !default;
+$purple-dark: $purple !default;
+$pink-dark: $pink !default;
+$red-dark: $red !default;
+$orange-dark: $orange !default;
+$yellow-dark: $yellow !default;
+$green-dark: $green !default;
+$teal-dark: $teal !default;
+$cyan-dark: $cyan !default;
+
+$theme-colors-dark: ( 
+    "primary": $primary-dark, 
+    "secondary": $secondary-dark, 
+    "success": $success-dark, 
+    "info": $info-dark, 
+    "warning": $warning-dark, 
+    "danger": $danger-dark, 
+    "light": $light-dark, 
+    "dark": $dark-dark ) !default;
+
+//
+// Component Defaults
+//
+$component-active-color-dark: $body-color !default;
+$component-active-bg-dark: $primary-dark !default;
+
+// Buttons
+$btn-primary-color-dark: $gray-900 !default;
+
+// Table Variants for dark mode
+$table-variants-dark: ( "primary": shift-color($primary-dark, $table-bg-scale), "secondary": shift-color($secondary-dark, $table-bg-scale), "success": shift-color($success-dark, $table-bg-scale), "info": shift-color($info-dark, $table-bg-scale), "warning": shift-color($warning-dark, $table-bg-scale), "danger": shift-color($danger-dark, $table-bg-scale), "light": $light, "dark": $dark, ) !default;
+
+// Form checkbox/radio dark mode
+$form-check-input-checked-bg-color-dark: $primary-dark !default;
+$form-check-input-checked-border-color-dark: $primary-dark !default;
+
+// Input focus dark mode
+$input-focus-box-shadow-dark: inset 0 -2px 0px 0 var(--bs-primary) !default;
+$input-focus-box-shadow-sm-dark: inset 0 -2px 0px -1px var(--bs-primary) !default;
+
+// Form switch dark mode
+$form-switch-color-dark: $white !default;
+$form-switch-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color-dark}'/></svg>") !default;
+$form-switch-checked-color-dark: $black !default;
+$form-switch-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-checked-color-dark}'/></svg>") !default;
+
+// Inherits from component-active for dark mode
+$nav-pills-link-active-color-dark: $component-active-color-dark !default;
+$nav-pills-link-active-bg-dark: $component-active-bg-dark !default;
+
+$dropdown-link-active-color-dark: $component-active-color-dark !default;
+$dropdown-link-active-bg-dark: $component-active-bg-dark !default;
+
+$list-group-active-color-dark: $component-active-color-dark !default;
+$list-group-active-bg-dark: $component-active-bg-dark !default;

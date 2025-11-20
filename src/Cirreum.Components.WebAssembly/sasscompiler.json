@@ -1,0 +1,42 @@
+{
+	"Arguments": "--error-css --style=expanded --no-source-map",
+	"Source": "Styles/cirreum-bootstrap-default.scss",
+	"Target": "wwwroot/css/cirreum-bootstrap-default.css",
+	"GenerateScopedCss": true,
+	"ScopedCssFolders": [ "Components" ],
+	"Compilations": [
+		{
+			"Source": "Styles/cirreum-bootstrap-aqua.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-aqua.css"
+		},
+		{
+			"Source": "Styles/cirreum-bootstrap-aspire.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-aspire.css"
+		},
+		{
+			"Source": "Styles/cirreum-bootstrap-excel.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-excel.css"
+		},
+		{
+			"Source": "Styles/cirreum-bootstrap-office.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-office.css"
+		},
+		{
+			"Source": "Styles/cirreum-bootstrap-outlook.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-outlook.css"
+		},
+		{
+			"Source": "Styles/cirreum-bootstrap-windows.scss",
+			"Target": "wwwroot/css/cirreum-bootstrap-windows.css"
+		},
+		{
+			"Source": "Styles/cirreum-spinners.scss",
+			"Target": "wwwroot/css/cirreum-spinners.css"
+		}
+	],
+	"Configurations": {
+		"Release": {
+			"Arguments": "--no-error-css --style=compressed --no-source-map"
+		}
+	}
+}

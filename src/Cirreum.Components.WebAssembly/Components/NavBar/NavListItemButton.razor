@@ -1,0 +1,55 @@
+@namespace Cirreum.Components
+
+<li class="nav-item">
+	<button @onclick="OnClick"
+			class="@ButtonCss"
+			style="@ButtonStyle"
+			type="button"
+			title="@Title"
+			disabled="@Disabled"
+			aria-label="@AriaLabel">
+		@ChildContent
+	</button>
+</li>
+
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	[Parameter]
+	public string? Title { get; set; }
+
+	[Parameter]
+	public string? AriaLabel { get; set; }
+
+	[Parameter]
+	public bool Disabled { get; set; }
+
+	[Parameter]
+	public bool Active { get; set; }
+
+	[Parameter]
+	public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+	/// <summary>
+	/// Additional Css classes.
+	/// </summary>
+	[Parameter]
+	public string? Class { get; set; }
+	private string ButtonCss => CssBuilder
+		.Default("nav-link")
+			.AddClass("active", when: this.Active)
+		.Build();
+
+	/// <summary>
+	/// Custom style.
+	/// </summary>
+	[Parameter]
+	public string? Style { get; set; }
+	protected string? ButtonStyle => StyleBuilder
+		.Empty()
+			.AddStyleIfNotEmpty(this.Style)
+		.NullIfEmpty();
+
+}

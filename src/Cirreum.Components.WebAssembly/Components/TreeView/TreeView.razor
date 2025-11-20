@@ -1,0 +1,39 @@
+﻿@namespace Cirreum.Components
+@inherits BaseAfterRenderComponent
+@inject IJSAppModule JSApp
+
+<CascadingValue Value="@this" IsFixed>
+	<div class="treeview-wrapper" style="@TreeViewWrapperStyle">
+		<div class="@HeaderClassList">
+			@HeaderTemplate
+		</div>
+		<div id="@ElementId" class="treeview" aria-label="treeview">
+			@if (Model is not null && Model.Count != 0) {
+				<ul role="tree"
+					class="treeview-node-container"
+					tabindex="-1"
+					aria-activedescendant="@ActiveDescendant">
+					@foreach (var childModel in Model) {
+						if (childModel.IsHeaderNode) {
+							if (ShowNodeHeaders) {
+								<TreeViewHeaderNode @key=childModel.NodeId Text="@childModel.Name" ShowDivider="@childModel.ShowHeaderNodeDivider" />
+							}
+						} else {
+							<TreeViewNode @key=@childModel.NodeId Model="@childModel" ShowNodeHeaders="@ShowNodeHeaders" />
+						}
+					}
+				</ul>
+			} else {
+				if (EmptyTemplate is not null) {
+					@EmptyTemplate
+				} else {
+					<div class="text-center text-warning">No Items</div>
+				}
+			}
+		</div>
+		<div class="@FooterClassList">
+			@FooterTemplate
+		</div>
+	</div>
+	<ScrollbarBehavior Target="@ScrollbarBehaviorTargetId" ShowDelay="250" />
+</CascadingValue>

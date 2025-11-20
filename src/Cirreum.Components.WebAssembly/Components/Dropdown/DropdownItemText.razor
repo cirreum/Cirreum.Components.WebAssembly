@@ -1,0 +1,15 @@
+﻿@namespace Cirreum.Components
+@implements IDropdownItemBase
+<li role="listitem"><span class="@CssClass">@ChildContent</span></li>
+@code {
+
+	[Parameter, EditorRequired]
+	public RenderFragment ChildContent { get; set; } = default!;
+
+	/// <summary>
+	/// Gets or sets the Css Class for the Span element. Default: dropdown-item-text
+	/// </summary>
+	[Parameter]
+	public string CssClass { get; set; } = "dropdown-item-text";
+
+}
