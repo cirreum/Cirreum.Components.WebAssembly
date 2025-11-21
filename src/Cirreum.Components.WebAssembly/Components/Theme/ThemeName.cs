@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 /// <summary>
 /// Represents the available design themes for the application.
 /// </summary>
-public enum Theme {
+public enum ThemeName {
 	/// <summary>
 	/// The default Cirreum Bootstrap theme.
 	/// </summary>

@@ -528,13 +528,14 @@ export function isStandAlone(): boolean {
 	return window.matchMedia('(display-mode: standalone)').matches;
 }
 
-export function getSystemTheme(): string {
+export function getSystemThemeMode(): string {
 	return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
-export function monitorThemeChanges(dotnetRef: DotNetHelper): void {
+
+export function monitorSystemThemeMode(dotnetRef: DotNetHelper): void {
 	const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
 	darkThemeMq.addEventListener("change", async e => {
-		const storedTheme = localStorage.getItem("theme");
+		const storedTheme = localStorage.getItem("user-theme-mode");
 		await dotnetRef.invokeMethodAsync("OnThemeChange", e.matches, storedTheme)
 	});
 }

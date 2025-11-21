@@ -21,5 +21,5 @@ public interface IThemeIconProvider {
 	/// </summary>
 	/// <param name="theme">The visual theme (Default, Aspire, Excel, etc.).</param>
 	/// <returns>The icon identifier corresponding to the specified theme (e.g., "bi-palette", "bi-microsoft").</returns>
-	string ResolveThemeIcon(Theme theme);
+	string ResolveThemeIcon(ThemeName theme);
 }

@@ -78,7 +78,6 @@ public interface IJSAppModule {
 	int GetElementScrollTop(string selector);
 	int GetElementScrollWidth(ElementReference element);
 	int GetElementScrollWidth(string selector);
-	string GetSystemTheme();
 	bool GetCurrentBreakPoint(string minBreakpointSize);
 	/// <summary>
 	/// Looks for a footer element (footer/.footer), and if found returns its height.
@@ -125,8 +124,22 @@ public interface IJSAppModule {
 	/// <param name="vertical"></param>
 	/// <param name="classes"></param>
 	void SetElementClassIfScrollbar(string selector, bool vertical, params string[] classes);
-	void MonitorThemeMode<T>(DotNetObjectReference<T> dotnetObjRef) where T : class;
+
+	/// <summary>
+	/// Gets the current system theme mode.
+	/// </summary>
+	/// <returns></returns>
+	string GetSystemThemeMode();
+	/// <summary>
+	/// Supply an object that implements <see cref="ISystemThemeChangedRef"/> to receive
+	/// updates when the system theme mode changes.
+	/// </summary>
+	/// <typeparam name="T">A type that implements <see cref="ISystemThemeChangedRef"/></typeparam>
+	/// <param name="dotnetObjRef">The <see cref="DotNetObjectReference{T}"/> to receive callbacks.</param>
+	void MonitorSystemThemeMode<T>(DotNetObjectReference<T> dotnetObjRef) where T : class, ISystemThemeChangedRef;
+
 	void MonitorBreakpoint<T>(DotNetObjectReference<T> dotnetObjRef, string minBreakpointSize) where T : class;
+
 	bool ParentContainsClass(ElementReference child, string token);
 	bool ParentContainsClass(string selector, string token);
 	void RemoveElementClass(ElementReference element, string token);

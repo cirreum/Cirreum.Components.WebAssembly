@@ -21,6 +21,6 @@ public interface IThemeStateManager {
 	/// <summary>
 	/// Sets the application's visual theme (color scheme) and synchronizes with the DOM.
 	/// </summary>
-	/// <param name="theme">The design theme to apply (Default, Aspire, Excel, etc.).</param>
-	void SetTheme(Theme theme);
+	/// <param name="theme">The name of the theme to apply (Default, Aspire, Excel, etc.).</param>
+	void SetTheme(ThemeName theme);
 }

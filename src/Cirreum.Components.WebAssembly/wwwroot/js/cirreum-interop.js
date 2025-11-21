@@ -258,13 +258,13 @@ if (typeof window.loadCss !== "function") {
 export function isStandAlone() {
     return window.matchMedia('(display-mode: standalone)').matches;
 }
-export function getSystemTheme() {
+export function getSystemThemeMode() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
-export function monitorThemeChanges(dotnetRef) {
+export function monitorSystemThemeMode(dotnetRef) {
     const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkThemeMq.addEventListener("change", async (e) => {
-        const storedTheme = localStorage.getItem("theme");
+        const storedTheme = localStorage.getItem("user-theme-mode");
         await dotnetRef.invokeMethodAsync("OnThemeChange", e.matches, storedTheme);
     });
 }
