@@ -34,7 +34,7 @@ public partial class ScrollToTop {
 
 		try {
 
-			const string jsPath = "./_content/Cirreum.Blazor.Components/Components/ScrollToTop/ScrollToTop.razor.js";
+			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/ScrollToTop/ScrollToTop.razor.js";
 			this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", this.DisposalToken, jsPath);
 
 			this.dotNetRef = DotNetObjectReference.Create(this);

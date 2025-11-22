@@ -120,7 +120,7 @@ public abstract class ContextMenuBase : BaseAfterRenderComponent {
 		this.dotnetRef = DotNetObjectReference.Create(this);
 	}
 	protected async override Task OnInitializedAsync() {
-		const string jsPath = $"./_content/Cirreum.Blazor.Components/Components/Menu/{nameof(ContextMenuButton)}.razor.js";
+		const string jsPath = $"./_content/Cirreum.Components.WebAssembly/Components/Menu/{nameof(ContextMenuButton)}.razor.js";
 		this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		await base.OnInitializedAsync();
 	}

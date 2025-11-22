@@ -1868,7 +1868,7 @@ public partial class DataGrid<TData> {
 
 	#region LifeCycle
 
-	private const string JS_MODULE_PATH = "./_content/Cirreum.Blazor.Components/Components/DataGrid/DataGrid.razor.js";
+	private const string JS_MODULE_PATH = "./_content/Cirreum.Components.WebAssembly/Components/DataGrid/DataGrid.razor.js";
 	private const string JS_COLUMNS_INIT = "initColumns";
 	private const string JS_COLUMNS_ADD_RESIZE = "addColumnResizeHandlers";
 	private const string JS_COLUMNS_REMOVE_RESIZE = "removeColumnResizeHandlers";

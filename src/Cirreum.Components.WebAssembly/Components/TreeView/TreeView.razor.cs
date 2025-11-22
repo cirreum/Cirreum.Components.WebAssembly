@@ -731,7 +731,7 @@ public partial class TreeView : BaseAfterRenderComponent {
 	}
 
 	protected override async Task OnAfterFirstRenderAsync() {
-		const string jsPath = "./_content/Cirreum.Blazor.Components/Components/TreeView/TreeView.razor.js";
+		const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/TreeView/TreeView.razor.js";
 		this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		if (this.AutoExpandAll && this.Model is not null) {
 			this.ExpandAllCore();

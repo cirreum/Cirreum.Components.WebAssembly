@@ -7,7 +7,7 @@ All Cirreum themes:
 - Maintain full Bootstrap component structure  
 - Override variables (not raw CSS overrides)  
 - Support both light & dark modes  
-- Integrate seamlessly with Cirreum.Blazor.Components  
+- Integrate seamlessly with Cirreum.Components.WebAssembly  
 - Serve as drop-in replacements for `bootstrap.min.css`  
 
 ---

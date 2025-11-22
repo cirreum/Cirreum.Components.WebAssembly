@@ -10,7 +10,7 @@ public class ClickDetectorService(
 		IAutoInitialize,
 		IDisposable {
 
-	const string MODULE_PATH = "./_content/Cirreum.Blazor.Components/js/clickDetector.js";
+	const string MODULE_PATH = "./_content/Cirreum.Components.WebAssembly/js/clickDetector.js";
 	const string REGISTER_METHOD = "registerElement";
 	const string UNREGISTER_METHOD = "unregisterElement";
 	const string OUTSIDECLICK_METHOD = "outsideClick";

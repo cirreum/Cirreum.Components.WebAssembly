@@ -130,7 +130,7 @@ public partial class DialogManager : IDisposable {
 	private IJSInProcessObjectReference? module;
 	protected override async Task OnAfterRenderAsync(bool firstRender) {
 		if (firstRender && !this._disposed) {
-			const string jsPath = "./_content/Cirreum.Blazor.Components/Components/Dialog/DialogManager.razor.js";
+			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/Dialog/DialogManager.razor.js";
 			this.module = await this.JS.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		}
 	}

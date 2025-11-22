@@ -635,7 +635,7 @@ public partial class Tabs {
 	}
 
 	protected override async Task OnAfterFirstRenderAsync() {
-		const string jsPath = "./_content/Cirreum.Blazor.Components/Components/Tabs/Tabs.razor.js";
+		const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/Tabs/Tabs.razor.js";
 		this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		this.module.InvokeVoid(
 			"connect",

@@ -263,7 +263,7 @@ public partial class ScrollbarBehavior {
 	/// Loads the JavaScript module and initializes the scrollbar behavior.
 	/// </remarks>
 	protected override async Task OnAfterFirstRenderAsync() {
-		const string jsPath = $"./_content/Cirreum.Blazor.Components/Components/{nameof(ScrollbarBehavior)}/{nameof(ScrollbarBehavior)}.razor.js";
+		const string jsPath = $"./_content/Cirreum.Components.WebAssembly/Components/{nameof(ScrollbarBehavior)}/{nameof(ScrollbarBehavior)}.razor.js";
 		this.module = await this.JS.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		this.EnsureShowDelay();
 		this.EnsureHideDelay();

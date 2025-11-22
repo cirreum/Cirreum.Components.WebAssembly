@@ -159,7 +159,7 @@ public partial class FileSelector {
 
 	protected override async Task OnAfterFirstRenderAsync() {
 		if (this.AnchorId.HasValue() && this.Id.HasValue()) {
-			const string jsPath = "./_content/Cirreum.Blazor.Components/Components/FileSelection/FileSelector.razor.js";
+			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/FileSelection/FileSelector.razor.js";
 			this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 			await this.module.InvokeVoidAsync("attachClickHandler", this.AnchorId, this.Id);
 		}
