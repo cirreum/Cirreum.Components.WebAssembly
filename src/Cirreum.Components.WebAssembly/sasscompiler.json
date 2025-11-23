@@ -3,7 +3,7 @@
 	"Source": "Styles/cirreum-bootstrap-default.scss",
 	"Target": "wwwroot/css/cirreum-bootstrap-default.css",
 	"GenerateScopedCss": true,
-	"ScopedCssFolders": [ "Components" ],
+	"ScopedCssFolders": [ "Components", "Components.Authentication" ],
 	"Compilations": [
 		{
 			"Source": "Styles/cirreum-bootstrap-aqua.scss",

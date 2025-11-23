@@ -269,6 +269,7 @@ $component-active-bg-dark: $primary-dark !default;
 
 // Buttons
 $btn-primary-color-dark: $gray-900 !default;
+$btn-secondary-color-dark: null !default;
 
 // Table Variants for dark mode
 $table-variants-dark: ( "primary": shift-color($primary-dark, $table-bg-scale), "secondary": shift-color($secondary-dark, $table-bg-scale), "success": shift-color($success-dark, $table-bg-scale), "info": shift-color($info-dark, $table-bg-scale), "warning": shift-color($warning-dark, $table-bg-scale), "danger": shift-color($danger-dark, $table-bg-scale), "light": $light, "dark": $dark, ) !default;

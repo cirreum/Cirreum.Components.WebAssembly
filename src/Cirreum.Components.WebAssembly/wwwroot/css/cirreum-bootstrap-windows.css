@@ -12151,7 +12151,7 @@ textarea.form-control-xs {
 }
 
 [data-bs-theme=dark] .text-bg-primary {
-  color: #000000 !important;
+  color: #1f1f1f !important;
   background-color: RGBA(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 [data-bs-theme=dark] .text-bg-secondary {
@@ -12181,9 +12181,6 @@ textarea.form-control-xs {
 [data-bs-theme=dark] .text-bg-dark {
   color: #ffffff !important;
   background-color: RGBA(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
-}
-[data-bs-theme=dark] .text-bg-primary {
-  color: #1f1f1f !important;
 }
 [data-bs-theme=dark] .link-primary {
   color: RGBA(var(--bs-primary-rgb), var(--bs-link-opacity, 1)) !important;
@@ -12258,13 +12255,13 @@ textarea.form-control-xs {
   text-decoration-color: RGBA(var(--bs-emphasis-color-rgb), var(--bs-link-underline-opacity, 0.75)) !important;
 }
 [data-bs-theme=dark] .btn-primary {
-  --bs-btn-color: #000000;
+  --bs-btn-color: #1f1f1f;
   --bs-btn-bg: #3498db;
   --bs-btn-border-color: #3498db;
   --bs-btn-hover-color: #000000;
   --bs-btn-hover-bg: rgb(82.45, 167.45, 224.4);
   --bs-btn-hover-border-color: rgb(72.3, 162.3, 222.6);
-  --bs-btn-focus-shadow-rgb: 44, 129, 186;
+  --bs-btn-focus-shadow-rgb: 49, 134, 191;
   --bs-btn-active-color: #000000;
   --bs-btn-active-bg: rgb(92.6, 172.6, 226.2);
   --bs-btn-active-border-color: rgb(72.3, 162.3, 222.6);
@@ -12276,7 +12273,7 @@ textarea.form-control-xs {
 [data-bs-theme=dark] .btn-outline-primary {
   --bs-btn-color: #3498db;
   --bs-btn-border-color: #3498db;
-  --bs-btn-hover-color: #000000;
+  --bs-btn-hover-color: #1f1f1f;
   --bs-btn-hover-bg: #3498db;
   --bs-btn-hover-border-color: #3498db;
   --bs-btn-focus-shadow-rgb: 52, 152, 219;
@@ -12512,12 +12509,6 @@ textarea.form-control-xs {
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: #1f1f1f;
   --bs-gradient: none;
-}
-[data-bs-theme=dark] .btn-primary {
-  --bs-btn-color: #1f1f1f;
-  --bs-btn-hover-color: #1f1f1f;
-  --bs-btn-active-color: #1f1f1f;
-  --bs-btn-disabled-color: #1f1f1f;
 }
 [data-bs-theme=dark] .form-check-input:checked {
   background-color: #3498db;

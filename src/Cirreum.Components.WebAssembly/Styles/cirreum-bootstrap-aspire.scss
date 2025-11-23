@@ -7,3 +7,13 @@
 */
 @import "bootstrap/themes/theme-aspire";
 @import "cirreum-bootstrap-base";
+
+// Dark mode version
+// Slightly different adjustment for dark mode
+[data-bs-theme="dark"] {
+	.btn-outline-info {
+		@include button-outline-variant(
+			darken($info, 10%)
+		);
+	}
+}

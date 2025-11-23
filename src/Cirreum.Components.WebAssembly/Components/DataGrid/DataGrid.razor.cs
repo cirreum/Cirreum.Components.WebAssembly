@@ -190,11 +190,10 @@ public partial class DataGrid<TData> {
 	internal void CancelColumnVisibility(IEnumerable<DataGridColumnVisibleModel> items) {
 		foreach (var column in this.Columns) {
 			var cv = items.FirstOrDefault(c => c.ColumnId.Equals(column.ColumnId));
-			if (cv is not null) {
-				cv.IsVisible = column.IsVisible;
-			}
+			cv?.IsVisible = column.IsVisible;
 		}
 		this.ApplyVisibilityIndex();
+		this.Update();
 	}
 	internal void ApplyVisibilityIndex() {
 		var visibleIndex = 1;
@@ -250,7 +249,7 @@ public partial class DataGrid<TData> {
 	/// Default: null
 	/// </para>
 	/// <para>
-	/// When <see langword="null"/>, uses the internal default of 'text-info'.
+	/// When <see langword="null"/>, uses the default of 'text-primary-emphasis'.
 	/// </para>
 	/// </remarks>
 	[Parameter]
@@ -374,9 +373,9 @@ public partial class DataGrid<TData> {
 	}
 
 	internal void CloseColumnFilter() {
-		if (this.currentFilteredColumn is not null) {
-			this.currentFilteredColumn.HideFilter();
-			this.currentFilteredColumn = null;
+		this.currentFilteredColumn?.HideFilter();
+		this.currentFilteredColumn = null;
+		if (this._renderColumnHeaderFilter is not null) {
 			this._renderColumnHeaderFilter = null;
 			this.Update();
 		}
@@ -1552,7 +1551,7 @@ public partial class DataGrid<TData> {
 	/// </para>
 	/// </remarks>
 	[Parameter]
-	public bool Small { get; set; } = true;
+	public bool Small { get; set; } = false;
 
 	private string ResolvedTableClass => CssBuilder
 		.Default("table")
@@ -1986,9 +1985,7 @@ public partial class DataGrid<TData> {
 		if (parameters.TryGetValue<bool>(nameof(this.Searchable), out var value) && this.Searchable != value) {
 			// force a Data Refresh... see OnParametersSet
 			this.isSearchableChanged = true;
-			if (this.SearchBarInstance is not null) {
-				this.SearchBarInstance.GridSearchValue = "";
-			}
+			this.SearchBarInstance?.GridSearchValue = "";
 		}
 	}
 
@@ -2108,7 +2105,7 @@ public partial class DataGrid<TData> {
 	}
 	protected override void OnParametersSet() {
 		if (this.Data is not null && this.QueryableData is not null) {
-			var msg = $"{nameof(DataGrid<TData>)} requires one of {nameof(this.Data)} or {nameof(this.QueryableData)}, but both were specified.";
+			var msg = $"{nameof(DataGrid<>)} requires one of {nameof(this.Data)} or {nameof(this.QueryableData)}, but both were specified.";
 			throw new InvalidOperationException(msg);
 		}
 

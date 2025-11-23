@@ -4,7 +4,7 @@
   background-color: rgba(var(--bs-body-color-rgb), 0.03);
 }
 .inputfile-container[drop-files] {
-  border: 1px dashed var(--bs-info);
+  border: 1px dashed var(--bs-primary-border);
 }
 .inputfile-container .inputfile-content {
   grid-column: 1;
@@ -18,11 +18,13 @@
   height: 100%;
   opacity: 0;
 }
-.inputfile-container ::deep label,
-.inputfile-container ::deep a {
-  color: var(--bs-info);
+.inputfile-container ::deep label {
+  color: var(--bs-link-color);
   text-decoration: underline;
   cursor: pointer;
+}
+.inputfile-container ::deep label:hover {
+  color: var(--bs-link-hover-color);
 }
 .inputfile-container[disabled], .inputfile-container[disabled=true] {
   opacity: 0.5;

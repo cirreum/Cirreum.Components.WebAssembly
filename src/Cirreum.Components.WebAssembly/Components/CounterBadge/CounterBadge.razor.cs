@@ -11,10 +11,10 @@ public partial class CounterBadge {
 	protected string? ClassValue => CssBuilder
 		.Empty()
 			.AddClass("counterbadge")
-			.AddClassIfNotEmpty(this.BackgroundColor.ToName())
-			.AddClassIfNotEmpty(this.Color.ToName())
+			.AddClass(this.BackgroundColor.ToName(), when: this.BackgroundColor != BackgroundColor.None)
+			.AddClass(this.Color.ToName(), when: this.Color != TextColor.None)
+			.AddClass($"border border{this.BackgroundColor.ToShortName()}", when: this.BackgroundColor != BackgroundColor.None)
 			.AddClassIfNotEmpty(this.Class)
-			.AddClassIfNotEmpty($"border border{this.BackgroundColor.ToShortName()}")
 		.Build();
 
 	[Parameter]

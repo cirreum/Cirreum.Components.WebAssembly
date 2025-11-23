@@ -18,7 +18,7 @@
 				Filter [@(HeaderText)]
 			</PopoverHeader>
 			<PopoverBody>
-				<div @onkeyup="EventUtil.AsNonRenderingEventHandler<KeyboardEventArgs>(KeyPress)">
+				<div @onkeyup="KeyPress">
 					<FocusTrap IsActive=@filterPopover.IsOpen>
 						<div class="m-2" title="filter">
 							<CascadingValue TValue="DataGridColumn<TData>" Value="@this" IsFixed="true">
@@ -59,9 +59,9 @@
 			aria-label="@HeaderText"
 			@ondrop="EventUtil.AsNonRenderingEventHandler(HandleDrop)" @ondrop:preventDefault
 			@ondragover="EventUtil.AsNonRenderingEventHandler(HandleDragOver)" @ondragover:preventDefault>
-			<span class="col-header-content"
-				  draggable="@Draggable"
-				  @ondragstart="EventUtil.AsNonRenderingEventHandler<DragEventArgs>(HandleDragStart)">
+			<div class="col-header-content"
+				 draggable="@Draggable"
+				 @ondragstart="EventUtil.AsNonRenderingEventHandler<DragEventArgs>(HandleDragStart)">
 
 				<div title="@SortIconTitle" @onclick="@EventUtil.AsNonRenderingEventHandler(SortBy)" class="@HeaderContentCssClasses">
 					@if (HeaderTemplate is not null) {
@@ -87,8 +87,11 @@
 					</div>
 				}
 
-			</span>
+			</div>
 			@if (CanResize) {
+				if (!Grid.Bordered) {
+					<span class="col-borderless-separator text-primary-emphasis"></span>
+				}
 				<span class="col-width-draghandle" id="@("sizer_" + ColumnId)" @onclick="EventUtil.AsNonRenderingEventHandler(ResizeHandlerClicked)" @onclick:stopPropagation="true"></span>
 			}
 		</th>

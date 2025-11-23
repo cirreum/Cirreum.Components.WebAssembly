@@ -135,11 +135,7 @@ public partial class Popover : IDisposable {
 		this.IsShowing = false;
 		this.IsRendering = false;
 
-		this.RunAfterRender(() => {
-			this.SetIsOpen(false);
-		});
-
-		this.Update();
+		this.SetIsOpen(false);
 
 	}
 

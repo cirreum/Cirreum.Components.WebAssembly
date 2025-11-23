@@ -107,7 +107,3 @@
 .text-search .form-control:disabled, .text-search .form-control.disabled, .text-search .form-control[readonly] {
   background-color: var(--bs-secondary-bg);
 }
-
-html[data-bs-theme=light] .text-search .form-control:focus {
-  background-color: var(--bs-body-bg) !important;
-}

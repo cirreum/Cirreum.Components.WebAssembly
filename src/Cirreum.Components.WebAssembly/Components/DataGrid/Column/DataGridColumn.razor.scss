@@ -7,8 +7,6 @@ th[role="columnheader"]:not([data-detail-column]) {
 }
 
 .col-header-content {
-	display: -webkit-box !important;
-	display: -ms-flexbox !important;
 	display: flex !important;
 	flex-wrap: nowrap !important;
 	margin-right: 4px;
@@ -63,8 +61,25 @@ th[role="columnheader"]:not([data-detail-column]) {
 	}
 }
 
+.col-borderless-separator {
+	display: inline-block;
+	width: 1px;
+	min-height: 4px;
+	position: absolute;
+	top: 4px;
+	bottom: 4px;
+	right: 0;
+	z-index: 7;
+	user-select: none;
+	pointer-events: none;
+	background-color: currentcolor;
+	opacity: 0.125;
+	transition: opacity 0.15s ease;
+}
 
-$draghandler-color: #62738e;
+// Using CSS custom properties for drag handle color
+// This allows theme customization
+$draghandler-color: var(--bs-border-color-translucent, #62738e) !default;
 .col-width-draghandle {
 	display: inline-block;
 	width: 8px;
@@ -85,7 +100,7 @@ $draghandler-color: #62738e;
 	border-right: 2px solid $draghandler-color;
 }
 
-::deep table {
+/*::deep table {
 	&:not(.table-bordered) {
 		> thead {
 			.col-width-draghandle {
@@ -93,4 +108,4 @@ $draghandler-color: #62738e;
 			}
 		}
 	}
-}
+}*/

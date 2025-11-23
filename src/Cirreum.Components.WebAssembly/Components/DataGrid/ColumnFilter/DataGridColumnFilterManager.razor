@@ -2,7 +2,7 @@
 @typeparam TData
 @ChildContent
 <div class="d-flex justify-content-evenly gap-2 mt-2">
-	<button type="button" class="col btn btn-secondary btn-sm" role="button" title="close..." @onclick="Close">Close</button>
-	<button type="button" class="col btn btn-danger btn-sm" role="button" title="clear..." @onclick="ClearFilter">Clear</button>
-	<button type="button" class="col btn btn-primary btn-sm" role="button" title="apply..." @onclick="ApplyFilter">Apply</button>
+	<button type="button" class="col btn btn-secondary btn-sm" role="button" title="close..." @onclick="Close" @onclick:preventDefault @onclick:stopPropagation>Close</button>
+	<button type="button" class="col btn btn-danger btn-sm" role="button" title="clear..." @onclick="ClearFilter" @onclick:preventDefault @onclick:stopPropagation>Clear</button>
+	<button type="button" class="col btn btn-primary btn-sm" role="button" title="apply..." @onclick="ApplyFilter" @onclick:preventDefault @onclick:stopPropagation>Apply</button>
 </div>

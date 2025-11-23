@@ -20,22 +20,16 @@ public partial class DataGridColumnFilterManager<TData> {
 	[Parameter]
 	public EventCallback OnFilterCancel { get; set; } = default!;
 
-	private void ApplyFilter() {
-		if (this.OnFilterApply.HasDelegate) {
-			this.OnFilterApply.InvokeAsync();
-		}
+	private async Task ApplyFilter() {
+		await this.OnFilterApply.InvokeAsync();
 	}
 
-	private void ClearFilter() {
-		if (this.OnFilterClear.HasDelegate) {
-			this.OnFilterClear.InvokeAsync();
-		}
+	private async Task ClearFilter() {
+		await this.OnFilterClear.InvokeAsync();
 	}
 
-	private void Close() {
-		if (this.OnFilterCancel.HasDelegate) {
-			this.OnFilterCancel.InvokeAsync();
-		}
+	private async Task Close() {
+		await this.OnFilterCancel.InvokeAsync();
 	}
 
 }

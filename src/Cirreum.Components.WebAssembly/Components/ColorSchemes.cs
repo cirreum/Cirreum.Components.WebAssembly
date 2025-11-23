@@ -10,6 +10,7 @@ using System.Linq;
 public static class ColorSchemes {
 
 	public const string DefaultId = "default";
+	public const string AquaId = "aqua";
 	public const string AspireId = "aspire";
 	public const string ExcelId = "excel";
 	public const string OfficeId = "office";
@@ -22,9 +23,17 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Default = new(
 		Id: DefaultId,
 		DisplayName: "Default",
-		CssKey: "default",
 		IconCssClass: "bi-palette",
 		Description: "Neutral Cirreum style");
+
+	/// <summary>
+	/// macOS/Big Sur inspired theme.
+	/// </summary>
+	public static readonly ColorScheme Aqua = new(
+		Id: AquaId,
+		DisplayName: "Aqua",
+		IconCssClass: "bi-apple",
+		Description: "macOS-inspired theme");
 
 	/// <summary>
 	/// Purple .NET-inspired theme.
@@ -32,7 +41,6 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Aspire = new(
 		Id: AspireId,
 		DisplayName: "Aspire",
-		CssKey: "aspire",
 		IconCssClass: "bi-stars",
 		Description: "Purple .NET-inspired theme");
 
@@ -42,7 +50,6 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Excel = new(
 		Id: ExcelId,
 		DisplayName: "Excel",
-		CssKey: "excel",
 		IconCssClass: "bi-table",
 		Description: "Data-focused theme");
 
@@ -52,7 +59,6 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Office = new(
 		Id: OfficeId,
 		DisplayName: "Office",
-		CssKey: "office",
 		IconCssClass: "bi-briefcase",
 		Description: "Office 365-style theme");
 
@@ -62,7 +68,6 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Outlook = new(
 		Id: OutlookId,
 		DisplayName: "Outlook",
-		CssKey: "outlook",
 		IconCssClass: "bi-envelope",
 		Description: "Mail & calendar inspired theme");
 
@@ -72,7 +77,6 @@ public static class ColorSchemes {
 	public static readonly ColorScheme Windows = new(
 		Id: WindowsId,
 		DisplayName: "Windows",
-		CssKey: "windows",
 		IconCssClass: "bi-windows",
 		Description: "Classic Microsoft feel");
 
@@ -82,6 +86,7 @@ public static class ColorSchemes {
 	public static readonly IReadOnlyList<ColorScheme> All =
 	[
 		Default,
+		Aqua,
 		Aspire,
 		Excel,
 		Office,

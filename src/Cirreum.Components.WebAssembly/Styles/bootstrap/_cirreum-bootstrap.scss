@@ -68,7 +68,6 @@
 		// Component overrides
 		--#{$prefix}component-active-color: #{$component-active-color-dark};
 		--#{$prefix}component-active-bg: #{$component-active-bg-dark};
-	   
 	}
 }
 
@@ -568,13 +567,18 @@ textarea.form-control-xs {
 		// text-bg utilities
 		@each $color, $value in $theme-colors-dark {
 			.text-bg-#{$color} {
-				color: color-contrast($value) if($enable-important-utilities, !important, null);
+				@if $color == 'primary' and $btn-primary-color-dark {
+					color: #{$btn-primary-color-dark} if($enable-important-utilities, !important, null);
+				}
+				@else if $color == 'secondary' and $btn-secondary-color-dark {
+					color: #{$btn-secondary-color-dark} if($enable-important-utilities, !important, null);
+				}
+				@else {
+					color: color-contrast($value) if($enable-important-utilities, !important, null);
+				}
+
 				background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if($enable-important-utilities, !important, null);
 			}
-		}
-
-		.text-bg-primary {
-			color: #{$btn-primary-color-dark} if($enable-important-utilities, !important, null);
 		}
 		// All-caps `RGBA()` function used because of this Sass bug: https://github.com/sass/node-sass/issues/2251
 		@each $color, $value in $theme-colors-dark {
@@ -610,20 +614,30 @@ textarea.form-control-xs {
 		//
 		@each $color, $value in $theme-colors-dark {
 			.btn-#{$color} {
-				@include button-variant($value, $value);
+				@if $color == 'primary' and $btn-primary-color-dark {
+					@include button-variant($value, $value, $btn-primary-color-dark);
+				}
+				@else if $color == 'secondary' and $btn-secondary-color-dark {
+					@include button-variant($value, $value, $btn-secondary-color-dark);
+				}
+				@else {
+					@include button-variant($value, $value);
+				}
 			}
 
 			.btn-outline-#{$color} {
-				@include button-outline-variant($value);
+				@if $color == 'primary' and $btn-primary-color-dark {
+					@include button-outline-variant($value, $btn-primary-color-dark);
+				}
+				@else if $color == 'secondary' and $btn-secondary-color-dark {
+					@include button-outline-variant($value, $btn-secondary-color-dark);
+				}
+				@else {
+					@include button-outline-variant($value);
+				}
 			}
 		}
 
-		.btn-primary {
-			--#{$prefix}btn-color: #{$btn-primary-color-dark};
-			--#{$prefix}btn-hover-color: #{$btn-primary-color-dark};
-			--#{$prefix}btn-active-color: #{$btn-primary-color-dark};
-			--#{$prefix}btn-disabled-color: #{$btn-primary-color-dark};
-		}
 		//
 		// Forms controls
 		//

@@ -4,7 +4,7 @@
 	background-color: rgba(var(--bs-body-color-rgb), 0.03);
 
 	&[drop-files] {
-		border: 1px dashed var(--bs-info);
+		border: 1px dashed var(--bs-primary-border);
 	}
 
 	.inputfile-content {
@@ -22,11 +22,14 @@
 			opacity: 0;
 		}
 
-		label,
-		a {
-			color: var(--bs-info);
+		label {
+			color: var(--bs-link-color);
 			text-decoration: underline;
 			cursor: pointer;
+
+			&:hover {
+				color: var(--bs-link-hover-color);
+			}
 		}
 	}
 

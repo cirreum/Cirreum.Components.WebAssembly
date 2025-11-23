@@ -131,12 +131,12 @@ public interface IJSAppModule {
 	/// <returns></returns>
 	string GetSystemThemeMode();
 	/// <summary>
-	/// Supply an object that implements <see cref="ISystemThemeChangedRef"/> to receive
+	/// Supply an object that implements <see cref="IThemeModeChangedRef"/> to receive
 	/// updates when the system theme mode changes.
 	/// </summary>
-	/// <typeparam name="T">A type that implements <see cref="ISystemThemeChangedRef"/></typeparam>
+	/// <typeparam name="T">A type that implements <see cref="IThemeModeChangedRef"/></typeparam>
 	/// <param name="dotnetObjRef">The <see cref="DotNetObjectReference{T}"/> to receive callbacks.</param>
-	void MonitorSystemThemeMode<T>(DotNetObjectReference<T> dotnetObjRef) where T : class, ISystemThemeChangedRef;
+	void MonitorSystemThemeMode<T>(DotNetObjectReference<T> dotnetObjRef) where T : class, IThemeModeChangedRef;
 
 	void MonitorBreakpoint<T>(DotNetObjectReference<T> dotnetObjRef, string minBreakpointSize) where T : class;
 

@@ -27,6 +27,12 @@ public enum ThemeMode {
 /// Provides constants for theme mode values used throughout the application.
 /// </summary>
 public static class ThemeModeNames {
+
+	/// <summary>
+	/// Represents the automatic theme mode that adapts to system preferences.
+	/// </summary>
+	public const string Auto = "auto";
+
 	/// <summary>
 	/// Represents the theme light mode.
 	/// </summary>
@@ -38,12 +44,8 @@ public static class ThemeModeNames {
 	public const string Dark = "dark";
 
 	/// <summary>
-	/// Represents the automatic theme mode that adapts to system preferences.
-	/// </summary>
-	public const string Auto = "auto";
-
-	/// <summary>
 	/// Gets a read-only collection containing all available theme modes.
 	/// </summary>
-	public static readonly IReadOnlyList<string> All = [Light, Dark, Auto];
+	public static readonly IReadOnlyList<string> All = [Auto, Light, Dark];
+
 }

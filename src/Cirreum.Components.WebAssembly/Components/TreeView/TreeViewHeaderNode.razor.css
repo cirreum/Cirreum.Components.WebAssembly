@@ -4,7 +4,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--bs-secondary);
+  color: var(--bs-tertiary-color);
   background-color: transparent;
 }
 

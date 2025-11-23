@@ -265,7 +265,7 @@ export function monitorSystemThemeMode(dotnetRef) {
     const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkThemeMq.addEventListener("change", async (e) => {
         const storedTheme = localStorage.getItem("user-theme-mode");
-        await dotnetRef.invokeMethodAsync("OnThemeChange", e.matches, storedTheme);
+        await dotnetRef.invokeMethodAsync("OnModeChanged", e.matches, storedTheme);
     });
 }
 export function getCurrentBreakPoint(minBreakpoint) {

@@ -4,9 +4,10 @@ using Cirreum.Components;
 using System;
 
 /// <summary>
-/// Provides extension methods for the BackgroundColor enum.
+/// Provides extension methods for mapping various color types to another.
 /// </summary>
-public static class BackgroundColorExtensions {
+public static class ColorExtensions {
+
 	/// <summary>
 	/// Converts a BackgroundColor to its corresponding ButtonColor.
 	/// Subtle variants and special cases are mapped to their base color equivalent.
@@ -46,8 +47,9 @@ public static class BackgroundColorExtensions {
 	/// Converts a ButtonColor to its corresponding BackgroundColor.
 	/// </summary>
 	/// <param name="buttonColor">The ButtonColor to convert.</param>
+	/// <param name="defaultBackgroundColor">The default background if the provided button color doesn't match an available Background color.</param>
 	/// <returns>The corresponding BackgroundColor.</returns>
-	public static BackgroundColor ToBackgroundColor(this ButtonColor buttonColor) {
+	public static BackgroundColor ToBackgroundColor(this ButtonColor buttonColor, BackgroundColor? defaultBackgroundColor = null) {
 		return buttonColor switch {
 			ButtonColor.None => BackgroundColor.None,
 			ButtonColor.Primary => BackgroundColor.Primary,
@@ -59,8 +61,28 @@ public static class BackgroundColorExtensions {
 			ButtonColor.Light => BackgroundColor.Light,
 			ButtonColor.Dark => BackgroundColor.Dark,
 			ButtonColor.Link => BackgroundColor.None, // Mapping Link to None as there's no direct equivalent
-			_ => throw new ArgumentOutOfRangeException(nameof(buttonColor), buttonColor, null)
+			_ => defaultBackgroundColor ?? throw new ArgumentOutOfRangeException(nameof(buttonColor), buttonColor, null)
 		};
 	}
 
+	/// <summary>
+	/// Converts a ToastStyleType to its corresponding BackgroundColor.
+	/// </summary>
+	/// <param name="styleType">The ToastStyleType to convert.</param>
+	/// <param name="defaultBackgroundColor">The default background if the provided button color doesn't match an available Background color.</param>
+	/// <returns>The corresponding BackgroundColor.</returns>
+	public static BackgroundColor ToBackgroundColor(this ToastStyleType styleType, BackgroundColor? defaultBackgroundColor = null) {
+		return styleType switch {
+			ToastStyleType.Default => BackgroundColor.Primary,
+			ToastStyleType.Primary => BackgroundColor.Primary,
+			ToastStyleType.Secondary => BackgroundColor.Secondary,
+			ToastStyleType.Success => BackgroundColor.Success,
+			ToastStyleType.Danger => BackgroundColor.Danger,
+			ToastStyleType.Warning => BackgroundColor.Warning,
+			ToastStyleType.Info => BackgroundColor.Info,
+			ToastStyleType.Light => BackgroundColor.Light,
+			ToastStyleType.Dark => BackgroundColor.Dark,
+			_ => defaultBackgroundColor ?? throw new ArgumentOutOfRangeException(nameof(styleType), styleType, null)
+		};
+	}
 }

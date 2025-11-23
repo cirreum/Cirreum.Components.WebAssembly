@@ -6,8 +6,6 @@ th[role=columnheader]:not([data-detail-column]) {
 }
 
 .col-header-content {
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
   display: flex !important;
   flex-wrap: nowrap !important;
   margin-right: 4px;
@@ -50,6 +48,22 @@ th[role=columnheader]:not([data-detail-column]) {
   text-shadow: 0 0 1px white;
 }
 
+.col-borderless-separator {
+  display: inline-block;
+  width: 1px;
+  min-height: 4px;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 0;
+  z-index: 7;
+  user-select: none;
+  pointer-events: none;
+  background-color: currentcolor;
+  opacity: 0.125;
+  transition: opacity 0.15s ease;
+}
+
 .col-width-draghandle {
   display: inline-block;
   width: 8px;
@@ -62,13 +76,19 @@ th[role=columnheader]:not([data-detail-column]) {
   user-select: none;
 }
 .col-width-draghandle:hover {
-  border-right: 4px solid #62738e;
+  border-right: 4px solid var(--bs-border-color-translucent, #62738e);
 }
 
 .col-width-resizing {
-  border-right: 2px solid #62738e;
+  border-right: 2px solid var(--bs-border-color-translucent, #62738e);
 }
 
-::deep table:not(.table-bordered) > thead .col-width-draghandle {
-  border-right: 1px solid #62738e;
-}
+/*::deep table {
+	&:not(.table-bordered) {
+		> thead {
+			.col-width-draghandle {
+				border-right: 1px solid $draghandler-color;
+			}
+		}
+	}
+}*/

@@ -140,7 +140,3 @@ $transition-duration: 0.2s;
 		}
 	}
 }
-
-html[data-bs-theme="light"] .text-search .form-control:focus {
-	background-color: var(--bs-body-bg) !important;
-}

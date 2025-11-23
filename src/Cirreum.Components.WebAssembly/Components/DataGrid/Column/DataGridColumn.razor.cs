@@ -543,7 +543,6 @@ public sealed partial class DataGridColumn<TData> {
 		this.SetSortColumn(false);
 	}
 
-	internal const string DefaultSortIconColorCss = "text-primary";
 	internal string? SortIconTitle => ValueBuilder
 		.Empty()
 			.AddValue("sort ascending...", when: this.IsSortable && !this.SortColumn)
@@ -551,6 +550,7 @@ public sealed partial class DataGridColumn<TData> {
 			.AddValue("sorted descending", when: this.SortColumn && this.SortDescending)
 		.NullIfEmpty();
 
+	internal const string DefaultSortIconColorCss = "text-primary-emphasis";
 	internal string SortIconClass => CssBuilder
 		.Default("mx-1 bi")
 			.AddClass("bi-sort-alpha-down", when: this.IsSortAlphaAsc)
@@ -698,7 +698,7 @@ public sealed partial class DataGridColumn<TData> {
 					this.Grid.ApplyCurrentData();
 					this.Grid.Update();
 				}
-			} else {
+			} else if (newFilter is not null) {
 				this.Filter = newFilter;
 				this.Grid.ApplyCurrentData();
 				this.Grid.Update();

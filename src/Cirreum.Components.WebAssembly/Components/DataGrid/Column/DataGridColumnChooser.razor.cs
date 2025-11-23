@@ -64,12 +64,6 @@ public partial class DataGridColumnChooser<TData> {
 
 	}
 
-	private Task HandleOpenedChanged(bool isOpen) {
-		this.IsPopoverOpen = isOpen;
-		this.Update();
-		return Task.CompletedTask;
-	}
-
 	private Task HandleOutsideClick(string targetId) {
 		if (this.ElementId != targetId) {
 			this.CancelColumns();

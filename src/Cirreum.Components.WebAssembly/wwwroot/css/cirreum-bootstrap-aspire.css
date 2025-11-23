@@ -12151,7 +12151,7 @@ textarea.form-control-xs {
 }
 
 [data-bs-theme=dark] .text-bg-primary {
-  color: #000000 !important;
+  color: #1f1f1f !important;
   background-color: RGBA(var(--bs-primary-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 [data-bs-theme=dark] .text-bg-secondary {
@@ -12181,9 +12181,6 @@ textarea.form-control-xs {
 [data-bs-theme=dark] .text-bg-dark {
   color: #ffffff !important;
   background-color: RGBA(var(--bs-dark-rgb), var(--bs-bg-opacity, 1)) !important;
-}
-[data-bs-theme=dark] .text-bg-primary {
-  color: #1f1f1f !important;
 }
 [data-bs-theme=dark] .link-primary {
   color: RGBA(var(--bs-primary-rgb), var(--bs-link-opacity, 1)) !important;
@@ -12258,13 +12255,13 @@ textarea.form-control-xs {
   text-decoration-color: RGBA(var(--bs-emphasis-color-rgb), var(--bs-link-underline-opacity, 0.75)) !important;
 }
 [data-bs-theme=dark] .btn-primary {
-  --bs-btn-color: #000000;
+  --bs-btn-color: #1f1f1f;
   --bs-btn-bg: #d6aeff;
   --bs-btn-border-color: #d6aeff;
   --bs-btn-hover-color: #000000;
   --bs-btn-hover-bg: rgb(220.15, 186.15, 255);
   --bs-btn-hover-border-color: rgb(218.1, 182.1, 255);
-  --bs-btn-focus-shadow-rgb: 182, 148, 217;
+  --bs-btn-focus-shadow-rgb: 187, 153, 221;
   --bs-btn-active-color: #000000;
   --bs-btn-active-bg: rgb(222.2, 190.2, 255);
   --bs-btn-active-border-color: rgb(218.1, 182.1, 255);
@@ -12276,7 +12273,7 @@ textarea.form-control-xs {
 [data-bs-theme=dark] .btn-outline-primary {
   --bs-btn-color: #d6aeff;
   --bs-btn-border-color: #d6aeff;
-  --bs-btn-hover-color: #000000;
+  --bs-btn-hover-color: #1f1f1f;
   --bs-btn-hover-bg: #d6aeff;
   --bs-btn-hover-border-color: #d6aeff;
   --bs-btn-focus-shadow-rgb: 214, 174, 255;
@@ -12513,12 +12510,6 @@ textarea.form-control-xs {
   --bs-btn-disabled-border-color: #1f1f1f;
   --bs-gradient: none;
 }
-[data-bs-theme=dark] .btn-primary {
-  --bs-btn-color: #1f1f1f;
-  --bs-btn-hover-color: #1f1f1f;
-  --bs-btn-active-color: #1f1f1f;
-  --bs-btn-disabled-color: #1f1f1f;
-}
 [data-bs-theme=dark] .form-check-input:checked {
   background-color: #d6aeff;
   border-color: #d6aeff;
@@ -12580,4 +12571,21 @@ textarea.form-control-xs {
 .bi-shake {
   display: inline-block;
   animation: bi-shaker 0.5s infinite;
+}
+
+[data-bs-theme=dark] .btn-outline-info {
+  --bs-btn-color: rgb(0, 84.8, 204);
+  --bs-btn-border-color: rgb(0, 84.8, 204);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: rgb(0, 84.8, 204);
+  --bs-btn-hover-border-color: rgb(0, 84.8, 204);
+  --bs-btn-focus-shadow-rgb: 0, 85, 204;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: rgb(0, 84.8, 204);
+  --bs-btn-active-border-color: rgb(0, 84.8, 204);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: rgb(0, 84.8, 204);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: rgb(0, 84.8, 204);
+  --bs-gradient: none;
 }
