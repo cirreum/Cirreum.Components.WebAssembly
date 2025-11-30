@@ -20,8 +20,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 /// state and propagates them to the telemetry system for correlation with application events.
 /// </para>
 /// </remarks>
-public class ClientAuthenticationView : RemoteAuthenticatorViewCore<RemoteAuthenticationState>
-{
+public class ClientAuthenticationView : RemoteAuthenticatorViewCore<RemoteAuthenticationState> {
 	public ClientAuthenticationView() => this.AuthenticationState = new RemoteAuthenticationState();
 
 	[Inject]
@@ -30,17 +29,15 @@ public class ClientAuthenticationView : RemoteAuthenticatorViewCore<RemoteAuthen
 	[CascadingParameter]
 	private Task<AuthenticationState>? AuthState { get; set; }
 
-	protected override void OnInitialized()
-	{
+	protected override void OnInitialized() {
 		this.OnLogInSucceeded = EventCallback.Factory.Create<RemoteAuthenticationState>(this, this.LoginSucceeded);
 		this.OnLogOutSucceeded = EventCallback.Factory.Create<RemoteAuthenticationState>(this, this.LogoutSucceeded);
 	}
 
-	private async Task LoginSucceeded(RemoteAuthenticationState clientAuthState)
-	{
-		if (this.AuthState is not null
-			&& this.UserTelemetryContext is not null)
-		{
+	private async Task LoginSucceeded(RemoteAuthenticationState clientAuthState) {
+
+		if (this.AuthState is not null &&
+			this.UserTelemetryContext?.IsEnabled == true) {
 			// get the newly authenticated user
 			var authState = await this.AuthState;
 
@@ -62,10 +59,8 @@ public class ClientAuthenticationView : RemoteAuthenticatorViewCore<RemoteAuthen
 		}
 	}
 
-	private async Task LogoutSucceeded(RemoteAuthenticationState clientAuthState)
-	{
-		if (this.UserTelemetryContext is not null)
-		{
+	private async Task LogoutSucceeded(RemoteAuthenticationState clientAuthState) {
+		if (this.UserTelemetryContext?.IsEnabled == true) {
 			await this.UserTelemetryContext.ClearAuthenticatedUser();
 		}
 	}
