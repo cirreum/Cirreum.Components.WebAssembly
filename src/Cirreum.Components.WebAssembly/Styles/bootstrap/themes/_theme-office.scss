@@ -1,11 +1,12 @@
 // Microsoft Office theme
+@import '../functions.scss';
 
 //
 // Light mode
 //
 $orange: #d83b01 !default;
 $primary: #d83b01 !default; // Office Orange
-$secondary: #605e5c !default; // Neutral Gray (Fluent)
+$secondary: #605E5C !default; // Neutral Gray (Fluent)
 $success: #217346 !default; // Excel Green
 $info: #0078d4 !default; // Fluent Blue
 $warning: #f2c811 !default; // Power BI Yellow
@@ -20,3 +21,6 @@ $link-hover-color: #a62d01 !default;
 //
 $link-color-dark: #ff8c5a !default; // Lighter Office orange for dark mode
 $link-hover-color-dark: #ffad85 !default; // Even lighter on hover
+
+// Buttons
+$btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

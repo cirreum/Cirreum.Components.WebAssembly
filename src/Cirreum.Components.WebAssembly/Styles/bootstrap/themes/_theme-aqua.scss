@@ -7,10 +7,10 @@ $min-contrast-ratio: 4.5 !default;
 // Light mode overrides
 //
 $primary: #007AFF !default; // iOS/macOS blue
+$secondary: #6C757D !default; // macOS gray
 $success: #34C759 !default; // macOS green
 $warning: #FF9500 !default; // macOS orange
 $danger: #FF3B30 !default; // macOS red
-$secondary: #6C757D !default; // macOS gray
 
 
 //
@@ -40,3 +40,6 @@ $body-secondary-color-dark: #98989D !default;
 
 // Border colors (macOS uses subtle separators)
 $border-color-dark: rgba(255, 255, 255, 0.1) !default;
+
+// Buttons
+$btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

@@ -1,6 +1,9 @@
 // Microsoft Fluent UI Default theme
+@import '../functions.scss';
+
+
 $primary: #3498db !default; // Windows Blue
-$secondary: #605e5c !default; // Neutral Gray
+$secondary: #605E5C !default; // Neutral Gray
 $success: #107c10 !default; // Green
 $info: #00b7c3 !default; // Teal
 $warning: #f7630c !default; // Orange
@@ -10,3 +13,8 @@ $link-color: #0078d4 !default;
 $link-hover-color: #106ebe !default;
 
 $blue: #0078d4 !default;
+
+// Dark Mode
+
+// Buttons
+$btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

@@ -252,14 +252,14 @@ $teal-dark: $teal !default;
 $cyan-dark: $cyan !default;
 
 $theme-colors-dark: ( 
-    "primary": $primary-dark, 
-    "secondary": $secondary-dark, 
-    "success": $success-dark, 
-    "info": $info-dark, 
-    "warning": $warning-dark, 
-    "danger": $danger-dark, 
-    "light": $light-dark, 
-    "dark": $dark-dark ) !default;
+	"primary": $primary-dark, 
+	"secondary": $secondary-dark, 
+	"success": $success-dark, 
+	"info": $info-dark, 
+	"warning": $warning-dark, 
+	"danger": $danger-dark, 
+	"light": $light-dark, 
+	"dark": $dark-dark ) !default;
 
 //
 // Component Defaults
@@ -270,9 +270,18 @@ $component-active-bg-dark: $primary-dark !default;
 // Buttons
 $btn-primary-color-dark: $gray-900 !default;
 $btn-secondary-color-dark: null !default;
+$btn-secondary-outline-color-dark: null !default;
 
 // Table Variants for dark mode
-$table-variants-dark: ( "primary": shift-color($primary-dark, $table-bg-scale), "secondary": shift-color($secondary-dark, $table-bg-scale), "success": shift-color($success-dark, $table-bg-scale), "info": shift-color($info-dark, $table-bg-scale), "warning": shift-color($warning-dark, $table-bg-scale), "danger": shift-color($danger-dark, $table-bg-scale), "light": $light, "dark": $dark, ) !default;
+$table-variants-dark: ( 
+	"primary": shift-color($primary-dark, $table-bg-scale), 
+	"secondary": shift-color($secondary-dark, $table-bg-scale), 
+	"success": shift-color($success-dark, $table-bg-scale), 
+	"info": shift-color($info-dark, $table-bg-scale), 
+	"warning": shift-color($warning-dark, $table-bg-scale), 
+	"danger": shift-color($danger-dark, $table-bg-scale), 
+	"light": $light, 
+	"dark": $dark, ) !default;
 
 // Form checkbox/radio dark mode
 $form-check-input-checked-bg-color-dark: $primary-dark !default;

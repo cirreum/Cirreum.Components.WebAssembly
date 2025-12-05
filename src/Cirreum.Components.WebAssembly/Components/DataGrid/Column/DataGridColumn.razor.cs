@@ -366,7 +366,7 @@ public sealed partial class DataGridColumn<TData> {
 				this._cellClassList = CssBuilder
 					.Empty()
 						.AddClassIfNotEmpty(this._cellCss)
-						.AddClass("sorting_1", when: this.SortColumn)
+						.AddClass("sorting_1", when: this.Grid.HighlightSortedColumn && this.SortColumn)
 					.NullIfEmpty();
 				this._cellClassListIsDirty = false;
 			}

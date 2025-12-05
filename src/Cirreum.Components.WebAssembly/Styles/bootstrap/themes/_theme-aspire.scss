@@ -27,14 +27,19 @@ $link-hover-color: #9151eb !default;
 //
 $primary-dark: #d6aeff !default; // Light purple for dark backgrounds
 
-$btn-primary-color-dark: #1f1f1f !default;
-
+// Link colors
 $link-color-dark: #cca3ff !default; // Aspire dark mode foreground rest
 $link-hover-color-dark: #f9d4ff !default; // Aspire dark mode foreground hover
 
+// Background subtles
 $primary-bg-subtle-dark: shade-color($primary, 90%) !default;
 $secondary-bg-subtle-dark: shade-color($secondary, 90%) !default;
 $success-bg-subtle-dark: shade-color($success, 90%) !default;
 $info-bg-subtle-dark: shade-color($info, 90%) !default;
 $warning-bg-subtle-dark: shade-color($warning, 80%) !default;
 $danger-bg-subtle-dark: shade-color($danger, 90%) !default;
+
+// Buttons
+$btn-primary-color-dark: #1f1f1f !default;
+$btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;
+

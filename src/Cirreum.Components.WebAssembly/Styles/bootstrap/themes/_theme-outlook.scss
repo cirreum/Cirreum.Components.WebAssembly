@@ -1,6 +1,9 @@
 // Microsoft Outlook theme
+@import '../functions.scss';
+
+
 $primary: #0f6cbd !default; // Outlook Blue
-$secondary: #605e5c !default; // Neutral Gray (Fluent)
+$secondary: #605E5C !default; // Neutral Gray (Fluent)
 $success: #107c10 !default; // Green
 $info: #0078d4 !default; // Fluent Info Blue
 $warning: #f7630c !default; // Orange
@@ -10,3 +13,10 @@ $link-color: #0f6cbd !default;
 $link-hover-color: #115ea3 !default;
 
 $blue: #0f6cbd !default;
+
+//
+// Dark mode
+//
+
+// Buttons
+$btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

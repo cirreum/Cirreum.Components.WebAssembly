@@ -255,6 +255,15 @@ public partial class DataGrid<TData> {
 	[Parameter]
 	public string? SortIconColorCss { get; set; }
 
+	/// <summary>
+	/// When <see langword="true"/>, applies a subtle background highlight to the sorted column.
+	/// </summary>
+	/// <remarks>
+	/// Default: <see langword="false"/>
+	/// </remarks>
+	[Parameter]
+	public bool HighlightSortedColumn { get; set; }
+
 	private DataGridColumn<TData>? DragSource;
 	internal void HandleDragStart(DataGridColumn<TData> column) {
 		this.DragSource = column;

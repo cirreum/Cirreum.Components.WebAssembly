@@ -85,7 +85,7 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 }
 
 .row-detail-toggle-cell {
-	padding-top: 0.2rem;
+	padding: 0.3rem;
 }
 
 .row-detail-toggle-footer {
@@ -150,8 +150,15 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 			}
 		}
 
-		& .table-sm tr {
-			height: 35px;
+		& .table-sm {
+			
+			.row-detail-toggle-cell {
+				padding-top: 0.2rem;
+			}
+
+			tr {
+				height: 35px;
+			}
 		}
 	}
 

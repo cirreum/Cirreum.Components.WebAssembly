@@ -15,8 +15,6 @@ th[role="columnheader"]:not([data-detail-column]) {
 	transition: all 500ms ease;
 
 	.sortable {
-		display: -webkit-box !important;
-		display: -ms-flexbox !important;
 		display: flex !important;
 		flex-wrap: nowrap !important;
 		padding-left: 0px;
@@ -99,13 +97,3 @@ $draghandler-color: var(--bs-border-color-translucent, #62738e) !default;
 .col-width-resizing {
 	border-right: 2px solid $draghandler-color;
 }
-
-/*::deep table {
-	&:not(.table-bordered) {
-		> thead {
-			.col-width-draghandle {
-				border-right: 1px solid $draghandler-color;
-			}
-		}
-	}
-}*/

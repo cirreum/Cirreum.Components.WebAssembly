@@ -72,7 +72,7 @@
 }
 
 .row-detail-toggle-cell {
-  padding-top: 0.2rem;
+  padding: 0.3rem;
 }
 
 .row-detail-toggle-footer {
@@ -128,6 +128,9 @@
   background: transparent;
   --bs-table-color-state: var(--bs-table-hover-color);
   --bs-table-bg-state: var(--bs-table-hover-bg);
+}
+.datagrid .datagrid-body .table-sm .row-detail-toggle-cell {
+  padding-top: 0.2rem;
 }
 .datagrid .datagrid-body .table-sm tr {
   height: 35px;

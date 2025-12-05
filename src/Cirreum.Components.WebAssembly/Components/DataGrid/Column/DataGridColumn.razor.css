@@ -14,8 +14,6 @@ th[role=columnheader]:not([data-detail-column]) {
   transition: all 500ms ease;
 }
 .col-header-content .sortable {
-  display: -webkit-box !important;
-  display: -ms-flexbox !important;
   display: flex !important;
   flex-wrap: nowrap !important;
   padding-left: 0px;
@@ -82,13 +80,3 @@ th[role=columnheader]:not([data-detail-column]) {
 .col-width-resizing {
   border-right: 2px solid var(--bs-border-color-translucent, #62738e);
 }
-
-/*::deep table {
-	&:not(.table-bordered) {
-		> thead {
-			.col-width-draghandle {
-				border-right: 1px solid $draghandler-color;
-			}
-		}
-	}
-}*/
