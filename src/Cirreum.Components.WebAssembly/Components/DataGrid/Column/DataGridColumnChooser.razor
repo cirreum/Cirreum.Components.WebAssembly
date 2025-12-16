@@ -29,7 +29,8 @@
 								  AriaLabel="toggle selection of all items"
 								  ThreeState="true"
 								  ShowIndeterminate="false"
-								  @bind-CheckState="AreAllColumnsVisible"
+								  CheckState="AreAllColumnsVisible"
+								  CheckStateChanged="OnAllColumnsVisibleChanged"
 								  title="select/unselect all..." />
 					</h3>
 					<div class="popover-body">
@@ -39,7 +40,8 @@
 									<Checkbox AriaLabel="@model.Title"
 											  LabelContent="@(LabelFragment(model))"
 											  Disabled="@model.IsFiltered"
-											  @bind-Value="model.IsVisible" />
+											  Value="model.IsVisible"
+											  ValueChanged="v => OnColumnVisibilityChanged(model, v)" />
 								}
 							</div>
 							<div class="d-flex gap-2 p-2 justify-content-end border-top rounded-bottom">

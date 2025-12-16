@@ -5,7 +5,7 @@
 @inherits BaseAfterRenderComponent
 
 <CascadingValue TValue="InternalGridContext<TData>" IsFixed="true" Value="@_internalGridContext">
-	<div @key="@ID" id="@ID" class="@ContainerClass" aria-busy="@(IsBusy || IsLoading).ToAttributeValue()" aria-labelledby="@($"{ID}-title")">
+	<div @key="@ID" id="@ID" class="@ContainerClass" aria-busy="@((IsBusy || IsLoading).ToAttributeValue())" aria-labelledby="@($"{ID}-title")">
 		<div @key="ColumnFilterContainerId" role="none" class="datagrid-filter-container" id="@ColumnFilterContainerId" style="overflow:hidden;">
 			@if (_renderColumnHeaderFilter is not null) {
 				@_renderColumnHeaderFilter

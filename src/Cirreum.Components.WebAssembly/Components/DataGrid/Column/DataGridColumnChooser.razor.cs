@@ -114,6 +114,16 @@ public partial class DataGridColumnChooser<TData> {
 		this.ColumnChooserListItems.Where(c => !c.IsFiltered).Any(c => c.IsVisible)
 		&& this.ColumnChooserListItems.Where(c => !c.IsFiltered).Any(c => !c.IsVisible);
 
+	private void OnAllColumnsVisibleChanged(bool? value) {
+		this.AreAllColumnsVisible = value;
+		this.InternalGrid.Update();
+	}
+
+	private void OnColumnVisibilityChanged(DataGridColumnVisibleModel model, bool value) {
+		model.IsVisible = value;
+		this.InternalGrid.Update();
+	}
+
 	private void HandleChooserButtonKeyDown(KeyboardEventArgs e) {
 		var key = e.Code ?? e.Key;
 		if (key == "Escape") {
@@ -138,6 +148,9 @@ public partial class DataGridColumnChooser<TData> {
 		this._renderPopover = this.RenderPopover;
 	}
 	protected override void OnInitialized() {
+		if (this.InternalGridContext is null) {
+			throw new InvalidOperationException($"{nameof(DataGridColumnChooser<>)} must be used within a {nameof(DataGrid<>)} component.");
+		}
 		this.InternalGrid.SetColumnChooserPopup(this._renderPopover);
 	}
 	protected override async Task OnAfterRenderAsync(bool firstRender) {

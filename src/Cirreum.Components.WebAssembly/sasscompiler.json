@@ -1,10 +1,14 @@
 {
-	"Arguments": "--error-css --style=expanded --no-source-map",
+	"Arguments": "--style=expanded --error-css --no-source-map",
 	"Source": "Styles/cirreum-bootstrap-default.scss",
 	"Target": "wwwroot/css/cirreum-bootstrap-default.css",
 	"GenerateScopedCss": true,
 	"ScopedCssFolders": [ "Components", "Components.Authentication" ],
 	"Compilations": [
+		{
+			"Source": "Styles/bootstrap-icons.scss",
+			"Target": "wwwroot/css/bootstrap-icons.min.css"
+		},
 		{
 			"Source": "Styles/cirreum-bootstrap-aqua.scss",
 			"Target": "wwwroot/css/cirreum-bootstrap-aqua.css"
@@ -36,7 +40,7 @@
 	],
 	"Configurations": {
 		"Release": {
-			"Arguments": "--no-error-css --style=compressed --no-source-map"
+			"Arguments": "--style=compressed --no-error-css --no-source-map"
 		}
 	}
 }
