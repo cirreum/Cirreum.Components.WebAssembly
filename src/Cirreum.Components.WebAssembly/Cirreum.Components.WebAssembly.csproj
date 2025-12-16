@@ -44,6 +44,8 @@
 		<Content Update="sasscompiler.json" CopyToOutputDirectory="Never" Pack="false" />
 		<Content Update="tsconfig.json" CopyToOutputDirectory="Never" Pack="false" />
 	</ItemGroup>
+
+	<!-- Always include a css folder -->
 	<ItemGroup>
 	  <Folder Include="wwwroot\css\" />
 	</ItemGroup>
