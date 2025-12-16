@@ -1,0 +1,14 @@
+#exclude generated .css files
+*.css
+*.min.css
+*.css.map
+
+#exclude specific .js files
+wwwroot/js/cirreum-interop.js
+wwwroot/js/cirreum-interop.js.map
+
+wwwroot/js/clickDetector.js
+wwwroot/js/clickDetector.js.map
+
+#exclude all *.js.map files
+*.js.map
