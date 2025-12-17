@@ -39,10 +39,10 @@ jobs:
       run: dotnet restore Cirreum.Components.WebAssembly.slnx
     
     - name: Build
-      run: dotnet build Cirreum.Components.WebAssembly.slnx --configuration Release --no-restore -p:Version=${{ steps.get_version.outputs.VERSION }}
+      run: dotnet build Cirreum.Components.WebAssembly.slnx --configuration Release --no-restore -p:IncrementalBuild=false -p:Version=${{ steps.get_version.outputs.VERSION }}
     
     - name: Pack
-      run: dotnet pack Cirreum.Components.WebAssembly.slnx --configuration Release --no-build -p:Version=${{ steps.get_version.outputs.VERSION }} -p:PackageVersion=${{ steps.get_version.outputs.VERSION }} --output ./artifacts
+      run: dotnet pack Cirreum.Components.WebAssembly.slnx --configuration Release -p:IncrementalBuild=false -p:Version=${{ steps.get_version.outputs.VERSION }} -p:PackageVersion=${{ steps.get_version.outputs.VERSION }} --output ./artifacts
     
     - name: NuGet login (OIDC -> temp API key)
       uses: NuGet/login@v1
