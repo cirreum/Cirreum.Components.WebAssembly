@@ -2,14 +2,33 @@
 
 	<PropertyGroup Label="Versioning">
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-		<MajorProductVersion Condition="$(MajorProductVersion) == ''">1</MajorProductVersion>
-		<MinorProductVersion Condition="$(MinorProductVersion) == ''">0</MinorProductVersion>
-		<PatchProductVersion Condition="$(PatchProductVersion) == ''">0</PatchProductVersion>
-		<VersionPrefix Condition="$(VersionPrefix) == ''">$(MajorProductVersion).$(MinorProductVersion).$(PatchProductVersion)</VersionPrefix>
+
+		<!-- Default version components (used when Version is not passed externally) -->
+		<MajorProductVersion Condition="'$(MajorProductVersion)' == ''">1</MajorProductVersion>
+		<MinorProductVersion Condition="'$(MinorProductVersion)' == ''">0</MinorProductVersion>
+		<PatchProductVersion Condition="'$(PatchProductVersion)' == ''">0</PatchProductVersion>
+
+		<!-- Build VersionPrefix from components if not set -->
+		<VersionPrefix Condition="'$(VersionPrefix)' == ''">$(MajorProductVersion).$(MinorProductVersion).$(PatchProductVersion)</VersionPrefix>
+
+		<!-- Full version (may include suffix like -preview, -rc, etc.) -->
 		<Version Condition="'$(Version)' == ''">$(VersionPrefix)$(VersionSuffix)</Version>
-		<AssemblyVersion Condition="$(AssemblyVersion) == ''">$(VersionPrefix).0</AssemblyVersion>
-		<FileVersion Condition="$(FileVersion) == ''">$(AssemblyVersion)</FileVersion>
-		<PackageVersion Condition="$(PackageVersion) == ''">$(VersionPrefix)</PackageVersion>
+
+		<!--
+			Extract numeric version for assembly versioning.
+			Strip any suffix (e.g., "2.1.0-preview" becomes "2.1.0")
+			This handles versions passed via CI/CD: -p:Version=X.Y.Z[-suffix]
+		-->
+		<_VersionWithoutSuffix>$(Version.Split('-')[0])</_VersionWithoutSuffix>
+
+		<!-- Assembly version: Major.Minor.Patch.0 (4-part version required) -->
+		<AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(_VersionWithoutSuffix).0</AssemblyVersion>
+
+		<!-- File version matches assembly version -->
+		<FileVersion Condition="'$(FileVersion)' == ''">$(AssemblyVersion)</FileVersion>
+
+		<!-- Package version uses the full version including any suffix -->
+		<PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
 	</PropertyGroup>
 
 </Project>
