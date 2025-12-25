@@ -1,6 +1,7 @@
 // Microsoft Outlook theme
 @import '../functions.scss';
 
+$min-contrast-ratio: 4.5 !default;
 
 $primary: #0f6cbd !default; // Outlook Blue
 $secondary: #605E5C !default; // Neutral Gray (Fluent)
@@ -15,8 +16,15 @@ $link-hover-color: #115ea3 !default;
 $blue: #0f6cbd !default;
 
 //
-// Dark mode
+// Dark Mode
 //
 
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
+// Border colors (macOS uses subtle separators)
+$border-color-dark: rgba(255, 255, 255, 0.1) !default;
+
 // Buttons
+$btn-primary-color-dark: #fff !default;
 $btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

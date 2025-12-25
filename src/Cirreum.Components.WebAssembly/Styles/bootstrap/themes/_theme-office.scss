@@ -1,6 +1,8 @@
 // Microsoft Office theme
 @import '../functions.scss';
 
+$min-contrast-ratio: 3.5 !default;
+
 //
 // Light mode
 //
@@ -19,8 +21,14 @@ $link-hover-color: #a62d01 !default;
 //
 // Dark mode
 //
+
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
+// Link colors
 $link-color-dark: #ff8c5a !default; // Lighter Office orange for dark mode
 $link-hover-color-dark: #ffad85 !default; // Even lighter on hover
 
 // Buttons
+$btn-primary-color-dark: #fff !default;
 $btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

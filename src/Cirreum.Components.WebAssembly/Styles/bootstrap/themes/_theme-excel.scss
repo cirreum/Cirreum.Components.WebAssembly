@@ -1,6 +1,8 @@
 // Microsoft Excel theme
 @import '../functions.scss';
 
+$min-contrast-ratio: 3.5 !default;
+
 //
 // Light mode
 //
@@ -19,8 +21,14 @@ $link-hover-color: #1a5c37 !default;
 //
 // Dark mode
 //
+
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
+// Link colors
 $link-color-dark: #4ba64f !default; // Muted Excel green
 $link-hover-color-dark: #6bc96f !default; // Brighter on hover
 
 // Buttons
+$btn-primary-color-dark: #fff !default;
 $btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

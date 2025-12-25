@@ -26,6 +26,9 @@ $danger-dark: #FF453A !default; // macOS dark red (more vibrant)
 $link-color-dark: #0A84FF !default; // Same as primary-dark
 $link-hover-color-dark: #409CFF !default; // Lighter blue on hover
 
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
 // Background subtles (macOS uses very subtle backgrounds)
 $primary-bg-subtle-dark: rgba(10, 132, 255, 0.15) !default;
 $secondary-bg-subtle-dark: rgba(152, 152, 157, 0.15) !default;
@@ -42,4 +45,5 @@ $body-secondary-color-dark: #98989D !default;
 $border-color-dark: rgba(255, 255, 255, 0.1) !default;
 
 // Buttons
+$btn-primary-color-dark: #fff !default;
 $btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;

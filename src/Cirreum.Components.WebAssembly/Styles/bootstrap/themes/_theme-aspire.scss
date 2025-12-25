@@ -31,6 +31,10 @@ $primary-dark: #d6aeff !default; // Light purple for dark backgrounds
 $link-color-dark: #cca3ff !default; // Aspire dark mode foreground rest
 $link-hover-color-dark: #f9d4ff !default; // Aspire dark mode foreground hover
 
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
+
 // Background subtles
 $primary-bg-subtle-dark: shade-color($primary, 90%) !default;
 $secondary-bg-subtle-dark: shade-color($secondary, 90%) !default;

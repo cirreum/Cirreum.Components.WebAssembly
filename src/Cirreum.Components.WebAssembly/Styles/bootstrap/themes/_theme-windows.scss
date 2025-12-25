@@ -1,6 +1,7 @@
 // Microsoft Fluent UI Default theme
 @import '../functions.scss';
 
+$min-contrast-ratio: 3.5 !default;
 
 $primary: #3498db !default; // Windows Blue
 $secondary: #605E5C !default; // Neutral Gray
@@ -14,7 +15,16 @@ $link-hover-color: #106ebe !default;
 
 $blue: #0078d4 !default;
 
+//
 // Dark Mode
+//
+
+// Base Component Colors
+$component-active-color-dark: #fff !default;
+
+// Border colors (macOS uses subtle separators)
+$border-color-dark: rgba(255, 255, 255, 0.1) !default;
 
 // Buttons
+$btn-primary-color-dark: #fff !default;
 $btn-secondary-outline-color-dark: tint-color($secondary, 25%) !default;
