@@ -5,6 +5,9 @@ $theme: "cirreum-bootstrap";
 
 $min-contrast-ratio: 4.5 !default;
 
+// thinner headings
+$headings-font-weight: 300 !default;
+
 //
 // Color system
 //
@@ -103,6 +106,8 @@ $accordion-button-active-bg: rgba(var(--bs-body-color-rgb), 0.075) !default;
 $accordion-button-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='#{$accordion-icon-color}' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>") !default;
 $accordion-button-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='#{$accordion-icon-active-color}' stroke-linecap='round' stroke-linejoin='round'><path d='M2 5L8 11L14 5'/></svg>") !default;
 
+// Badges
+$badge-font-weight: 300 !default;
 
 // Tables
 $table-bg-scale: 0%;
