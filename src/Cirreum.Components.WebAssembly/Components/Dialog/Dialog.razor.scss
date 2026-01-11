@@ -267,6 +267,25 @@ $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0,
 			}
 		}
 
+		.dialog-content,
+		.dialog-content-only {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+			min-height: 0; // This is crucial for nested flexbox scrolling
+
+			> * { // for any children directly under dialog-content
+				display: flex;
+				flex-direction: column;
+				flex: 1 1 auto;
+				min-height: 0; // Also crucial for nested flexbox scrolling
+			}
+
+			.dialog-body {
+				overflow-y: auto; // allow body to scroll
+			}
+		}
+
 		.dialog-header,
 		.dialog-buttons,
 		.dialog-footer {
