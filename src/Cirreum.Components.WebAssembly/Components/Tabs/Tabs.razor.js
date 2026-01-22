@@ -18,6 +18,7 @@ const HANDLE_METHODS = {
     END: "HandleEndKey"
 };
 class Tabs {
+    abortController = null;
     tabType;
     tabsInstance;
     dotnetRef;
@@ -48,40 +49,42 @@ class Tabs {
     }
     getTabsElement(parent) {
         const tabsElement = parent.querySelector('.tab-items');
-        if (!tabsElement) {
-            console.warn('Tabs element not found');
+        if (!(tabsElement instanceof HTMLElement)) {
+            throw new Error('Tabs element (.tab-items) not found');
         }
         return tabsElement;
     }
     getScrollContainer(parent) {
         const scrollContainer = parent.querySelector('.nav-scroll-container');
-        if (!scrollContainer) {
-            console.warn('Scroll container not found');
+        if (!(scrollContainer instanceof HTMLElement)) {
+            throw new Error('Scroll container (.nav-scroll-container) not found');
         }
         return scrollContainer;
     }
     getTabList(parent) {
-        return parent.querySelector('[role="tablist"]');
+        const tabList = parent.querySelector('[role="tablist"]');
+        if (!(tabList instanceof HTMLElement)) {
+            throw new Error('Tab list ([role="tablist"]) not found');
+        }
+        return tabList;
     }
     connect() {
-        if (!this.tabsElement || !this.scrollContainer || !this.tabList) {
-            throw new Error('Required elements not found');
-        }
-        this.scrollContainer.addEventListener('scroll', this.handleTabListScrolled.bind(this));
-        this.tabsElement.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
-        this.tabsElement.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
-        this.tabsElement.addEventListener("keydown", this.handleKeydownEvent.bind(this));
+        this.abortController = new AbortController();
+        const signal = this.abortController.signal;
+        this.scrollContainer.addEventListener('scroll', this.handleTabListScrolled.bind(this), { signal });
+        this.tabsElement.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true, signal });
+        this.tabsElement.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true, signal });
+        this.tabsElement.addEventListener('keydown', this.handleKeydownEvent.bind(this), { signal });
         this.connectResizeObserver();
         this.setTouchAction();
     }
     disconnect() {
-        this.scrollContainer.removeEventListener('scroll', this.handleTabListScrolled.bind(this));
+        this.abortController?.abort();
+        this.abortController = null;
         if (this.scrolledDebouncer) {
             clearTimeout(this.scrolledDebouncer);
+            this.scrolledDebouncer = null;
         }
-        this.tabsElement.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-        this.tabsElement.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-        this.tabsElement.removeEventListener("keydown", this.handleKeydownEvent.bind(this));
         this.disconnectResizeObserver();
     }
     changeTabType(newTabType) {
@@ -204,9 +207,11 @@ class Tabs {
     disconnectResizeObserver() {
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
+            this.resizeObserver = null;
         }
         if (this.resizeDebouncer) {
             clearTimeout(this.resizeDebouncer);
+            this.resizeDebouncer = null;
         }
     }
     ensureTabVisible() {

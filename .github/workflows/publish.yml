@@ -34,6 +34,13 @@ jobs:
     
     - name: Display version
       run: echo "Building version ${{ steps.get_version.outputs.VERSION }}"
+
+    - name: Inject version into interop script
+      run: |
+        INTEROP_FILE="src/Cirreum.Components.WebAssembly/wwwroot/js/cirreum-interop.js"
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        echo "Injecting version $VERSION into $INTEROP_FILE"
+        sed -i "s/@VERSION@/$VERSION/g" "$INTEROP_FILE"
     
     - name: Restore dependencies
       run: dotnet restore Cirreum.Components.WebAssembly.slnx

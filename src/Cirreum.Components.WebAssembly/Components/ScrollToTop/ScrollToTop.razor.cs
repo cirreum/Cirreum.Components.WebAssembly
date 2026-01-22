@@ -35,7 +35,7 @@ public partial class ScrollToTop {
 		try {
 
 			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/ScrollToTop/ScrollToTop.razor.js";
-			this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", this.DisposalToken, jsPath);
+			this.module = await this.JSRuntime.InvokeAsync<IJSInProcessObjectReference>("import", this.DisposalToken, jsPath);
 
 			this.dotNetRef = DotNetObjectReference.Create(this);
 			await this.module.InvokeVoidAsync("initialize", this.instanceId, this.dotNetRef, this.ShowAfterPixels);
@@ -75,7 +75,11 @@ public partial class ScrollToTop {
 
 	protected override async ValueTask DisposeAsyncCore() {
 		if (this.module != null) {
-			await this.module.InvokeVoidAsync("dispose", this.instanceId);
+			try {
+				await this.module.InvokeVoidAsync("dispose", this.instanceId);
+			} catch (JSDisconnectedException) {
+				// Browser disconnected
+			}
 			await this.module.DisposeAsync();
 		}
 		this.dotNetRef?.Dispose();

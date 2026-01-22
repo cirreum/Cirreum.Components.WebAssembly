@@ -85,6 +85,10 @@ export function Connect(id: string, dotnetRef: any): void {
 		return;
 	}
 	var toggleButton = document.getElementById(id) as HTMLElement;
+	if (!(toggleButton instanceof HTMLElement)) {
+		console.warn(`[ ContextMenuBase | Connect ] element with id "${id}" not found.`);
+		return;
+	}
 	const keyHandler = new KeyHandler(dotnetRef, toggleButton);
 	keyHandler.connect();
 	registeredMenus.set(id, keyHandler);

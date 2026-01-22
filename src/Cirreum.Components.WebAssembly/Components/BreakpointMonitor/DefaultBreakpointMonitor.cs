@@ -6,9 +6,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 public sealed class DefaultBreakpointMonitor(
-	IJSAppModule js)
-	: IBreakpointMonitor,
-		IDisposable {
+	IJSAppModule js
+) : IBreakpointMonitor,
+	IDisposable {
 
 	private bool _initialized;
 
@@ -54,6 +54,11 @@ public sealed class DefaultBreakpointMonitor(
 			return;
 		}
 		isDisposed = true;
+
+		foreach (var bp in Enum.GetValues<Breakpoint>()) {
+			js.RemoveBreakpointMonitor(bp.ToName()); // Clean up JS side first
+		}
+
 		foreach (var monitor in this.monitors) {
 			monitor.Dispose();
 		}

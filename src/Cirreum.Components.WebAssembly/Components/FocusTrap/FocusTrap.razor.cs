@@ -96,7 +96,7 @@ public partial class FocusTrap : BaseAfterRenderComponent {
 		try {
 
 			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/FocusTrap/FocusTrap.razor.js";
-			this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", this.DisposalToken, jsPath);
+			this.module = await this.JSRuntime.InvokeAsync<IJSInProcessObjectReference>("import", this.DisposalToken, jsPath);
 
 		} catch (OperationCanceledException) when (this.DisposalToken.IsCancellationRequested) {
 			// Expected during disposal

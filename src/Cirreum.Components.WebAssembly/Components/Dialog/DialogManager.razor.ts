@@ -58,9 +58,10 @@ declare class Draggabilly {
 }
 
 const registeredDialogs: Map<string, Draggabilly> = new Map<string, Draggabilly>();
-function resolveElement(element: string | HTMLElement): HTMLElement {
+function resolveElement(element: string | HTMLElement): HTMLElement | null {
 	if (typeof element === 'string') {
-		return document.querySelector(element) as HTMLElement;
+		const el = document.querySelector(element);
+		return el instanceof HTMLElement ? el : null;
 	}
 	return element;
 }
@@ -121,18 +122,21 @@ export function addDraggable(id: string, options?: DraggabillyOptions): boolean 
 
 	return false;
 }
-export function removeDraggable(id: string) {
+export function removeDraggable(id: string): void {
 	const draggie = registeredDialogs.get(id);
-	const dialog = resolveElement(`#${id}`);
-	if (draggie && dialog instanceof HTMLElement) {
-		try {
-			draggie.off('pointerDown', handlePointerDownUp);
-			draggie.off('pointerUp', handlePointerDownUp);
-			draggie.destroy();
-			registeredDialogs.delete(id);
-		} catch (e: any) {
-			console.error(e.message);
-		}
+	if (!draggie) {
+		return;
+	}
+
+	try {
+		draggie.off('pointerDown', handlePointerDownUp);
+		draggie.off('pointerUp', handlePointerDownUp);
+		draggie.destroy();
+	} catch (e: any) {
+		console.error(`removeDraggable error: ${e.message}`);
+	} finally {
+		// Always clean up the registry, even if element is gone
+		registeredDialogs.delete(id);
 	}
 }
 export function adjustPosition(position: number, index: number, dialogInstance: string | HTMLElement) {

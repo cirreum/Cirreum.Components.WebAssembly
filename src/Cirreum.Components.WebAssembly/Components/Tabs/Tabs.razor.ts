@@ -32,12 +32,13 @@ type TabType = 'Tabs' | 'Pills' | 'Underlines';
 type TabPosition = 'Top' | 'Right' | 'Bottom' | 'Left';
 
 class Tabs {
+	private abortController: AbortController | null = null;
 	private tabType: TabType;
 	private readonly tabsInstance: HTMLElement;
 	private readonly dotnetRef: DotNetReference;
 	private scrollContainer: HTMLElement;
 	private tabsElement: HTMLElement;
-	private tabList: HTMLElement | null;
+	private tabList: HTMLElement;
 	private activeTab: HTMLElement | null;
 	private vertical: boolean;
 	private scrolledDebouncer: number | null = null;
@@ -70,56 +71,50 @@ class Tabs {
 
 	private getTabsElement(parent: HTMLElement): HTMLElement {
 		const tabsElement = parent.querySelector('.tab-items');
-		if (!tabsElement) {
-			console.warn('Tabs element not found');
+		if (!(tabsElement instanceof HTMLElement)) {
+			throw new Error('Tabs element (.tab-items) not found');
 		}
-		return tabsElement as HTMLElement;
+		return tabsElement;
 	}
 	private getScrollContainer(parent: HTMLElement): HTMLElement {
 		const scrollContainer = parent.querySelector('.nav-scroll-container');
-		if (!scrollContainer) {
-			console.warn('Scroll container not found');
+		if (!(scrollContainer instanceof HTMLElement)) {
+			throw new Error('Scroll container (.nav-scroll-container) not found');
 		}
-		return scrollContainer as HTMLElement;
+		return scrollContainer;
 	}
-	private getTabList(parent: HTMLElement): HTMLElement | null {
-		return parent.querySelector('[role="tablist"]');
+	private getTabList(parent: HTMLElement): HTMLElement {
+		const tabList = parent.querySelector('[role="tablist"]');
+		if (!(tabList instanceof HTMLElement)) {
+			throw new Error('Tab list ([role="tablist"]) not found');
+		}
+		return tabList;
 	}
 
 	public connect(): void {
 
-		// Validate required elements
-		if (!this.tabsElement || !this.scrollContainer || !this.tabList) {
-			throw new Error('Required elements not found');
-		}
+		this.abortController = new AbortController();
+		const signal = this.abortController.signal;
 
-		// connect normal event handlers
-		this.scrollContainer.addEventListener('scroll', this.handleTabListScrolled.bind(this));
-		this.tabsElement.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
-		this.tabsElement.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
-		this.tabsElement.addEventListener("keydown", this.handleKeydownEvent.bind(this));
+		this.scrollContainer.addEventListener('scroll', this.handleTabListScrolled.bind(this), { signal });
+		this.tabsElement.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true, signal });
+		this.tabsElement.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true, signal });
+		this.tabsElement.addEventListener('keydown', this.handleKeydownEvent.bind(this), { signal });
 
-		// setup resize observer
 		this.connectResizeObserver();
-
-		// set the touch action based on orientation
 		this.setTouchAction();
-
 	}
 
 	public disconnect(): void {
+		this.abortController?.abort();
+		this.abortController = null;
 
-		this.scrollContainer.removeEventListener('scroll', this.handleTabListScrolled.bind(this));
 		if (this.scrolledDebouncer) {
 			clearTimeout(this.scrolledDebouncer);
+			this.scrolledDebouncer = null;
 		}
 
-		this.tabsElement.removeEventListener('touchstart', this.handleTouchStart.bind(this));
-		this.tabsElement.removeEventListener('touchend', this.handleTouchEnd.bind(this));
-		this.tabsElement.removeEventListener("keydown", this.handleKeydownEvent.bind(this));
-
 		this.disconnectResizeObserver();
-
 	}
 
 
@@ -281,10 +276,12 @@ class Tabs {
 	private disconnectResizeObserver(): void {
 		if (this.resizeObserver) {
 			this.resizeObserver.disconnect();
+			this.resizeObserver = null;
 		}
 
 		if (this.resizeDebouncer) {
 			clearTimeout(this.resizeDebouncer);
+			this.resizeDebouncer = null;
 		}
 	}
 	private ensureTabVisible(): void {

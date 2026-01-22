@@ -1,6 +1,5 @@
 ﻿namespace Cirreum.Components;
 
-using Cirreum.Components.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -28,7 +27,7 @@ public abstract class ContextMenuBase : BaseAfterRenderComponent {
 
 
 	[Inject]
-	IJSAppModule JSApp { get; set; } = default!;
+	IJSRuntime JSRuntime { get; set; } = default!;
 
 	/// <summary>
 	/// The text to display for the button.
@@ -121,7 +120,7 @@ public abstract class ContextMenuBase : BaseAfterRenderComponent {
 	}
 	protected async override Task OnInitializedAsync() {
 		const string jsPath = $"./_content/Cirreum.Components.WebAssembly/Components/Menu/{nameof(ContextMenuButton)}.razor.js";
-		this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
+		this.module = await this.JSRuntime.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 		await base.OnInitializedAsync();
 	}
 	protected async override Task OnAfterRenderAsync(bool firstRender) {

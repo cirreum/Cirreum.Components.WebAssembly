@@ -1,11 +1,9 @@
+interface ScrollbarBehaviorEntry {
+	controller: AbortController;
+	pendingTimeout: number | null;
+}
 
-interface HTMLElementWithEventHandler extends HTMLElement {
-	_mouseenterHandler: any;
-	_mouseleaveHandler: any;
-}
-function sleep(ms: number) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
+const scrollbarBehaviors = new Map<string, ScrollbarBehaviorEntry>();
 
 enum ScrollbarState {
 	Hiding,
@@ -15,79 +13,85 @@ enum ScrollbarState {
 	Sleeping
 }
 
-export function addScrollbarBehavior(selector: string, showDelay: number, hideDelay: number) {
+export function addScrollbarBehavior(selector: string, showDelay: number, hideDelay: number): void {
+	const control = document.querySelector(selector);
+	if (!(control instanceof HTMLElement)) {
+		return;
+	}
 
-	const control = document.documentElement.querySelector(selector) as HTMLElementWithEventHandler;
+	// Clean up existing if re-registering
+	removeScrollbarBehavior(selector);
 
-	if (control) {
+	const controller = new AbortController();
+	const signal = controller.signal;
+	let state: ScrollbarState = ScrollbarState.Hidden;
+	let pendingTimeout: number | null = null;
 
-		let state: ScrollbarState = ScrollbarState.Hidden;
+	const entry: ScrollbarBehaviorEntry = {
+		controller,
+		get pendingTimeout() { return pendingTimeout; },
+		set pendingTimeout(val) { pendingTimeout = val; }
+	};
 
-		// Define the event handlers
-		const mouseEnterHandler = async (e: MouseEvent) => {
-			if (state === ScrollbarState.Showing || state === ScrollbarState.Shown) return;
-			if (state === ScrollbarState.Sleeping) return;
-			state = ScrollbarState.Sleeping;
-			await sleep(showDelay);
-			if (state === ScrollbarState.Sleeping) {
+	const clearPendingTimeout = () => {
+		if (pendingTimeout !== null) {
+			clearTimeout(pendingTimeout);
+			pendingTimeout = null;
+		}
+	};
+
+	const mouseEnterHandler = () => {
+		if (state === ScrollbarState.Showing || state === ScrollbarState.Shown) return;
+		clearPendingTimeout();
+		state = ScrollbarState.Sleeping;
+		pendingTimeout = window.setTimeout(() => {
+			if (state === ScrollbarState.Sleeping && !signal.aborted) {
 				state = ScrollbarState.Showing;
 				control.dataset.scrollbar = 'show';
 				state = ScrollbarState.Shown;
 			}
-		}
+		}, showDelay);
+	};
 
-		const mouseLeaveHandler = async (e: MouseEvent) => {
-			if (state === ScrollbarState.Hiding || state === ScrollbarState.Hidden) return;
-			if (state === ScrollbarState.Sleeping) {
-				state = ScrollbarState.Hidden;
-			} else {
-				state = ScrollbarState.Sleeping;
-				if (hideDelay > 10) {
-					await sleep(hideDelay);
-				}
-				if (state === ScrollbarState.Sleeping) {
+	const mouseLeaveHandler = () => {
+		if (state === ScrollbarState.Hiding || state === ScrollbarState.Hidden) return;
+		clearPendingTimeout();
+		if (state === ScrollbarState.Sleeping) {
+			state = ScrollbarState.Hidden;
+		} else {
+			state = ScrollbarState.Sleeping;
+			const delay = hideDelay > 10 ? hideDelay : 0;
+			pendingTimeout = window.setTimeout(() => {
+				if (state === ScrollbarState.Sleeping && !signal.aborted) {
 					state = ScrollbarState.Hiding;
-					// Set the hide state
 					control.dataset.scrollbar = 'hide';
 					state = ScrollbarState.Hidden;
 				}
-			}
+			}, delay);
 		}
+	};
 
-		// Add the event listeners
-		control.addEventListener('mouseenter', mouseEnterHandler);
-		control.addEventListener('mouseleave', mouseLeaveHandler);
+	control.addEventListener('mouseenter', mouseEnterHandler, { signal });
+	control.addEventListener('mouseleave', mouseLeaveHandler, { signal });
+	control.dataset.scrollbar = 'hide';
 
-		// Store references to the event handlers for later removal
-		control._mouseenterHandler = mouseEnterHandler;
-		control._mouseleaveHandler = mouseLeaveHandler;
-
-		// Initialize with the default (hidden)
-		control.dataset.scrollbar = 'hide';
-
-	}
+	scrollbarBehaviors.set(selector, entry);
 }
 
-export function removeScrollbarBehavior(selector: string, preserveDataAttribute: boolean = false) {
-
-	const control = document.documentElement.querySelector(selector) as HTMLElementWithEventHandler;
-
-	if (control) {
-
-		// Remove the event listeners using the stored references
-		if (control._mouseenterHandler) {
-			control.removeEventListener('mouseenter', control._mouseenterHandler);
-			delete control._mouseenterHandler;
+export function removeScrollbarBehavior(selector: string, preserveDataAttribute: boolean = false): void {
+	const entry = scrollbarBehaviors.get(selector);
+	if (entry) {
+		if (entry.pendingTimeout !== null) {
+			clearTimeout(entry.pendingTimeout);
 		}
-		if (control._mouseleaveHandler) {
-			control.removeEventListener('mouseleave', control._mouseleaveHandler);
-			delete control._mouseleaveHandler;
-		}
+		entry.controller.abort();
+		scrollbarBehaviors.delete(selector);
+	}
 
-		// Clean up data attribute
-		if (!preserveDataAttribute) {
+	if (!preserveDataAttribute) {
+		const control = document.querySelector(selector);
+		if (control instanceof HTMLElement) {
 			delete control.dataset.scrollbar;
 		}
 	}
-
 }

@@ -35,6 +35,7 @@ class KeyHandler {
 		this._toggleButton.removeEventListener("keydown", this);
 		this._toggleMenu.removeEventListener("keydown", this);
 		this._toggleMenu.removeEventListener("keyup", this);
+		this.previouslyFocusedElement = null; // Prevent holding stale reference
 	}
 
 	handleEvent(event: KeyboardEvent) {
@@ -139,10 +140,10 @@ class KeyHandler {
 	}
 
 	restorePreviousFocus() {
-		if (this.previouslyFocusedElement) {
+		if (this.previouslyFocusedElement?.isConnected) {
 			this.previouslyFocusedElement.focus();
-			return;
 		}
+		this.previouslyFocusedElement = null; // Clear reference after use
 	}
 
 }

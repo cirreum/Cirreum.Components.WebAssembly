@@ -5,10 +5,10 @@ using Microsoft.JSInterop;
 using System.Diagnostics.CodeAnalysis;
 
 public class ClickDetectorService(
-	IJSRuntime JS)
-	: IClickDetectorService,
-		IAutoInitialize,
-		IDisposable {
+	IJSRuntime JS
+) : IClickDetectorService,
+	IAutoInitialize,
+	IDisposable {
 
 	const string MODULE_PATH = "./_content/Cirreum.Components.WebAssembly/js/clickDetector.js";
 	const string REGISTER_METHOD = "registerElement";

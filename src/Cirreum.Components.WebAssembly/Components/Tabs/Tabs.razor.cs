@@ -184,7 +184,7 @@ public partial class Tabs {
 			.AddClass("flex-column", when: this.IsVertical)
 		.Build();
 
-	private List<Tab> PreviousTabs => this.overflowTabItems.Where(t => t.Index < this._activeTabIndex).ToList();
+	private List<Tab> PreviousTabs => [.. this.overflowTabItems.Where(t => t.Index < this._activeTabIndex)];
 	private readonly string ScrollBackwardBtnId = IdGenerator.Next;
 	private bool ScrollBackwardsDisabled =>
 		this.tabItems.Count == 0 ||
@@ -209,7 +209,7 @@ public partial class Tabs {
 			.AddBuilder(this.ScrollBackwardsBuilder, when: this.tabItems.Count > 0 && this.HasOverflow && this.OverflowMode == TabsOverflowMode.Scrollable)
 		.Build();
 
-	private List<Tab> NextTabs => this.overflowTabItems.Where(t => t.Index > this._activeTabIndex).ToList();
+	private List<Tab> NextTabs => [.. this.overflowTabItems.Where(t => t.Index > this._activeTabIndex)];
 	private readonly string ScrollForwardBtnId = IdGenerator.Next;
 	private bool ScrollForwardDisabled =>
 		this.tabItems.Count == 0 ||

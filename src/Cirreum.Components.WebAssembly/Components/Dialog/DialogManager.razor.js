@@ -1,7 +1,8 @@
 const registeredDialogs = new Map();
 function resolveElement(element) {
     if (typeof element === 'string') {
-        return document.querySelector(element);
+        const el = document.querySelector(element);
+        return el instanceof HTMLElement ? el : null;
     }
     return element;
 }
@@ -44,17 +45,19 @@ export function addDraggable(id, options) {
 }
 export function removeDraggable(id) {
     const draggie = registeredDialogs.get(id);
-    const dialog = resolveElement(`#${id}`);
-    if (draggie && dialog instanceof HTMLElement) {
-        try {
-            draggie.off('pointerDown', handlePointerDownUp);
-            draggie.off('pointerUp', handlePointerDownUp);
-            draggie.destroy();
-            registeredDialogs.delete(id);
-        }
-        catch (e) {
-            console.error(e.message);
-        }
+    if (!draggie) {
+        return;
+    }
+    try {
+        draggie.off('pointerDown', handlePointerDownUp);
+        draggie.off('pointerUp', handlePointerDownUp);
+        draggie.destroy();
+    }
+    catch (e) {
+        console.error(`removeDraggable error: ${e.message}`);
+    }
+    finally {
+        registeredDialogs.delete(id);
     }
 }
 export function adjustPosition(position, index, dialogInstance) {

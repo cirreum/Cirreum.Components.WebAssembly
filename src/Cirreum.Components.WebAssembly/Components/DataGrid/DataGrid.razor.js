@@ -85,6 +85,7 @@ class DataGrid {
         }
         return 0;
     }
+    activeResizeController = null;
     attachResizeHandlers() {
         if (!this.tableElement.tHead) {
             console.warn('DataGrid: Table has no thead element');
@@ -108,6 +109,9 @@ class DataGrid {
     handlePointerDown(event) {
         if (this.isDisposed)
             return;
+        this.activeResizeController?.abort();
+        this.activeResizeController = new AbortController();
+        const signal = this.activeResizeController.signal;
         event.preventDefault();
         event.stopPropagation();
         const handle = event.currentTarget;
@@ -124,6 +128,7 @@ class DataGrid {
         };
         const handleEnd = (evt) => {
             originalTarget.releasePointerCapture(evt.pointerId);
+            this.activeResizeController = null;
             document.removeEventListener('pointermove', handleMove);
             document.removeEventListener('pointerup', handleEnd);
             document.removeEventListener('pointercancel', handleEnd);
@@ -132,9 +137,9 @@ class DataGrid {
             this.compensateOtherColumns(handle._columnRef.id);
             handle.classList.remove('col-width-resizing');
         };
-        document.addEventListener('pointermove', handleMove);
-        document.addEventListener('pointerup', handleEnd);
-        document.addEventListener('pointercancel', handleEnd);
+        document.addEventListener('pointermove', handleMove, { signal });
+        document.addEventListener('pointerup', handleEnd, { signal });
+        document.addEventListener('pointercancel', handleEnd, { signal });
     }
     handleDoubleClick(event) {
         if (this.isDisposed)
@@ -321,6 +326,8 @@ class DataGrid {
     dispose() {
         if (this.isDisposed)
             return;
+        this.activeResizeController?.abort();
+        this.activeResizeController = null;
         this.removeColumnResizeHandlers();
         this.removeRowKeyDownHandler();
         this.removeGridFooterResizer();

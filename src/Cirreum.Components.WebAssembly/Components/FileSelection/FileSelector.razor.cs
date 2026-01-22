@@ -1,15 +1,14 @@
 ﻿namespace Cirreum.Components;
 
-using Cirreum.Components.Interop;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
-public partial class FileSelector {
+public partial class FileSelector : IAsyncDisposable {
 
 	[Inject]
-	protected IJSAppModule JSApp { get; set; } = default!;
+	protected IJSRuntime JSRuntime { get; set; } = default!;
 	private IJSInProcessObjectReference? module;
 
 	/// <summary>
@@ -120,11 +119,6 @@ public partial class FileSelector {
 		this.OnCanceled?.Invoke();
 	}
 
-	private void OnFileSelectionFailed(string message) {
-		this.DropOver = false;
-		this.OnCanceled?.Invoke();
-	}
-
 	private void OnFileSelectedChanged(InputFileChangeEventArgs e) {
 
 		this.DropOver = false;
@@ -160,8 +154,19 @@ public partial class FileSelector {
 	protected override async Task OnAfterFirstRenderAsync() {
 		if (this.AnchorId.HasValue() && this.Id.HasValue()) {
 			const string jsPath = "./_content/Cirreum.Components.WebAssembly/Components/FileSelection/FileSelector.razor.js";
-			this.module = await this.JSApp.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
+			this.module = await this.JSRuntime.InvokeAsync<IJSInProcessObjectReference>("import", jsPath);
 			await this.module.InvokeVoidAsync("attachClickHandler", this.AnchorId, this.Id);
+		}
+	}
+
+	protected override async ValueTask DisposeAsyncCore() {
+		if (this.module is not null) {
+			try {
+				await this.module.InvokeVoidAsync("detachClickHandler", this.AnchorId);
+				await this.module.DisposeAsync();
+			} catch (JSDisconnectedException) {
+				// Circuit disconnected, safe to ignore
+			}
 		}
 	}
 
