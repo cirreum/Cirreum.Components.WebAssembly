@@ -37,7 +37,7 @@ jobs:
 
     - name: Inject version into interop script
       run: |
-        INTEROP_FILE="src/Cirreum.Components.WebAssembly/wwwroot/js/cirreum-interop.js"
+        INTEROP_FILE="src/Cirreum.Components.WebAssembly/wwwroot/js/cirreum-interop.ts"
         VERSION="${{ steps.get_version.outputs.VERSION }}"
         echo "Injecting version $VERSION into $INTEROP_FILE"
         sed -i "s/@VERSION@/$VERSION/g" "$INTEROP_FILE"
