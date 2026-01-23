@@ -131,6 +131,11 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 		padding: 0.5rem 0.5rem;
 		overflow-x: hidden;
 
+		> * > .table,
+		> * > table.table {
+			margin-bottom: 0;
+		}
+
 		& tr {
 			height: 41px;
 
@@ -151,7 +156,7 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 		}
 
 		& .table-sm {
-			
+
 			.row-detail-toggle-cell {
 				padding-top: 0.2rem;
 			}
@@ -222,6 +227,10 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 // useful within other components (e.g., cards).
 .datagrid-flush {
 
+	.datagrid-body {
+		padding: 1rem 0 2rem;
+	}
+
 	&:has(.datagrid-footer) {
 		.datagrid-body {
 			padding-bottom: 0;
@@ -230,9 +239,5 @@ $busy-overlay-bg: rgba(0,0,0,0.075);
 				border-bottom-width: 0;
 			}
 		}
-	}
-
-	& .datagrid-body {
-		padding: 1rem 0;
 	}
 }

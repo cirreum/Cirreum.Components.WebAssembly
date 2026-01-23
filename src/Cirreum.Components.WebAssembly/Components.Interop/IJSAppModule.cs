@@ -94,36 +94,9 @@ public interface IJSAppModule {
 	string GetCurrentTheme();
 
 	/// <summary>
-	/// Sets the theme via the cirreum namespace.
-	/// </summary>
-	/// <param name="scheme">The theme name to set.</param>
-	/// <returns>True if the theme was set successfully.</returns>
-	bool SetTheme(string scheme);
-
-	/// <summary>
 	/// Gets valid theme names from the cirreum namespace.
 	/// </summary>
 	string[] GetValidThemes();
-
-	/// <summary>
-	/// Gets authentication configuration from the cirreum namespace.
-	/// </summary>
-	AppAuthInfo GetAuthInfo();
-
-	/// <summary>
-	/// Gets tenant configuration from the cirreum namespace (for dynamic auth).
-	/// </summary>
-	TenantAuthConfig? GetTenantConfig();
-
-	/// <summary>
-	/// Gets the tenant slug from the cirreum namespace.
-	/// </summary>
-	string GetTenantSlug();
-
-	/// <summary>
-	/// Gets the tenant display name from the cirreum namespace.
-	/// </summary>
-	string? GetTenantDisplayName();
 
 	#endregion
 

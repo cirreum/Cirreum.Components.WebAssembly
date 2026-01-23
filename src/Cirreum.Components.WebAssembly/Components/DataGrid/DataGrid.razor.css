@@ -113,6 +113,10 @@
   padding: 0.5rem 0.5rem;
   overflow-x: hidden;
 }
+.datagrid .datagrid-body > * > .table,
+.datagrid .datagrid-body > * > table.table {
+  margin-bottom: 0;
+}
 .datagrid .datagrid-body tr {
   height: 41px;
 }
@@ -174,12 +178,12 @@
     flex-grow: 0;
   }
 }
+.datagrid-flush .datagrid-body {
+  padding: 1rem 0 2rem;
+}
 .datagrid-flush:has(.datagrid-footer) .datagrid-body {
   padding-bottom: 0;
 }
 .datagrid-flush:has(.datagrid-footer) .datagrid-body table > :last-child > tr:last-child {
   border-bottom-width: 0;
-}
-.datagrid-flush .datagrid-body {
-  padding: 1rem 0;
 }

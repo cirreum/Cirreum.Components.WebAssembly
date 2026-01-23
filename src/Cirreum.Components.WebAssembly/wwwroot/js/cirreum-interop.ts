@@ -21,12 +21,6 @@
 // =====================================================================
 
 //#region Cirreum Namespace Types
-
-interface CirreumAuthConfig {
-	include: boolean;
-	authType: string;
-}
-
 interface CirreumTenantConfig {
 	slug?: string;
 	displayName?: string;
@@ -39,14 +33,14 @@ interface CirreumTenantConfig {
 	isEntraExternal?: boolean;
 	authLibrary?: string;
 }
-
 interface CirreumNamespace {
 	app: {
 		getName(): string;
 		getAssemblyName(): string | null;
 	};
 	auth: {
-		getType(): string;
+		getMode(): string;
+		getLibrary(): string;
 		isEnabled(): boolean;
 	};
 	tenant: {
@@ -56,7 +50,6 @@ interface CirreumNamespace {
 	};
 	theme: {
 		getCurrent(): string;
-		set(scheme: string): boolean;
 		getValidThemes(): string[];
 	};
 	assets: {
@@ -64,13 +57,11 @@ interface CirreumNamespace {
 		loadJs(src: string, integrity?: string): void;
 	};
 }
-
 declare global {
 	interface Window {
 		cirreum: CirreumNamespace;
 	}
 }
-
 //#endregion
 
 //#region Popper Types
@@ -496,66 +487,28 @@ export function getUserAgent(): string {
  * Gets the application name.
  */
 export function getAppName(): string {
-	return window.cirreum.app.getName();
+	return window.cirreum?.app?.getName() ?? window.location.hostname.toUpperCase();
 }
 
 /**
  * Gets the assembly name.
  */
 export function getAssemblyName(): string | null {
-	return window.cirreum.app.getAssemblyName();
+	return window.cirreum?.app?.getAssemblyName() ?? null;
 }
 
 /**
  * Gets the current theme.
  */
 export function getCurrentTheme(): string {
-	return window.cirreum.theme.getCurrent();
-}
-
-/**
- * Sets the theme.
- */
-export function setTheme(scheme: string): boolean {
-	return window.cirreum.theme.set(scheme);
+	return window.cirreum?.theme?.getCurrent() ?? "default";
 }
 
 /**
  * Gets valid theme names.
  */
 export function getValidThemes(): string[] {
-	return window.cirreum.theme.getValidThemes();
-}
-
-/**
- * Gets authentication configuration from the cirreum namespace.
- */
-export function getAuthInfo(): CirreumAuthConfig {
-	return {
-		include: window.cirreum.auth.isEnabled(),
-		authType: window.cirreum.auth.getType()
-	};
-}
-
-/**
- * Gets tenant configuration (for dynamic auth).
- */
-export function getTenantConfig(): CirreumTenantConfig | null {
-	return window.cirreum.tenant.getConfig();
-}
-
-/**
- * Gets tenant slug.
- */
-export function getTenantSlug(): string {
-	return window.cirreum.tenant.getSlug();
-}
-
-/**
- * Gets tenant display name.
- */
-export function getTenantDisplayName(): string | null {
-	return window.cirreum.tenant.getDisplayName();
+	return window.cirreum?.theme?.getValidThemes() ?? ["default"];
 }
 
 //#endregion
