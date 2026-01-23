@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Dialog variables
 $dialog-min-width: 320px !default;
 $dialog-max-width: unset !default;
@@ -23,13 +25,13 @@ $dialog-cap-color: null !default;
 $breakpoints: ( mobile: 426px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px );
 
 @mixin breakpoint-min($name) {
-	@media (min-width: map-get($breakpoints, $name)) {
+	@media (min-width: map.get($breakpoints, $name)) {
 		@content;
 	}
 }
 
 @mixin breakpoint-max($name) {
-	@media (max-width: map-get($breakpoints, $name)) {
+	@media (max-width: map.get($breakpoints, $name)) {
 		@content;
 	}
 }
@@ -38,7 +40,7 @@ $breakpoints: ( mobile: 426px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl:
 $dialog-sizes: ( mobile: 95vw, sm: 480px, md: 640px, lg: 800px, xl: 1140px, xxl: 1140px, max: 75vw );
 
 @function dialog-size($size) {
-	@return map-get($dialog-sizes, $size);
+	@return map.get($dialog-sizes, $size);
 }
 
 @mixin flex-center {
@@ -50,7 +52,7 @@ $dialog-sizes: ( mobile: 95vw, sm: 480px, md: 640px, lg: 800px, xl: 1140px, xxl:
 $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0, 0, 0.12) 0px 4px 16px 0px), dark: (rgba(0, 0, 0, 0.25) 0px 16px 18px 0px, rgba(0, 0, 0, 0.15) 0px 4px 16px 0px) );
 
 @mixin dialog-box-shadow($theme: 'light') {
-	box-shadow: map-get($dialog-box-shadows, $theme);
+	box-shadow: map.get($dialog-box-shadows, $theme);
 }
 
 @mixin dialog-position($props) {
@@ -83,7 +85,7 @@ $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0,
 		&.dialog-md,
 		&.dialog-lg,
 		&.dialog-xl {
-			--dialog-max-width: #{map-get($dialog-sizes, sm)};
+			--dialog-max-width: #{map.get($dialog-sizes, sm)};
 		}
 	}
 
@@ -91,29 +93,29 @@ $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0,
 		&.dialog-md,
 		&.dialog-lg,
 		&.dialog-xl {
-			--dialog-max-width: #{map-get($dialog-sizes, md)};
+			--dialog-max-width: #{map.get($dialog-sizes, md)};
 		}
 	}
 
 	@include breakpoint-min(lg) {
 		&.dialog-lg,
 		&.dialog-xl {
-			--dialog-max-width: #{map-get($dialog-sizes, lg)};
+			--dialog-max-width: #{map.get($dialog-sizes, lg)};
 		}
 	}
 
 	@include breakpoint-min(xl) {
 		&.dialog-xl {
-			--dialog-max-width: #{map-get($dialog-sizes, xl)};
+			--dialog-max-width: #{map.get($dialog-sizes, xl)};
 		}
 	}
 
 	@include breakpoint-max(sm) {
-		--dialog-max-width: #{map-get($dialog-sizes, mobile)};
+		--dialog-max-width: #{map.get($dialog-sizes, mobile)};
 	}
 
 	@include breakpoint-max(mobile) {
-		--dialog-min-width: #{map-get($dialog-sizes, mobile)};
+		--dialog-min-width: #{map.get($dialog-sizes, mobile)};
 	}
 }
 
@@ -258,17 +260,17 @@ $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0,
 			flex: 1 1 auto;
 			display: flex;
 			flex-direction: column;
-			min-height: 0; // This is crucial for nested flexbox scrolling
+			min-height: 0;
 
-			> * { // for any children directly under dialog-content
+			> *:not(.dialog-buttons):not(.dialog-footer):not(.dialog-header) {
 				display: flex;
 				flex-direction: column;
 				flex: 1 1 auto;
-				min-height: 0; // Also crucial for nested flexbox scrolling
+				min-height: 0;
 			}
 
 			.dialog-body {
-				overflow-y: auto; // allow body to scroll
+				overflow-y: auto;
 			}
 		}
 
@@ -281,7 +283,17 @@ $dialog-box-shadows: ( light: (rgba(0, 0, 0, 0.28) 0px 16px 18px 0px, rgba(0, 0,
 }
 
 // Dialog positioning classes
-$dialog-positions: ( center: (top: null, bottom: null, left: null, right: null, transform: none), center-left: (top: 50%, left: 1.5rem, transform: translateY(-50%)), center-right: (top: 50%, right: 1.5rem, transform: translateY(-50%)), top: (top: 3rem, left: 50%, transform: translateX(-50%)), topleft: (top: 3rem, left: 1.5rem), topright: (top: 3rem, right: 1.5rem), bottom: (bottom: 1.5rem, left: 50%, transform: translateX(-50%)), bottomleft: (bottom: 1.5rem, left: 1.5rem), bottomright: (bottom: 1.5rem, right: 1.5rem) );
+$dialog-positions: (
+	center: (top: null, bottom: null, left: null, right: null, transform: none),
+	center-left: (top: 50%, left: 1.5rem, transform: translateY(-50%)),
+	center-right: (top: 50%, right: 1.5rem, transform: translateY(-50%)),
+	top: (top: 3rem, left: 50%, transform: translateX(-50%)),
+	topleft: (top: 3rem, left: 1.5rem),
+	topright: (top: 3rem, right: 1.5rem),
+	bottom: (bottom: 1.5rem, left: 50%, transform: translateX(-50%)),
+	bottomleft: (bottom: 1.5rem, left: 1.5rem),
+	bottomright: (bottom: 1.5rem, right: 1.5rem)
+);
 
 @each $position, $props in $dialog-positions {
 	.dialog-#{$position} .dialog {
