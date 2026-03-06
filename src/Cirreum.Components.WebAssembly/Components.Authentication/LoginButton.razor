@@ -1,31 +1,77 @@
 @namespace Cirreum.Components.Authentication
-
 @inject NavigationManager Navigation
 
-<button type="button" class="@Css" @onclick="Login" aria-label="Login">
-	<i class="bi bi-person-circle" aria-hidden="true"></i> Log in
+<button type="button" class="@Css" @onclick="Login" aria-label="@AriaLabel">
+	<i class="bi bi-person-circle" aria-hidden="true"></i> @Label
 </button>
 
 @code {
 
 	/// <summary>
-	/// Default: nav-link
+	/// CSS class applied to the button. Default: <c>nav-link</c>
 	/// </summary>
 	[Parameter]
 	public string Css { get; set; } = "nav-link";
 
 	/// <summary>
-	/// The path to the login page. Default: authentication/login
+	/// The path to the login page. Default: <c>authentication/login</c>
 	/// </summary>
 	[Parameter]
 	public string LoginPath { get; set; } = "authentication/login";
 
-	void Login() {
+	/// <summary>
+	/// The visible button label. Default: <c>Log in</c>
+	/// </summary>
+	[Parameter]
+	public string Label { get; set; } = "Log in";
+
+	/// <summary>
+	/// The accessible label for screen readers. Defaults to <see cref="Label"/> if not set.
+	/// </summary>
+	[Parameter]
+	public string? AriaLabel { get; set; }
+
+	/// <summary>
+	/// Optional login hint passed to the identity provider to pre-populate the username field.
+	/// Maps to the OIDC <c>loginHint</c> parameter.
+	/// </summary>
+	[Parameter]
+	public string? LoginHint { get; set; }
+
+	/// <summary>
+	/// Optional OIDC <c>prompt</c> parameter to control IdP interaction behavior.
+	/// When <see langword="null"/>, the parameter is omitted from the request entirely.
+	/// </summary>
+	[Parameter]
+	public OidcPrompt? Prompt { get; set; }
+
+	private void Login() {
+	
 		InteractiveRequestOptions requestOptions = new() {
-				Interaction = InteractionType.SignIn,
-				ReturnUrl = Navigation.Uri,
+			Interaction = InteractionType.SignIn,
+			ReturnUrl = this.Navigation.Uri
+		};
+
+		if (!string.IsNullOrWhiteSpace(this.LoginHint)) {
+			requestOptions.TryAddAdditionalParameter("loginHint", this.LoginHint);
+		}
+
+		if (this.Prompt.HasValue) {
+			var promptValue = this.Prompt.Value switch {
+				OidcPrompt.None => "none",
+				OidcPrompt.Login => "login",
+				OidcPrompt.Consent => "consent",
+				OidcPrompt.SelectAccount => "select_account",
+				_ => null
 			};
-		Navigation.NavigateToLogin(LoginPath, requestOptions);
+
+			if (promptValue is not null) {
+				requestOptions.TryAddAdditionalParameter("prompt", promptValue);
+			}
+		}
+
+		this.Navigation.NavigateToLogin(this.LoginPath, requestOptions);
+	
 	}
 
 }

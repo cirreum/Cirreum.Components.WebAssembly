@@ -13,7 +13,7 @@
 	<ItemGroup>
 
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.97.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.3" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -49,9 +49,11 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\css\" />
 	</ItemGroup>
-	
+
+	<!-- NOTE: This fix is Linux-only (see Condition) - applying broadly breaks Blazor Server/Web -->
 	<!-- SDK 9.0.300 Broken with WASM Standalone Razor JS Modules -->
-	<!-- IS THIS STILL AN ISSUE .NET 10.0,100??  -->
+	<!-- IS THIS STILL AN ISSUE .NET 10.0.100??  -->
+	<!-- Yes, THIS IS STILL AN ISSUE for 10.0.100,10.0.200 and 10.0.300??  -->
 	<Target Name="NormalizeContentPathsForLinux" BeforeTargets="GetTargetPathWithTargetPlatformMoniker" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
 
 		<Message Importance="high" Text="Building on Linux!" />
