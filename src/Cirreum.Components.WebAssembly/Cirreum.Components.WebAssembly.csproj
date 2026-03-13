@@ -20,9 +20,9 @@
 		</PackageReference>
 	
 		<!-- Cirreum Packages -->
-		<PackageReference Include="Cirreum.ExpressionBuilder" Version="1.0.*" />
-		<PackageReference Include="Cirreum.Storage.Browser" Version="1.0.*" />
-		<PackageReference Include="Cirreum.Startup" Version="1.0.*" />
+		<PackageReference Include="Cirreum.ExpressionBuilder" Version="1.0.105" />
+		<PackageReference Include="Cirreum.Storage.Browser" Version="1.0.106" />
+		<PackageReference Include="Cirreum.Startup" Version="1.0.111" />
 	
 	</ItemGroup>
 
