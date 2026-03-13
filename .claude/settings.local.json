@@ -7,7 +7,16 @@
       "Bash(unzip:*)",
       "Bash(gh issue:*)",
       "Bash(gh api:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(sed -i 's|actions/checkout@v4|actions/checkout@v5|g' \"$f\")",
+      "Bash(sed -i 's|actions/setup-dotnet@v4|actions/setup-dotnet@v5|g' \"$f\")",
+      "Bash(sed -i \"s|dotnet-version: ''10.0.x''|dotnet-version: ''10.0.2xx''|g\" \"$f\")",
+      "Bash(echo \"Updated: $f\")",
+      "Bash(done)",
+      "Read(//c/Cirreum/Runtime//**)",
+      "Read(//c/Cirreum/Runtime Extensions//**)"
     ],
     "deny": [],
     "ask": []
