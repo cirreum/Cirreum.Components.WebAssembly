@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 /// A component that redirects the user to the login page with optional OIDC parameters.
 /// </summary>
 /// <remarks>
-/// Typically used in a route guard or <c>RedirectToLogin</c> route to force authentication.
+/// Typically used in a route guard or <c>AppRouteView</c> to force authentication before
+/// rendering a protected page component.
 /// </remarks>
 public class RedirectToLogin : ComponentBase {
 
@@ -36,21 +37,34 @@ public class RedirectToLogin : ComponentBase {
 	/// active session exists. Use <see cref="OidcPrompt.None"/> for silent checks.
 	/// </remarks>
 	[Parameter]
-	public OidcPrompt? Prompt { get; set; }
+	public OidcPrompt? LoginPrompt { get; set; }
+
+	/// <summary>
+	/// The URL to return to after successful login. When <see langword="null"/>,
+	/// defaults to <see cref="NavigationManager.Uri"/> at the time of initialization.
+	/// </summary>
+	/// <remarks>
+	/// Callers that intercept navigation before the URI changes — such as route guard
+	/// components that evaluate auth state in <c>SetParametersAsync</c> — should supply
+	/// the intended return URL explicitly to ensure the correct page is restored
+	/// after the authentication callback completes.
+	/// </remarks>
+	[Parameter]
+	public string? ReturnUrl { get; set; }
 
 	protected override void OnInitialized() {
 
 		InteractiveRequestOptions requestOptions = new() {
 			Interaction = InteractionType.SignIn,
-			ReturnUrl = this.Navigation.Uri
+			ReturnUrl = this.ReturnUrl ?? this.Navigation.Uri
 		};
 
 		if (!string.IsNullOrWhiteSpace(this.LoginHint)) {
 			requestOptions.TryAddAdditionalParameter("loginHint", this.LoginHint);
 		}
 
-		if (this.Prompt.HasValue) {
-			var promptValue = this.Prompt.Value switch {
+		if (this.LoginPrompt.HasValue) {
+			var promptValue = this.LoginPrompt.Value switch {
 				OidcPrompt.None => "none",
 				OidcPrompt.Login => "login",
 				OidcPrompt.Consent => "consent",
