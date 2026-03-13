@@ -22,6 +22,14 @@ public class RedirectToLogin : ComponentBase {
 	public string LoginPath { get; set; } = "authentication/login";
 
 	/// <summary>
+	/// Optional domain hint passed to the identity provider to skip the organization/account
+	/// picker and route directly to the specified tenant's login page.
+	/// Maps to the OIDC <c>domain_hint</c> parameter.
+	/// </summary>
+	[Parameter]
+	public string? DomainHint { get; set; }
+
+	/// <summary>
 	/// Optional login hint passed to the identity provider to pre-populate the username field.
 	/// Maps to the OIDC <c>loginHint</c> parameter.
 	/// </summary>
@@ -61,6 +69,10 @@ public class RedirectToLogin : ComponentBase {
 
 		if (!string.IsNullOrWhiteSpace(this.LoginHint)) {
 			requestOptions.TryAddAdditionalParameter("loginHint", this.LoginHint);
+		}
+
+		if (!string.IsNullOrWhiteSpace(this.DomainHint)) {
+			requestOptions.TryAddAdditionalParameter("domainHint", this.DomainHint);
 		}
 
 		if (this.LoginPrompt.HasValue) {

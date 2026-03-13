@@ -32,6 +32,14 @@
 	public string? AriaLabel { get; set; }
 
 	/// <summary>
+	/// Optional domain hint passed to the identity provider to skip the organization/account
+	/// picker and route directly to the specified tenant's login page.
+	/// Maps to the OIDC <c>domain_hint</c> parameter.
+	/// </summary>
+	[Parameter]
+	public string? DomainHint { get; set; }
+
+	/// <summary>
 	/// Optional login hint passed to the identity provider to pre-populate the username field.
 	/// Maps to the OIDC <c>loginHint</c> parameter.
 	/// </summary>
@@ -40,10 +48,14 @@
 
 	/// <summary>
 	/// Optional OIDC <c>prompt</c> parameter to control IdP interaction behavior.
-	/// When <see langword="null"/>, the parameter is omitted from the request entirely.
+	/// When <c>null</c>, the parameter is omitted from the request entirely.
 	/// </summary>
+	/// <remarks>
+	/// Use <see cref="OidcPrompt.Login"/> to force re-authentication even when an
+	/// active session exists. Use <see cref="OidcPrompt.None"/> for silent checks.
+	/// </remarks>
 	[Parameter]
-	public OidcPrompt? Prompt { get; set; }
+	public OidcPrompt? LoginPrompt { get; set; }
 
 	private void Login() {
 	
@@ -56,8 +68,12 @@
 			requestOptions.TryAddAdditionalParameter("loginHint", this.LoginHint);
 		}
 
-		if (this.Prompt.HasValue) {
-			var promptValue = this.Prompt.Value switch {
+		if (!string.IsNullOrWhiteSpace(this.DomainHint)) {
+			requestOptions.TryAddAdditionalParameter("domainHint", this.DomainHint);
+		}
+
+		if (this.LoginPrompt.HasValue) {
+			var promptValue = this.LoginPrompt.Value switch {
 				OidcPrompt.None => "none",
 				OidcPrompt.Login => "login",
 				OidcPrompt.Consent => "consent",
