@@ -4,7 +4,10 @@
       "Bash(tar:*)",
       "Bash(dir C:CORRCORR.Foundation /s /b)",
       "Bash(findstr:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh api:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": [],
     "ask": []
