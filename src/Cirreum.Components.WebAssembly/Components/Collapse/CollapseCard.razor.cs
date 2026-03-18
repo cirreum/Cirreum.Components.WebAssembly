@@ -70,7 +70,7 @@ public partial class CollapseCard {
 	/// Set to <see langword="true"/> to render <see cref="CopyToClipboardButton"/>
 	/// </summary>
 	[Parameter]
-	public bool ShowCopyButton { get; set; } = true;
+	public bool ShowCopyButton { get; set; }
 
 	/// <summary>
 	/// Optional text that can be copied to the clipboard when <see cref="ShowCopyButton"/> is <see langword="true"/>.
