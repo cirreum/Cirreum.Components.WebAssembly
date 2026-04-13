@@ -22,7 +22,7 @@
 		<!-- Cirreum Packages -->
 		<PackageReference Include="Cirreum.ExpressionBuilder" Version="1.0.106" />
 		<PackageReference Include="Cirreum.Storage.Browser" Version="1.0.107" />
-		<PackageReference Include="Cirreum.Startup" Version="1.0.112" />
+		<PackageReference Include="Cirreum.Startup" Version="1.0.113" />
 	
 	</ItemGroup>
 
