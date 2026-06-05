@@ -16,6 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `AspNetCore.SassCompiler` `1.99.0` → `1.100.0`
   - `Microsoft.AspNetCore.Components.WebAssembly.Authentication` `10.0.7` → `10.0.8`
 
-## [1.0.9]
+## [1.0.37]
 
-Baseline release. Prior history predates this changelog.
+Baseline entry. Prior history predates this changelog.
