@@ -3,7 +3,7 @@
 [![NuGet Version](https://img.shields.io/nuget/v/Cirreum.Components.WebAssembly.svg?style=flat-square&labelColor=1F1F1F&color=003D8F)](https://www.nuget.org/packages/Cirreum.Components.WebAssembly/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Cirreum.Components.WebAssembly.svg?style=flat-square&labelColor=1F1F1F&color=003D8F)](https://www.nuget.org/packages/Cirreum.Components.WebAssembly/)
 [![GitHub Release](https://img.shields.io/github/v/release/cirreum/Cirreum.Components.WebAssembly?style=flat-square&labelColor=1F1F1F&color=FF3B2E)](https://github.com/cirreum/Cirreum.Components.WebAssembly/releases)
-[![License](https://img.shields.io/github/license/cirreum/Cirreum.Components.WebAssembly?style=flat-square&labelColor=1F1F1F&color=F2F2F2)](https://github.com/cirreum/Cirreum.Components.WebAssembly/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-F2F2F2?style=flat-square&labelColor=1F1F1F)](https://github.com/cirreum/Cirreum.Components.WebAssembly/blob/main/LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-003D8F?style=flat-square&labelColor=1F1F1F)](https://dotnet.microsoft.com/)
 
 A complete, production-ready UI component library for **Blazor WebAssembly**, built as part of the Cirreum application framework.
