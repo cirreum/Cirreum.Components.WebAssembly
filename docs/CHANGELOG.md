@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Updated
 
 - Updated NuGet packages.
+- Updated TypeScript to use latest version `7.0.0` and ES2025
 
 ## [1.0.43] - 2026-07-18
 

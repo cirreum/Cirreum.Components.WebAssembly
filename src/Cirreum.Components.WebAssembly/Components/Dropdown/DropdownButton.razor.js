@@ -9,8 +9,12 @@ const HANDLE_ESCAPE = "HandleEscapeKey";
 const HANDLE_ENTER = "HandleEnterKey";
 const HANDLE_TAB = "HandleTabKey";
 class KeyHandler {
+    _id;
+    _dotnetRef;
+    _toggleButton;
+    _toggleMenu;
+    previouslyFocusedElement = null;
     constructor(id, dotnetRef, toggleButton, toggleMenu) {
-        this.previouslyFocusedElement = null;
         this._id = id;
         this._dotnetRef = dotnetRef;
         this._toggleButton = toggleButton;

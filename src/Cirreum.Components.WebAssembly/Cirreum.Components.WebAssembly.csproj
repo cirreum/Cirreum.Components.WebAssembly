@@ -35,6 +35,8 @@
 
 	<!-- No JS/TS Maps or Comments -->
 	<PropertyGroup>
+		<TypeScriptTarget>ES2025</TypeScriptTarget>
+		<TypeScriptModuleKind>ESNext</TypeScriptModuleKind>
 		<TypeScriptRemoveComments>true</TypeScriptRemoveComments>
 		<TypeScriptSourceMap>false</TypeScriptSourceMap>
 	</PropertyGroup>

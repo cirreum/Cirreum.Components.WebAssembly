@@ -8,6 +8,8 @@ const HANDLE_ARROW_DOWN = "HandleArrowDownKey";
 const HANDLE_ESCAPE = "HandleEscapeKey";
 const HANDLE_ENTER = "HandleEnterOrSpace";
 class KeyHandler {
+    _dotnetRef;
+    _toggleButton;
     constructor(dotnetRef, toggleButton) {
         this._dotnetRef = dotnetRef;
         this._toggleButton = toggleButton;

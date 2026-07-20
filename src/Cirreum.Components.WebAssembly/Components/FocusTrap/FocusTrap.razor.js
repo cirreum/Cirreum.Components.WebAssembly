@@ -21,9 +21,12 @@ const focusableElementsSelector = "a:not([tabindex='-1']):not([inert])," +
     "[tabindex]:not([tabindex='-1'])," +
     "[contentEditable=true]:not([tabindex='-1']):not([inert])";
 class FocusTrap {
+    container;
+    focusType;
+    handleKeyDown;
+    previouslyFocusedElement = null;
+    focusableElements = [];
     constructor(containerId, defaultFocusType) {
-        this.previouslyFocusedElement = null;
-        this.focusableElements = [];
         const container = document.getElementById(containerId);
         if (!container) {
             throw new FocusTrapError(`Container with id "${containerId}" not found`);
