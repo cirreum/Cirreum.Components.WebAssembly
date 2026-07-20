@@ -18,24 +18,16 @@ const HANDLE_METHODS = {
     END: "HandleEndKey"
 };
 class Tabs {
-    abortController = null;
-    tabType;
-    tabsInstance;
-    dotnetRef;
-    scrollContainer;
-    tabsElement;
-    tabList;
-    activeTab;
-    vertical;
-    scrolledDebouncer = null;
-    touchStartX = 0;
-    touchStartY = 0;
-    resizeObserver = null;
-    resizeDebouncer = null;
-    MIN_SWIPE_DISTANCE = 20;
-    MULTIPLIER_THRESHOLD = 150;
-    MULTIPLIER_INCREASE = 3;
     constructor(tabsInstance, dotnetRef, tabType, tabPosition) {
+        this.abortController = null;
+        this.scrolledDebouncer = null;
+        this.touchStartX = 0;
+        this.touchStartY = 0;
+        this.resizeObserver = null;
+        this.resizeDebouncer = null;
+        this.MIN_SWIPE_DISTANCE = 20;
+        this.MULTIPLIER_THRESHOLD = 150;
+        this.MULTIPLIER_INCREASE = 3;
         this.activeTab = null;
         this.resizeObserver = null;
         this.resizeDebouncer = null;

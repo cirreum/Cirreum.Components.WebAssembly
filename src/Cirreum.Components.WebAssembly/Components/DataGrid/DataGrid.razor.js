@@ -1,22 +1,19 @@
 class DataGrid {
-    tableElement;
-    options;
-    columnStates = new Map();
-    resizeObserver;
-    dotNetRef;
-    isDisposed = false;
-    features = {
-        columnResizeEnabled: false,
-        keyboardNavigationEnabled: false,
-        footerResizerEnabled: false
-    };
-    boundHandlers = {
-        pointerDown: this.handlePointerDown.bind(this),
-        doubleClick: this.handleDoubleClick.bind(this),
-        keyDown: this.handleRowKeyDown.bind(this),
-        resizeObserver: this.updateFooterJustifyContent.bind(this)
-    };
     constructor(tableElement, options = {}) {
+        this.columnStates = new Map();
+        this.isDisposed = false;
+        this.features = {
+            columnResizeEnabled: false,
+            keyboardNavigationEnabled: false,
+            footerResizerEnabled: false
+        };
+        this.boundHandlers = {
+            pointerDown: this.handlePointerDown.bind(this),
+            doubleClick: this.handleDoubleClick.bind(this),
+            keyDown: this.handleRowKeyDown.bind(this),
+            resizeObserver: this.updateFooterJustifyContent.bind(this)
+        };
+        this.activeResizeController = null;
         this.tableElement = tableElement;
         const { keyDownHandler, ...config } = options;
         this.options = {
@@ -85,7 +82,6 @@ class DataGrid {
         }
         return 0;
     }
-    activeResizeController = null;
     attachResizeHandlers() {
         if (!this.tableElement.tHead) {
             console.warn('DataGrid: Table has no thead element');
