@@ -9,6 +9,7 @@
     <File Path="build/Versioning.props" />
   </Folder>
   <Folder Name="/docs/">
+    <File Path="docs/BACKLOG.md" />
     <File Path="docs/CHANGELOG.md" />
   </Folder>
   <Folder Name="/publish/">
@@ -27,3 +28,4 @@
     <File Path="README.md" />
   </Folder>
 </Solution>
+
