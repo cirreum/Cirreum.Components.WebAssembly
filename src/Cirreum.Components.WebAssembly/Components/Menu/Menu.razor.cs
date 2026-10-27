@@ -64,7 +64,10 @@ public partial class Menu {
 		var scrollPosition = this.JSApp.GetScrollPosition();
 		var footerHeight = this.JSApp.GetFooterHeight();
 
-		var triggerRect = (this.Anchored || top < 1 || left < 1)
+		// Keyboard activation (Enter/Space on the trigger) raises a click whose coordinates
+		// are zero, so coordinates below 1 cannot place the menu; the trigger's rect can.
+		var coordinatesUnusable = top < 1 || left < 1;
+		var triggerRect = (this.Anchored || coordinatesUnusable)
 			? this.JSApp.GetAccurateBoundingClientRect(this.Trigger)
 			: null;
 		var offsetDistanceFromTrigger = this.Anchored ? 2 : 0;
@@ -73,10 +76,14 @@ public partial class Menu {
 		// trigger element to ensure it doesn't
 		// overflow the view port.
 
-		// Use supplied top/left unless Anchored is true and we have a trigger rect
 		if (this.Anchored && triggerRect is not null) {
+			// Anchored: hang off the trigger's bottom-right corner.
 			left = triggerRect.Right + scrollPosition.X;
 			top = triggerRect.Bottom + scrollPosition.Y + offsetDistanceFromTrigger;
+		} else if (coordinatesUnusable && triggerRect is not null) {
+			// Unanchored but no usable pointer position: open below the trigger, left-aligned.
+			left = triggerRect.Left + scrollPosition.X;
+			top = triggerRect.Bottom + scrollPosition.Y;
 		}
 
 		// Convert document coordinates to viewport coordinates

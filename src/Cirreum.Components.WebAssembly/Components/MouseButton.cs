@@ -9,36 +9,36 @@ public enum MouseButton {
 	/// <summary>
 	/// No button or unknown button.
 	/// </summary>
-	[JsonPropertyName("none")]
+	[JsonStringEnumMemberName("none")]
 	None = -1,
 
 	/// <summary>
 	/// Left mouse button.
 	/// </summary>
-	[JsonPropertyName("left")]
+	[JsonStringEnumMemberName("left")]
 	Left = 0,
 
 	/// <summary>
 	/// Middle mouse button.
 	/// </summary>
-	[JsonPropertyName("middle")]
+	[JsonStringEnumMemberName("middle")]
 	Middle = 1,
 
 	/// <summary>
 	/// Right mouse button.
 	/// </summary>
-	[JsonPropertyName("right")]
+	[JsonStringEnumMemberName("right")]
 	Right = 2,
 
 	/// <summary>
 	/// Browser back button (if present).
 	/// </summary>
-	[JsonPropertyName("back")]
+	[JsonStringEnumMemberName("back")]
 	Back = 3,
 
 	/// <summary>
 	/// Browser forward button (if present).
 	/// </summary>
-	[JsonPropertyName("forward")]
+	[JsonStringEnumMemberName("forward")]
 	Forward = 4
 }

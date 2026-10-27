@@ -137,6 +137,11 @@ public partial class Popover : IDisposable {
 
 		this.SetIsOpen(false);
 
+		// The popover removes its own markup. A caller that owns the trigger but not the
+		// popover's position in the render tree (the DataGrid column chooser renders it
+		// inside the grid) cannot re-render it, so Close must.
+		this.Update();
+
 	}
 
 	private PopperJSOptions ResolveOptions() {

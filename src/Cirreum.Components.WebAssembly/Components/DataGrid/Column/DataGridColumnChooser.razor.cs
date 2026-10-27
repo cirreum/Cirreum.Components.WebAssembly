@@ -71,10 +71,17 @@ public partial class DataGridColumnChooser<TData> {
 		return Task.CompletedTask;
 	}
 
+	// The chooser is the only caller of Open and Close, so it tracks the open state itself.
+	// It deliberately does not subscribe to the popover's OnOpenChanged: that callback fires
+	// from the popover's after-render, and re-rendering the chooser from there, then the
+	// popover from the chooser's after-render, re-enters the popover while Popper is still
+	// applying its initial position.
 	private void ShowChooser() {
+		this.IsPopoverOpen = true;
 		this.ChooserPopover?.Open();
 	}
 	private void HideChooser() {
+		this.IsPopoverOpen = false;
 		this.ChooserPopover?.Close();
 	}
 
@@ -153,11 +160,4 @@ public partial class DataGridColumnChooser<TData> {
 		}
 		this.InternalGrid.SetColumnChooserPopup(this._renderPopover);
 	}
-	protected override async Task OnAfterRenderAsync(bool firstRender) {
-		await base.OnAfterRenderAsync(firstRender);
-		if (this.IsPopoverOpen) {
-			this.ChooserPopover?.Update();
-		}
-	}
-
 }

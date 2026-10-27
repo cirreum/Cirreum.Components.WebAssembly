@@ -287,15 +287,29 @@ public interface IJSAppModule {
 	void SetElementScrollTop(ElementReference element, int value);
 
 	// Rectangles & Coordinates
-	DomRect GetAccurateBoundingClientRect(ElementReference element);
-	DomRect GetAccurateBoundingClientRect(string selector);
-	DomRect GetBoundingClientRect(string selector);
-	DomRect GetBoundingClientRect(ElementReference element);
+
+	/// <summary>
+	/// Gets a rect whose position is the rendered position and whose size is the layout box
+	/// (<c>offsetWidth</c>/<c>offsetHeight</c>), or <see langword="null"/> when the element is not found.
+	/// </summary>
+	DomRect? GetAccurateBoundingClientRect(ElementReference element);
+	/// <inheritdoc cref="GetAccurateBoundingClientRect(ElementReference)"/>
+	DomRect? GetAccurateBoundingClientRect(string selector);
+	/// <summary>
+	/// Gets the element's bounding client rect, or <see langword="null"/> when the element is not found.
+	/// </summary>
+	DomRect? GetBoundingClientRect(string selector);
+	/// <inheritdoc cref="GetBoundingClientRect(string)"/>
+	DomRect? GetBoundingClientRect(ElementReference element);
 	ElementCoordinates GetElementCoordinates(string selector);
 	ElementCoordinates GetElementCoordinates(ElementReference element);
 	ElementDimensions GetElementDimensions(ElementReference element);
 	ElementDimensions GetElementDimensions(string selector);
 	ElementDimensions GetViewportDimensions();
+	/// <summary>
+	/// Gets the document scroll position, the offset that converts a viewport-relative rect
+	/// into document coordinates.
+	/// </summary>
 	Coordinates GetScrollPosition();
 	/// <summary>
 	/// Looks for a footer element (footer/.footer), and if found returns its height.
@@ -307,7 +321,10 @@ public interface IJSAppModule {
 
 	#region PopperJS
 
-	void ForceUpdatePopperJS(int id);
+	/// <summary>
+	/// Forces the popper identified by <paramref name="id"/>, as returned by <see cref="ShowPopperJS"/>, to recompute its position.
+	/// </summary>
+	void ForceUpdatePopperJS(string id);
 	void ClosePopperJS(string id);
 	string ShowPopperJS(PopperJSOptions options);
 

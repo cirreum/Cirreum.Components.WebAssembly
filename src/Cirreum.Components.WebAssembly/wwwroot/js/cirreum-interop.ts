@@ -85,6 +85,16 @@ interface DotNetObjectReference {
 	invokeMethodAsync(methodName: string, ...args: unknown[]): Promise<void>;
 }
 
+/**
+ * Invokes a .NET callback and reports a failure to the console instead of leaving it as
+ * an unhandled promise rejection, which the browser attributes to no caller.
+ */
+function invokeDotNet(dotnetRef: DotNetObjectReference, methodName: string, ...args: unknown[]): void {
+	dotnetRef.invokeMethodAsync(methodName, ...args).catch((error: unknown) => {
+		console.error(`cirreum-interop: ${methodName} failed: ${error instanceof Error ? error.message : String(error)}`);
+	});
+}
+
 interface InternationalFormatInfo {
 	locale: string;
 	calendar: string;
@@ -101,14 +111,6 @@ interface InternationalFormatInfo {
 	minute?: string;
 	second?: string;
 	timeZoneName?: string;
-}
-
-interface FormattedDateSamples {
-	defaultFormat: string;
-	dateOnly: string;
-	timeOnly: string;
-	full: string;
-	withTimeZone: string;
 }
 
 interface ScrollbarInfo {
@@ -221,13 +223,11 @@ function resolveElement<T extends HTMLElement>(selectorOrElement: string | T): T
  * Detects scrollbar presence and dimensions in the document.
  */
 function detectScrollbars(): ScrollbarInfo {
+	// "Custom" here means the page's own CSS hides the scrollbar on the body. Reading the
+	// computed property is enough; injecting a <style> element to probe it (as this once
+	// did) changed nothing the read depends on and is blocked under a strict style-src.
 	function hasCustomScrollbars(): boolean {
-		const style = document.createElement("style");
-		style.textContent = "::-webkit-scrollbar { width: 0; height: 0; }";
-		document.head.appendChild(style);
-		const hasCustom = window.getComputedStyle(document.body).scrollbarWidth === "none";
-		document.head.removeChild(style);
-		return hasCustom;
+		return window.getComputedStyle(document.body).scrollbarWidth === "none";
 	}
 
 	const outer = document.createElement("div");
@@ -383,78 +383,6 @@ export function isDaylightSavingTime(): string {
 }
 
 /**
- * Gets samples of different date/time formats.
- */
-export function getFormattedSamples(): FormattedDateSamples {
-	const now = new Date();
-
-	let supportsDateStyle = false;
-	try {
-		new Intl.DateTimeFormat("en", { dateStyle: "full" } as Intl.DateTimeFormatOptions).format(now);
-		supportsDateStyle = true;
-	} catch {
-		supportsDateStyle = false;
-	}
-
-	let fullFormatted: string;
-	if (supportsDateStyle) {
-		try {
-			fullFormatted = new Intl.DateTimeFormat(undefined, {
-				dateStyle: "full",
-				timeStyle: "long"
-			} as Intl.DateTimeFormatOptions).format(now);
-		} catch {
-			fullFormatted = now.toLocaleString();
-		}
-	} else {
-		try {
-			fullFormatted = new Intl.DateTimeFormat(undefined, {
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-				hour: "2-digit",
-				minute: "2-digit",
-				second: "2-digit"
-			}).format(now);
-		} catch {
-			fullFormatted = now.toLocaleString();
-		}
-	}
-
-	let timeZoneName: string;
-	try {
-		const formatter = new Intl.DateTimeFormat(undefined, { timeZoneName: "long" });
-		const parts = formatter.formatToParts(now);
-		const timeZonePart = parts.find((part) => part.type === "timeZoneName");
-		timeZoneName = timeZonePart?.value ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
-	} catch {
-		timeZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	}
-
-	let dateTimeFormat: string;
-	try {
-		dateTimeFormat = new Intl.DateTimeFormat(undefined, {
-			year: "numeric",
-			month: "numeric",
-			day: "numeric",
-			hour: "numeric",
-			minute: "2-digit",
-			second: "2-digit"
-		}).format(now);
-	} catch {
-		dateTimeFormat = now.toLocaleString();
-	}
-
-	return {
-		defaultFormat: now.toLocaleString(),
-		dateOnly: now.toLocaleDateString(),
-		timeOnly: now.toLocaleTimeString(),
-		full: fullFormatted,
-		withTimeZone: `${dateTimeFormat} (${timeZoneName})`
-	};
-}
-
-/**
  * Checks if the browser supports Intl.DateTimeFormat timeZone.
  */
 export function hasTimeZoneSupport(): boolean {
@@ -535,7 +463,9 @@ export function getSystemThemeMode(): string {
 let themeModeAbortController: AbortController | null = null;
 
 /**
- * Monitors system theme mode changes.
+ * Monitors system theme mode changes. The callback reports only the system state; whether
+ * the application follows it is the .NET side's decision, which holds the user's mode
+ * preference already.
  */
 export function monitorSystemThemeMode(dotnetRef: DotNetObjectReference): void {
 	// Clean up any existing listener first
@@ -544,9 +474,8 @@ export function monitorSystemThemeMode(dotnetRef: DotNetObjectReference): void {
 	const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
 	const controller = new AbortController();
 
-	darkThemeMq.addEventListener("change", async (e) => {
-		const storedTheme = localStorage.getItem("user-theme-mode");
-		await dotnetRef.invokeMethodAsync("OnModeChanged", e.matches, storedTheme);
+	darkThemeMq.addEventListener("change", (e) => {
+		invokeDotNet(dotnetRef, "OnModeChanged", e.matches);
 	}, { signal: controller.signal });
 
 	themeModeAbortController = controller;
@@ -572,10 +501,13 @@ export function monitorBreakpointChanges(
 	dotnetRef: DotNetObjectReference,
 	minBreakpointSize: string
 ): void {
+	// Re-registering a breakpoint replaces its listener rather than stacking a second one.
+	breakpointAbortControllers.get(minBreakpointSize)?.abort();
+
 	const mq = window.matchMedia(`(min-width: ${minBreakpointSize})`);
 	const controller = new AbortController();
-	mq.addEventListener("change", async (e) => {
-		await dotnetRef.invokeMethodAsync("OnBreakpointChange", e.matches);
+	mq.addEventListener("change", (e) => {
+		invokeDotNet(dotnetRef, "OnBreakpointChange", e.matches);
 	}, { signal: controller.signal });
 	breakpointAbortControllers.set(minBreakpointSize, controller);
 }
@@ -608,7 +540,7 @@ export function includeStyleSheet(
 	title?: string,
 	disabled?: boolean
 ): void {
-	const existing = document.querySelector(`link[href="${href}"]`);
+	const existing = document.querySelector(`link[href="${CSS.escape(href)}"]`);
 	if (!existing) {
 		window.cirreum.assets.loadCss(href, integrity, title, disabled);
 	}
@@ -618,7 +550,7 @@ export function includeStyleSheet(
  * Replaces a stylesheet's href.
  */
 export function replaceHeadLink(oldHref: string, newHref: string): void {
-	const link = document.querySelector<HTMLLinkElement>(`link[href="${oldHref}"]`);
+	const link = document.querySelector<HTMLLinkElement>(`link[href="${CSS.escape(oldHref)}"]`);
 	if (link) {
 		link.href = newHref;
 	}
@@ -684,7 +616,7 @@ export function focusElement(element: string | HTMLElement, preventScroll: boole
  */
 export function focusNextElement(
 	reverse: boolean = false,
-	element: string | null = null,
+	element: string | HTMLElement | null = null,
 	preventScroll: boolean = false
 ): boolean {
 	const activeElem = element ? resolveElement(element) ?? document.activeElement : document.activeElement;
@@ -731,11 +663,15 @@ export function isHorizontalScrollbarVisible(selector: string): boolean {
 
 /**
  * Adds CSS classes to an element if a scrollbar is visible.
+ *
+ * @remarks
+ * `tokens` is an array, not a rest parameter: .NET passes a string[] as one argument, and a
+ * rest parameter would receive that array as a single token.
  */
 export function addElementClassIfScrollbar(
 	selector: string,
 	vertical: boolean,
-	...tokens: string[]
+	tokens: string[]
 ): void {
 	const el = resolveElement(selector);
 	if (!el) {
@@ -896,9 +832,10 @@ export function addElementClasses(element: string | HTMLElement, classString: st
 }
 
 /**
- * Removes CSS classes from an element.
+ * Removes CSS classes from an element. `tokens` is an array for the reason given on
+ * {@link addElementClassIfScrollbar}.
  */
-export function removeElementClasses(element: string | HTMLElement, ...tokens: string[]): void {
+export function removeElementClasses(element: string | HTMLElement, tokens: string[]): void {
 	const el = resolveElement(element);
 	if (el && tokens.length > 0) {
 		el.classList.remove(...tokens);
@@ -1062,7 +999,10 @@ export function getBoundingClientRect(element: string | HTMLElement): DomRect | 
 }
 
 /**
- * Gets an accurate bounding rect accounting for transforms.
+ * Gets a bounding rect whose position is the rendered position (transforms included, as
+ * getBoundingClientRect already reports) and whose size is the layout box (offsetWidth and
+ * offsetHeight), so a scaled or translated trigger anchors by where it is drawn but sizes
+ * by what it occupies.
  */
 export function getAccurateBoundingClientRect(element: string | HTMLElement): DomRect | null {
 	const el = resolveElement(element);
@@ -1071,28 +1011,18 @@ export function getAccurateBoundingClientRect(element: string | HTMLElement): Do
 	}
 
 	const rect = el.getBoundingClientRect();
-	const computedStyle = window.getComputedStyle(el);
 	const width = el.offsetWidth;
 	const height = el.offsetHeight;
 
-	let offsetX = 0;
-	let offsetY = 0;
-	const transform = computedStyle.transform;
-	if (transform && transform !== "none") {
-		const matrix = new DOMMatrixReadOnly(transform);
-		offsetX = matrix.m41;
-		offsetY = matrix.m42;
-	}
-
 	return {
-		Bottom: rect.top + offsetY + height,
+		Bottom: rect.top + height,
 		Height: height,
-		Left: rect.left + offsetX,
-		Right: rect.left + offsetX + width,
-		Top: rect.top + offsetY,
+		Left: rect.left,
+		Right: rect.left + width,
+		Top: rect.top,
 		Width: width,
-		X: rect.x,
-		Y: rect.y
+		X: rect.left,
+		Y: rect.top
 	};
 }
 
@@ -1134,22 +1064,12 @@ export function getViewPortDimensions(): ElementDimensions {
 }
 
 /**
- * Gets the current scroll position.
+ * Gets the document scroll position: the offset that converts a viewport-relative rect
+ * (getBoundingClientRect) into document coordinates. Inner scroll containers are not
+ * added; a viewport-relative rect already reflects them, so adding them would double-count.
  */
 export function getScrollPosition(): Coordinates {
-	let totalX = window.scrollX;
-	let totalY = window.scrollY;
-
-	let currentElement = document.activeElement as HTMLElement | null;
-	while (currentElement && currentElement !== document.body) {
-		if (currentElement.scrollHeight > currentElement.clientHeight) {
-			totalX += currentElement.scrollLeft;
-			totalY += currentElement.scrollTop;
-		}
-		currentElement = currentElement.parentElement;
-	}
-
-	return { X: totalX, Y: totalY };
+	return { X: window.scrollX, Y: window.scrollY };
 }
 
 /**
@@ -1227,8 +1147,20 @@ export function destroyPopper(id: string): void {
 
 //#region Mouse Button Listener
 
+/**
+ * Raises a .NET callback for one mouse button on one element.
+ *
+ * Only the trigger button's own events are consumed: a listener for the right button
+ * leaves left clicks, and their default actions (links, checkboxes, labels), untouched.
+ *
+ * Touch: a left trigger relies on the browser's synthesized click, so touchstart does not
+ * raise it (raising on both produced two callbacks per tap). A right trigger is a long
+ * press; once it fires, the native contextmenu and click that follow the same touch are
+ * suppressed so the callback is raised once.
+ */
 class MouseButtonListener {
 	private timer: number | null = null;
+	private suppressUntil = 0;
 
 	constructor(
 		private element: HTMLElement,
@@ -1248,46 +1180,62 @@ class MouseButtonListener {
 		};
 	}
 
+	private raise(info: MouseButtonEventInfo): void {
+		invokeDotNet(this.dotnetHelper, "OnEventCallback", info);
+	}
+
+	private isSuppressed(): boolean {
+		return performance.now() < this.suppressUntil;
+	}
+
 	private handleClick = (e: MouseEvent): void => {
-		e.preventDefault();
-		if (e.button === this.triggerButton) {
-			e.stopPropagation();
-			const eventInfo = this.getEventInfo(e.button, e, MouseButtonEventType.Click);
-			this.dotnetHelper.invokeMethodAsync("OnEventCallback", eventInfo);
+		if (e.button !== this.triggerButton) {
+			return;
 		}
+		e.preventDefault();
+		e.stopPropagation();
+		if (this.isSuppressed()) {
+			return;
+		}
+		this.raise(this.getEventInfo(e.button, e, MouseButtonEventType.Click));
 	};
 
 	private handleContextMenu = (e: MouseEvent): void => {
-		e.preventDefault();
-		if (this.triggerButton === MouseButton.Right) {
-			e.stopPropagation();
-			const eventInfo = this.getEventInfo(e.button, e, MouseButtonEventType.ContextMenu);
-			this.dotnetHelper.invokeMethodAsync("OnEventCallback", eventInfo);
+		if (this.triggerButton !== MouseButton.Right) {
+			return;
 		}
+		e.preventDefault();
+		e.stopPropagation();
+		if (this.isSuppressed()) {
+			return;
+		}
+		this.raise(this.getEventInfo(e.button, e, MouseButtonEventType.ContextMenu));
 	};
 
+	// auxclick fires for middle and right buttons; consume only the trigger's.
 	private handleAuxclick = (e: MouseEvent): void => {
-		e.preventDefault();
+		if (e.button === this.triggerButton) {
+			e.preventDefault();
+		}
 	};
 
 	private handleTouchStart = (e: TouchEvent): void => {
 		if (this.triggerButton === MouseButton.Right) {
 			this.startLongPress(e.touches[0]);
-		} else {
-			const eventInfo = this.getEventInfo(this.triggerButton, e.touches[0], MouseButtonEventType.Click);
-			this.dotnetHelper.invokeMethodAsync("OnEventCallback", eventInfo);
 		}
 	};
 
-	private handleTouchEnd = (e: TouchEvent): void => {
-		e.preventDefault();
+	private handleTouchEnd = (): void => {
 		this.cancelLongPress();
 	};
 
-	private startLongPress(e: Touch): void {
+	private startLongPress(touch: Touch): void {
+		this.cancelLongPress();
 		this.timer = window.setTimeout(() => {
-			const eventInfo = this.getEventInfo(MouseButton.None, e, MouseButtonEventType.ContextMenu);
-			this.dotnetHelper.invokeMethodAsync("OnEventCallback", eventInfo);
+			this.timer = null;
+			// Suppress the contextmenu/click the browser synthesizes for this same touch.
+			this.suppressUntil = performance.now() + 1000;
+			this.raise(this.getEventInfo(MouseButton.None, touch, MouseButtonEventType.ContextMenu));
 		}, this.delay);
 	}
 
@@ -1303,8 +1251,9 @@ class MouseButtonListener {
 		this.element.addEventListener("contextmenu", this.handleContextMenu);
 		this.element.addEventListener("click", this.handleClick);
 		this.element.addEventListener("touchstart", this.handleTouchStart, { passive: true });
-		this.element.addEventListener("touchend", this.handleTouchEnd);
-		this.element.addEventListener("touchcancel", this.handleTouchEnd);
+		this.element.addEventListener("touchmove", this.handleTouchEnd, { passive: true });
+		this.element.addEventListener("touchend", this.handleTouchEnd, { passive: true });
+		this.element.addEventListener("touchcancel", this.handleTouchEnd, { passive: true });
 	}
 
 	public detachListeners(): void {
@@ -1313,6 +1262,7 @@ class MouseButtonListener {
 		this.element.removeEventListener("contextmenu", this.handleContextMenu);
 		this.element.removeEventListener("click", this.handleClick);
 		this.element.removeEventListener("touchstart", this.handleTouchStart);
+		this.element.removeEventListener("touchmove", this.handleTouchEnd);
 		this.element.removeEventListener("touchend", this.handleTouchEnd);
 		this.element.removeEventListener("touchcancel", this.handleTouchEnd);
 	}
