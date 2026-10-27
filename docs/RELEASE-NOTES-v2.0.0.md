@@ -26,11 +26,13 @@ The 2.0 break makes the contract say what the JavaScript does, and ships the fix
 - `IThemeModeChangedRef.ModeChanged(bool isDarkMode)` drops the `storedMode` parameter. The
   JavaScript reports the system's preference only; whether the application follows it is a
   decision for the side that holds the user's choice.
-- `IJSAppModule.ForceUpdatePopperJS(string id)` takes the id `ShowPopperJS` returns.
+- `IJSAppModule.ForceUpdatePopperJS` is removed. It took an `int` where popper ids are strings,
+  so it never reached an instance, and nothing called it. A member nothing exercises is removed
+  rather than corrected.
 - `GetBoundingClientRect` and `GetAccurateBoundingClientRect` return `DomRect?`.
 - For direct importers of the module: `addElementClassIfScrollbar` and `removeElementClasses`
   take `string[]`; `monitorSystemThemeMode` invokes `OnModeChanged(isDark)`;
-  `getFormattedSamples` is removed.
+  `getFormattedSamples` and `updatePopper` are removed.
 
 **Fixed, in the JavaScript:**
 
@@ -45,6 +47,11 @@ The 2.0 break makes the contract say what the JavaScript does, and ships the fix
 
 **Fixed, in the components:**
 
+- A link in a DataGrid cell navigates. The row's unconditional `preventDefault` on click was
+  cancelling every anchor, checkbox and label inside it; a `<tr>` has no default action of its
+  own, so the cancellation is removed. Consumers can drop the `@onclick:stopPropagation`
+  workaround on their anchors
+  ([#3](https://github.com/cirreum/Cirreum.Components.WebAssembly/issues/3)).
 - `Menu` opened from the keyboard, where the click carries zero coordinates, opens below its
   trigger.
 - The DataGrid column chooser toggles, shows as active while open, and closes cleanly. The
@@ -64,8 +71,8 @@ later `style-src-attr` split.
 ## Upgrading
 
 Implementations of `IThemeModeChangedRef` drop the second parameter. Callers of the rect
-accessors handle `null`, which they were already receiving. Callers of `ForceUpdatePopperJS`
-pass the string id. See [MIGRATION-v2.md](MIGRATION-v2.md) for the before/after of each.
+accessors handle `null`, which they were already receiving. Calls to `ForceUpdatePopperJS`
+are deleted. See [MIGRATION-v2.md](MIGRATION-v2.md) for the before/after of each.
 
 Four behaviour changes are worth a glance even where nothing fails to compile: left clicks
 inside a right-button listener's element regain their default action; touch raises once;

@@ -15,10 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   On a fresh browser nothing is stored, so the old callback compared `null` to `"auto"` and
   ignored every system change until the user picked a mode explicitly. Implementations drop the
   second parameter. See `docs/MIGRATION-v2.md`.
-- **`IJSAppModule.ForceUpdatePopperJS` takes a `string` id.** `ShowPopperJS` returns a string
-  id and `ClosePopperJS` takes one; the force-update overload took an `int`, so the JavaScript
-  map lookup could never match and the call was a silent no-op. No framework component called
-  it.
+- **`IJSAppModule.ForceUpdatePopperJS` is removed**, with the module's `updatePopper` export.
+  `ShowPopperJS` returns a string id and `ClosePopperJS` takes one; the force-update member took
+  an `int`, so the JavaScript map lookup could never match and the call was a silent no-op.
+  Nothing in the framework or its consumers called it. A member nothing exercises is removed
+  rather than corrected; a popover that needs a forced reposition brings it back with its
+  consumer.
 - **The four bounding-rect accessors return `DomRect?`.** The JavaScript returned `null` for a
   missing element throughout; the C# signatures said otherwise. `Menu` already null-checked.
 - **Module-level JavaScript signatures.** For anyone importing `cirreum-interop.js` directly:
@@ -30,6 +32,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **A link inside a DataGrid cell navigates** ([#3](https://github.com/cirreum/Cirreum.Components.WebAssembly/issues/3)).
+  Every data row carried `@onclick:preventDefault`, so a click on an `<a>` in a cell bubbled to
+  the row, had its default action cancelled, and Blazor's link interception never ran; the same
+  applied to a checkbox or label a consumer placed in a cell. A `<tr>` has no default action of
+  its own, and nothing the grid renders inside a row depends on the cancellation, so it is
+  removed. The row still stops propagation and still handles the click, so `OnRowClicked` and
+  row selection fire for a link click as for any other; the row cannot see the click's target
+  from C#, and stopping propagation in JavaScript for anchors would also stop the click
+  reaching Blazor's own navigation listener. Consumers who added `@onclick:stopPropagation` to
+  their anchors as a workaround can remove it.
 - **A keyboard-activated `Menu` opens at its trigger.** Enter or Space on the trigger raises a
   click with zero coordinates. `ShowAsync` already fetched the trigger's rect for that case but
   only used it when `Anchored` was set, so an unanchored menu opened at the page origin. It now

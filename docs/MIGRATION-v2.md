@@ -11,7 +11,7 @@ components and never touch `IJSAppModule`, `IThemeModeChangedRef` or the
 | App uses components only, through `Cirreum.Runtime.Wasm` | None. The runtime implements the new contract. |
 | App implements `IThemeModeChangedRef` | Drop the second parameter (below). |
 | App calls `GetBoundingClientRect` / `GetAccurateBoundingClientRect` | Handle `null` (below). |
-| App calls `ForceUpdatePopperJS` | Pass the string id `ShowPopperJS` returned. |
+| App calls `ForceUpdatePopperJS` | Remove the call (below). |
 | App imports `cirreum-interop.js` from its own JavaScript | Review the module signatures (below). |
 
 ## `IThemeModeChangedRef.ModeChanged`
@@ -46,10 +46,11 @@ Behaviour is unchanged; the annotation now matches it.
 
 ## `ForceUpdatePopperJS`
 
-```csharp
-var id = js.ShowPopperJS(options);   // string
-js.ForceUpdatePopperJS(id);          // was int; could never match the string id
-```
+Removed, together with the module's `updatePopper` export. It took an `int` where the popper
+ids are strings, so no call ever reached a Popper instance; removing the call changes nothing
+at runtime. A popover that needs a forced reposition after its content changes size should ask
+for the member to return with that use case, rather than keep a corrected signature nothing
+exercises.
 
 ## Module signatures (direct JavaScript consumers only)
 
@@ -59,6 +60,7 @@ js.ForceUpdatePopperJS(id);          // was int; could never match the string id
 | `removeElementClasses(element, ...tokens)` | rest parameter | `tokens: string[]` |
 | `monitorSystemThemeMode` callback | `OnModeChanged(isDark, storedMode)` | `OnModeChanged(isDark)` |
 | `getFormattedSamples()` | exported | removed |
+| `updatePopper(id)` | exported | removed |
 
 ## Behaviour changes to be aware of
 

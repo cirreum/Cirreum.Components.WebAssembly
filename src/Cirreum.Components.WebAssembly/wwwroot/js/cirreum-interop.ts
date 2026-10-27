@@ -67,7 +67,6 @@ declare global {
 //#region Popper Types
 
 interface PopperInstance {
-	forceUpdate(): void;
 	destroy(): void;
 }
 
@@ -1109,20 +1108,6 @@ export function showPopper(id: string, host: HTMLElement, popper: HTMLElement, c
 		registeredPoppers.set(id, instance);
 	} catch (e) {
 		console.error(`showPopper error: ${e instanceof Error ? e.message : String(e)}`);
-	}
-}
-
-/**
- * Forces a Popper instance to update.
- */
-export function updatePopper(id: string): void {
-	const instance = registeredPoppers.get(id);
-	if (instance) {
-		try {
-			instance.forceUpdate();
-		} catch (e) {
-			console.error(`updatePopper error: ${e instanceof Error ? e.message : String(e)}`);
-		}
 	}
 }
 

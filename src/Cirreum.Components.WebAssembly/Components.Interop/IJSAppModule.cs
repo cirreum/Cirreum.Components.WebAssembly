@@ -321,10 +321,6 @@ public interface IJSAppModule {
 
 	#region PopperJS
 
-	/// <summary>
-	/// Forces the popper identified by <paramref name="id"/>, as returned by <see cref="ShowPopperJS"/>, to recompute its position.
-	/// </summary>
-	void ForceUpdatePopperJS(string id);
 	void ClosePopperJS(string id);
 	string ShowPopperJS(PopperJSOptions options);
 

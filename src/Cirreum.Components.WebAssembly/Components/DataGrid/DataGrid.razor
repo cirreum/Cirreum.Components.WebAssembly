@@ -199,7 +199,7 @@
 		var columnCount = columns.Count;
 		<tr @key="@ItemKey(rowItem)"
 			@oncontextmenu="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>((e) => OnContextMenuHandlerAsync(e, rowItem))" @oncontextmenu:preventDefault="@HasContextMenu" @oncontextmenu:stopPropagation
-			@onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>((e) => OnRowClickHandlerAsync(e, rowItem, rowIndex))" @onclick:preventDefault @onclick:stopPropagation
+			@onclick="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>((e) => OnRowClickHandlerAsync(e, rowItem, rowIndex))" @onclick:stopPropagation
 			id="@rowId"
 			tabindex="@GetTabIndex(rowIndex,isSelected)"
 			aria-rowindex="@(rowIndex+1)"
