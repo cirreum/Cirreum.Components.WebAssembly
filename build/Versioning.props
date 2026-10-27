@@ -4,9 +4,9 @@
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
 		<!-- Default version components (used when Version is not passed externally) -->
-		<MajorProductVersion Condition="'$(MajorProductVersion)' == ''">1</MajorProductVersion>
+		<MajorProductVersion Condition="'$(MajorProductVersion)' == ''">2</MajorProductVersion>
 		<MinorProductVersion Condition="'$(MinorProductVersion)' == ''">0</MinorProductVersion>
-		<PatchProductVersion Condition="'$(PatchProductVersion)' == ''">51</PatchProductVersion>
+		<PatchProductVersion Condition="'$(PatchProductVersion)' == ''">0</PatchProductVersion>
 
 		<!-- Build VersionPrefix from components if not set -->
 		<VersionPrefix Condition="'$(VersionPrefix)' == ''">$(MajorProductVersion).$(MinorProductVersion).$(PatchProductVersion)</VersionPrefix>
